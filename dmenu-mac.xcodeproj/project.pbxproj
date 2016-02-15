@@ -14,7 +14,7 @@
 		7F3278F61C71C9CE00AFB227 /* SearchWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278EE1C71C9CE00AFB227 /* SearchWindowController.swift */; };
 		7F3278F71C71C9CE00AFB227 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278EF1C71C9CE00AFB227 /* ViewController.swift */; };
 		7F3278FC1C71CA0E00AFB227 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F3278FB1C71CA0E00AFB227 /* Main.storyboard */; };
-		7F3278FE1C71CD1F00AFB227 /* VerticalAlignedTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278FD1C71CD1F00AFB227 /* VerticalAlignedTextFieldCell.swift */; };
+		7F3279001C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278FF1C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,7 +26,7 @@
 		7F3278EE1C71C9CE00AFB227 /* SearchWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchWindowController.swift; path = src/SearchWindowController.swift; sourceTree = "<group>"; };
 		7F3278EF1C71C9CE00AFB227 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewController.swift; path = src/ViewController.swift; sourceTree = "<group>"; };
 		7F3278FB1C71CA0E00AFB227 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = src/Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		7F3278FD1C71CD1F00AFB227 /* VerticalAlignedTextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalAlignedTextFieldCell.swift; sourceTree = "<group>"; };
+		7F3278FF1C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VerticalAlignedTextFieldCell.swift; path = src/VerticalAlignedTextFieldCell.swift; sourceTree = "<group>"; };
 		7FE8A6481C717481000A2C4C /* dmenu-mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "dmenu-mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -44,6 +44,7 @@
 		7F3278E71C71C96100AFB227 /* dmenu-mac */ = {
 			isa = PBXGroup;
 			children = (
+				7F3278FF1C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift */,
 				7F3278FA1C71CA0200AFB227 /* Base.lproj */,
 				7F3278E81C71C9CE00AFB227 /* AppDelegate.swift */,
 				7F3278E91C71C9CE00AFB227 /* Assets.xcassets */,
@@ -52,7 +53,6 @@
 				7F3278ED1C71C9CE00AFB227 /* SearchWindow.swift */,
 				7F3278EE1C71C9CE00AFB227 /* SearchWindowController.swift */,
 				7F3278EF1C71C9CE00AFB227 /* ViewController.swift */,
-				7F3278FD1C71CD1F00AFB227 /* VerticalAlignedTextFieldCell.swift */,
 			);
 			name = "dmenu-mac";
 			sourceTree = "<group>";
@@ -151,9 +151,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F3279001C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift in Sources */,
 				7F3278F71C71C9CE00AFB227 /* ViewController.swift in Sources */,
 				7F3278F31C71C9CE00AFB227 /* FuzzySearch.swift in Sources */,
-				7F3278FE1C71CD1F00AFB227 /* VerticalAlignedTextFieldCell.swift in Sources */,
 				7F3278F61C71C9CE00AFB227 /* SearchWindowController.swift in Sources */,
 				7F3278F01C71C9CE00AFB227 /* AppDelegate.swift in Sources */,
 				7F3278F51C71C9CE00AFB227 /* SearchWindow.swift in Sources */,
