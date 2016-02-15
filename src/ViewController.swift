@@ -18,10 +18,19 @@ class ViewController: NSViewController, NSTextFieldDelegate {
         super.viewDidLoad()
         searchText.delegate = self;
         
-        let appDir = NSSearchPathForDirectoriesInDomains(
-            .ApplicationDirectory, .LocalDomainMask, true)[0]
+        // appName to dir recursivity key/valye dict
+        var appDirDict = [String: Bool]()
         
-        appList = getAppList(NSURL(fileURLWithPath: appDir, isDirectory: true))
+        appDirDict[NSSearchPathForDirectoriesInDomains(
+            .ApplicationDirectory, .LocalDomainMask, true)[0]] = true
+        appDirDict["/System/Library/CoreServices/"] = false
+        
+        for dir in appDirDict.keys {
+            appList.appendContentsOf(
+                getAppList(
+                    NSURL(fileURLWithPath: dir, isDirectory: true),
+                    recursive: appDirDict[dir]!))
+        }
         
         for app in appList {
             let appName = (app.URLByDeletingPathExtension?.lastPathComponent)
@@ -29,7 +38,7 @@ class ViewController: NSViewController, NSTextFieldDelegate {
         }
     }
     
-    func getAppList(appDir: NSURL) -> [NSURL] {
+    func getAppList(appDir: NSURL, recursive: Bool = true) -> [NSURL] {
         var list = [NSURL]()
         let fileManager = NSFileManager.defaultManager()
         
@@ -44,7 +53,7 @@ class ViewController: NSViewController, NSTextFieldDelegate {
                 if dir.pathExtension == "app" {
                     print("APP: \(sub)");
                     list.append(dir);
-                } else if (dir.hasDirectoryPath) {
+                } else if (dir.hasDirectoryPath && recursive) {
                     print("DIR enter!: \(dir.absoluteString)");
                     list.appendContentsOf(self.getAppList(dir))
                 } else {
