@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
+    </dependencies>
+    <scenes>
+        <!--Window Controller-->
+        <scene sceneID="R2V-B0-nI4">
+            <objects>
+                <windowController id="B8D-0N-5wS" customClass="SearchWindowController" customModule="dmenu_mac" customModuleProvider="target" sceneMemberID="viewController">
+                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" hidesOnDeactivate="YES" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="IQv-IB-iLA" customClass="SearchWindow" customModule="dmenu_mac" customModuleProvider="target">
+                        <windowStyleMask key="styleMask" unifiedTitleAndToolbar="YES"/>
+                        <rect key="contentRect" x="196" y="0.0" width="485" height="25"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+                    </window>
+                    <connections>
+                        <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="cq2-FE-JQM"/>
+                    </connections>
+                </windowController>
+                <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="75" y="250"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="hIz-AP-VOD">
+            <objects>
+                <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="dmenu_mac" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" wantsLayer="YES" misplaced="YES" id="m2S-Jp-Qdl">
+                        <rect key="frame" x="0.0" y="0.0" width="371" height="45"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Fjb-7T-x1e">
+                                <rect key="frame" x="10" y="0.0" width="90" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="90" id="gz9-SZ-TTB"/>
+                                    <constraint firstAttribute="height" constant="31" id="oAG-TV-bUz"/>
+                                </constraints>
+                                <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" focusRingType="none" alignment="left" placeholderString="Search" drawsBackground="YES" id="pMg-YR-zKP" customClass="VerticalAlignedTextFieldCell" customModule="dmenu_mac" customModuleProvider="target">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="WoX-eI-jdS">
+                                <rect key="frame" x="120" y="0.0" width="251" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="31" id="yE0-CF-gP2"/>
+                                </constraints>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" drawsBackground="YES" id="Znv-Tw-8o5" customClass="VerticalAlignedTextFieldCell" customModule="dmenu_mac" customModuleProvider="target">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" red="1" green="0.32741422261286068" blue="0.57327014546140687" alpha="0.0" colorSpace="calibratedRGB"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="WoX-eI-jdS" secondAttribute="trailing" id="209-ZU-HgI"/>
+                            <constraint firstItem="Fjb-7T-x1e" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="66N-Ij-dx0"/>
+                            <constraint firstItem="WoX-eI-jdS" firstAttribute="leading" secondItem="Fjb-7T-x1e" secondAttribute="trailing" constant="20" id="6Vk-EO-0Me"/>
+                            <constraint firstItem="Fjb-7T-x1e" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="10" id="NJB-TE-dlI"/>
+                            <constraint firstItem="WoX-eI-jdS" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="RBQ-Og-B3b"/>
+                            <constraint firstAttribute="trailing" secondItem="WoX-eI-jdS" secondAttribute="trailing" id="dPT-FA-u26"/>
+                            <constraint firstAttribute="bottom" secondItem="WoX-eI-jdS" secondAttribute="bottom" id="pFM-pe-rjr"/>
+                            <constraint firstAttribute="bottom" secondItem="Fjb-7T-x1e" secondAttribute="bottom" id="x2G-3p-Zbf"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="resultsText" destination="WoX-eI-jdS" id="bYA-H1-qHl"/>
+                        <outlet property="searchText" destination="Fjb-7T-x1e" id="dUT-7x-0zh"/>
+                    </connections>
+                </viewController>
+                <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="75.5" y="663.5"/>
+        </scene>
+    </scenes>
+</document>
