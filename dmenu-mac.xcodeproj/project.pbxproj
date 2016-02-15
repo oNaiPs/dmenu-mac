@@ -9,24 +9,36 @@
 /* Begin PBXBuildFile section */
 		7F3278F01C71C9CE00AFB227 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278E81C71C9CE00AFB227 /* AppDelegate.swift */; };
 		7F3278F11C71C9CE00AFB227 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7F3278E91C71C9CE00AFB227 /* Assets.xcassets */; };
-		7F3278F31C71C9CE00AFB227 /* FuzzySearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278EB1C71C9CE00AFB227 /* FuzzySearch.swift */; };
 		7F3278F51C71C9CE00AFB227 /* SearchWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278ED1C71C9CE00AFB227 /* SearchWindow.swift */; };
 		7F3278F61C71C9CE00AFB227 /* SearchWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278EE1C71C9CE00AFB227 /* SearchWindowController.swift */; };
 		7F3278F71C71C9CE00AFB227 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278EF1C71C9CE00AFB227 /* ViewController.swift */; };
 		7F3278FC1C71CA0E00AFB227 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F3278FB1C71CA0E00AFB227 /* Main.storyboard */; };
 		7F3279001C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278FF1C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift */; };
+		7F3279091C71DF2300AFB227 /* DDHotKeyCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F3279031C71DF2300AFB227 /* DDHotKeyCenter.m */; };
+		7F32790A1C71DF2300AFB227 /* DDHotKeyTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F3279051C71DF2300AFB227 /* DDHotKeyTextField.m */; };
+		7F32790B1C71DF2300AFB227 /* DDHotKeyUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F3279071C71DF2300AFB227 /* DDHotKeyUtilities.m */; };
+		7F32790C1C71DF2300AFB227 /* FuzzySearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3279081C71DF2300AFB227 /* FuzzySearch.swift */; };
+		7F32790E1C71DF3E00AFB227 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F32790D1C71DF3E00AFB227 /* Carbon.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		7F3278E81C71C9CE00AFB227 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = src/AppDelegate.swift; sourceTree = "<group>"; };
 		7F3278E91C71C9CE00AFB227 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = src/Assets.xcassets; sourceTree = "<group>"; };
-		7F3278EB1C71C9CE00AFB227 /* FuzzySearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FuzzySearch.swift; path = src/FuzzySearch.swift; sourceTree = "<group>"; };
 		7F3278EC1C71C9CE00AFB227 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = src/Info.plist; sourceTree = "<group>"; };
 		7F3278ED1C71C9CE00AFB227 /* SearchWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchWindow.swift; path = src/SearchWindow.swift; sourceTree = "<group>"; };
 		7F3278EE1C71C9CE00AFB227 /* SearchWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchWindowController.swift; path = src/SearchWindowController.swift; sourceTree = "<group>"; };
 		7F3278EF1C71C9CE00AFB227 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewController.swift; path = src/ViewController.swift; sourceTree = "<group>"; };
 		7F3278FB1C71CA0E00AFB227 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = src/Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7F3278FF1C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VerticalAlignedTextFieldCell.swift; path = src/VerticalAlignedTextFieldCell.swift; sourceTree = "<group>"; };
+		7F3279021C71DF2300AFB227 /* DDHotKeyCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DDHotKeyCenter.h; path = "src/3rd-party/DDHotKeyCenter.h"; sourceTree = "<group>"; };
+		7F3279031C71DF2300AFB227 /* DDHotKeyCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DDHotKeyCenter.m; path = "src/3rd-party/DDHotKeyCenter.m"; sourceTree = "<group>"; };
+		7F3279041C71DF2300AFB227 /* DDHotKeyTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DDHotKeyTextField.h; path = "src/3rd-party/DDHotKeyTextField.h"; sourceTree = "<group>"; };
+		7F3279051C71DF2300AFB227 /* DDHotKeyTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DDHotKeyTextField.m; path = "src/3rd-party/DDHotKeyTextField.m"; sourceTree = "<group>"; };
+		7F3279061C71DF2300AFB227 /* DDHotKeyUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DDHotKeyUtilities.h; path = "src/3rd-party/DDHotKeyUtilities.h"; sourceTree = "<group>"; };
+		7F3279071C71DF2300AFB227 /* DDHotKeyUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DDHotKeyUtilities.m; path = "src/3rd-party/DDHotKeyUtilities.m"; sourceTree = "<group>"; };
+		7F3279081C71DF2300AFB227 /* FuzzySearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FuzzySearch.swift; path = "src/3rd-party/FuzzySearch.swift"; sourceTree = "<group>"; };
+		7F32790D1C71DF3E00AFB227 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		7F3279111C71E02300AFB227 /* BridgingHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BridgingHeader.h; path = src/BridgingHeader.h; sourceTree = "<group>"; };
 		7FE8A6481C717481000A2C4C /* dmenu-mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "dmenu-mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -35,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F32790E1C71DF3E00AFB227 /* Carbon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,14 +57,15 @@
 		7F3278E71C71C96100AFB227 /* dmenu-mac */ = {
 			isa = PBXGroup;
 			children = (
-				7F3278FF1C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift */,
+				7F3279011C71DF1900AFB227 /* 3rd-party */,
 				7F3278FA1C71CA0200AFB227 /* Base.lproj */,
 				7F3278E81C71C9CE00AFB227 /* AppDelegate.swift */,
 				7F3278E91C71C9CE00AFB227 /* Assets.xcassets */,
-				7F3278EB1C71C9CE00AFB227 /* FuzzySearch.swift */,
+				7F3279111C71E02300AFB227 /* BridgingHeader.h */,
 				7F3278EC1C71C9CE00AFB227 /* Info.plist */,
 				7F3278ED1C71C9CE00AFB227 /* SearchWindow.swift */,
 				7F3278EE1C71C9CE00AFB227 /* SearchWindowController.swift */,
+				7F3278FF1C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift */,
 				7F3278EF1C71C9CE00AFB227 /* ViewController.swift */,
 			);
 			name = "dmenu-mac";
@@ -65,10 +79,33 @@
 			name = Base.lproj;
 			sourceTree = "<group>";
 		};
+		7F3279011C71DF1900AFB227 /* 3rd-party */ = {
+			isa = PBXGroup;
+			children = (
+				7F3279021C71DF2300AFB227 /* DDHotKeyCenter.h */,
+				7F3279031C71DF2300AFB227 /* DDHotKeyCenter.m */,
+				7F3279041C71DF2300AFB227 /* DDHotKeyTextField.h */,
+				7F3279051C71DF2300AFB227 /* DDHotKeyTextField.m */,
+				7F3279061C71DF2300AFB227 /* DDHotKeyUtilities.h */,
+				7F3279071C71DF2300AFB227 /* DDHotKeyUtilities.m */,
+				7F3279081C71DF2300AFB227 /* FuzzySearch.swift */,
+			);
+			name = "3rd-party";
+			sourceTree = "<group>";
+		};
+		7F32790F1C71DF4600AFB227 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7F32790D1C71DF3E00AFB227 /* Carbon.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		7FE8A63F1C717481000A2C4C = {
 			isa = PBXGroup;
 			children = (
 				7F3278E71C71C96100AFB227 /* dmenu-mac */,
+				7F32790F1C71DF4600AFB227 /* Frameworks */,
 				7FE8A6491C717481000A2C4C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -107,6 +144,7 @@
 		7FE8A6401C717481000A2C4C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = "";
 				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "Jose Pereira";
@@ -153,9 +191,12 @@
 			files = (
 				7F3279001C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift in Sources */,
 				7F3278F71C71C9CE00AFB227 /* ViewController.swift in Sources */,
-				7F3278F31C71C9CE00AFB227 /* FuzzySearch.swift in Sources */,
+				7F32790C1C71DF2300AFB227 /* FuzzySearch.swift in Sources */,
 				7F3278F61C71C9CE00AFB227 /* SearchWindowController.swift in Sources */,
+				7F32790A1C71DF2300AFB227 /* DDHotKeyTextField.m in Sources */,
 				7F3278F01C71C9CE00AFB227 /* AppDelegate.swift in Sources */,
+				7F3279091C71DF2300AFB227 /* DDHotKeyCenter.m in Sources */,
+				7F32790B1C71DF2300AFB227 /* DDHotKeyUtilities.m in Sources */,
 				7F3278F51C71C9CE00AFB227 /* SearchWindow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -253,6 +294,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.fidalgo.dmenu-mac";
 				PRODUCT_NAME = "dmenu-mac";
+				SWIFT_OBJC_BRIDGING_HEADER = src/BridgingHeader.h;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -267,6 +309,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.fidalgo.dmenu-mac";
 				PRODUCT_NAME = "dmenu-mac";
+				SWIFT_OBJC_BRIDGING_HEADER = src/BridgingHeader.h;
 			};
 			name = Release;
 		};

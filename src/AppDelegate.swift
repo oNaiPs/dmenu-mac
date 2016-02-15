@@ -4,25 +4,26 @@
 //
 
 import Cocoa
+import Carbon
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
-
-
-
     func applicationDidFinishLaunching(aNotification: NSNotification) {
-        // Insert code here to initialize your application
-        
-
+         let res = DDHotKeyCenter.sharedHotKeyCenter()
+            .registerHotKeyWithKeyCode(UInt16(kVK_Space),
+                modifierFlags: NSEventModifierFlags.CommandKeyMask.rawValue,
+                target: self, action: Selector("resumeApp"), object: nil)
+        if (res == nil) {
+            print("Could not register global shortcut.")
+        }
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {
-        // Insert code here to tear down your application
     }
 
-    
-    func test() {
-        NSLog("TEST!")
+    func resumeApp() {
+        //not sure if this is the most performant, it's taking couple ms to open the app in my machine.
+        NSWorkspace.sharedWorkspace().launchApplication(NSBundle.mainBundle().executablePath!)
     }
 }
 

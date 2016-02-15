@@ -69,17 +69,11 @@ class ViewController: NSViewController, NSTextFieldDelegate {
         print(list.first?.absoluteString)
         
         if let app = list.first {
-            if NSWorkspace.sharedWorkspace().launchApplication(app.path!) {
-                self.closeApp()
-            }
+            NSWorkspace.sharedWorkspace().launchApplication(app.path!)
         }
         
         self.searchText.stringValue = ""
         self.resultsText.stringValue = ""
-    }
-    
-    func applicationWasOpened() {
-        self.closeApp()
     }
     
     @IBAction func closeApp(sender: NSButton) {
@@ -87,7 +81,7 @@ class ViewController: NSViewController, NSTextFieldDelegate {
     }
     
     func closeApp() {
-        NSApplication.sharedApplication().terminate(self)
+        NSApplication.sharedApplication().hide(nil)
     }
     
     func getFuzzyList() -> [NSURL] {
