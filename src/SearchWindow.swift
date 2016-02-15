@@ -16,34 +16,9 @@ class SearchWindow: NSPanel {
             height: self.frame.height)
         
         setFrame(frame, display: false)
-        //        setFrame(frame)
     }
     
     override var canBecomeKeyWindow: Bool {
         return true
     }
-    
-    
-    override func drawLayer(layer: CALayer, inContext ctx: CGContext) {
-        NSGraphicsContext.saveGraphicsState()
-        
-        
-        NSBezierPath(roundedRect: self.frame, xRadius: 5, yRadius: 5)
-        //        self.la
-        NSGraphicsContext.restoreGraphicsState()
-        
-    }
-    
-    //    - (void) drawRect:(NSRect)dirtyRect{
-    //    [[NSColor windowBackgroundColor] set];
-    //
-    //    [NSGraphicsContext saveGraphicsState];
-    //    NSBezierPath *path;
-    //    path = [NSBezierPath bezierPathWithRoundedRect:[self bounds] xRadius:5 yRadius:5];
-    //
-    //    ... // do more fancy stuff here ;)
-    //
-    //    [NSGraphicsContext restoreGraphicsState];
-    //    }
-    
 }

@@ -94,11 +94,5 @@ class ViewController: NSViewController, NSTextFieldDelegate {
             .sort({$0.1 > $1.1}).map({$0.0})
         return resultsList
     }
-    
-    override var representedObject: AnyObject? {
-        didSet {
-            // Update the view, if already loaded.
-        }
-    }
 }
 

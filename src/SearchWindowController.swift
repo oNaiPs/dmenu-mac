@@ -7,13 +7,7 @@ import Cocoa
 
 class SearchWindowController: NSWindowController {
 
-    
-    
-    
     override func windowDidLoad() {
-//        self.window?.movableByWindowBackground = true;
-
-        
     }
     
 }
