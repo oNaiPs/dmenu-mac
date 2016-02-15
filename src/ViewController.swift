@@ -68,12 +68,26 @@ class ViewController: NSViewController, NSTextFieldDelegate {
         let list = self.getFuzzyList()
         print(list.first?.absoluteString)
         
-        if let a = list.first {
-            NSWorkspace.sharedWorkspace().launchApplication(a.path!)
+        if let app = list.first {
+            if NSWorkspace.sharedWorkspace().launchApplication(app.path!) {
+                self.closeApp()
+            }
         }
         
         self.searchText.stringValue = ""
         self.resultsText.stringValue = ""
+    }
+    
+    func applicationWasOpened() {
+        self.closeApp()
+    }
+    
+    @IBAction func closeApp(sender: NSButton) {
+        self.closeApp()
+    }
+    
+    func closeApp() {
+        NSApplication.sharedApplication().terminate(self)
     }
     
     func getFuzzyList() -> [NSURL] {

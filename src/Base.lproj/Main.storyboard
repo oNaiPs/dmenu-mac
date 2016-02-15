@@ -47,12 +47,25 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="31" id="yE0-CF-gP2"/>
                                 </constraints>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" drawsBackground="YES" id="Znv-Tw-8o5" customClass="VerticalAlignedTextFieldCell" customModule="dmenu_mac" customModuleProvider="target">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" state="on" drawsBackground="YES" id="Znv-Tw-8o5" customClass="VerticalAlignedTextFieldCell" customModule="dmenu_mac" customModuleProvider="target">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" red="1" green="0.32741422261286068" blue="0.57327014546140687" alpha="0.0" colorSpace="calibratedRGB"/>
                                 </textFieldCell>
                             </textField>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" alphaValue="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="738-UY-82Z">
+                                <rect key="frame" x="-11" y="24" width="81" height="32"/>
+                                <buttonCell key="cell" type="push" title="Button" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="5o7-SG-xoV">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="closeApp:" target="XfG-lQ-9wD" id="jdb-LG-h65"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="WoX-eI-jdS" secondAttribute="trailing" id="209-ZU-HgI"/>
