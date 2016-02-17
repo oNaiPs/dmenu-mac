@@ -1,6 +1,6 @@
 //
 //  Created by Jose Pereira on 2/14/16.
-//  Copyright © 2016 Jose Pereira. All rights reserved.
+//  Copyright © 2016 fidalgo.io. All rights reserved.
 //
 
 import Cocoa
@@ -8,8 +8,8 @@ import Cocoa
 class SearchWindow: NSPanel {
     
     override func awakeFromNib() {
-        let screenSize = NSScreen.mainScreen()
         self.hasShadow = false
+        let screenSize = NSScreen.mainScreen()
         
         let frame = NSRect(x: 0, y: (screenSize?.frame.height)! - self.frame.height,
             width: (screenSize?.frame.width)!,
@@ -19,6 +19,10 @@ class SearchWindow: NSPanel {
     }
     
     override var canBecomeKeyWindow: Bool {
+        return true
+    }
+    
+    override var canBecomeMainWindow: Bool {
         return true
     }
 }

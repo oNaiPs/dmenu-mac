@@ -1,6 +1,6 @@
 //
 //  Created by Jose Pereira on 2/14/16.
-//  Copyright © 2016 Jose Pereira. All rights reserved.
+//  Copyright © 2016 fidalgo.io. All rights reserved.
 //
 
 import Foundation
@@ -9,7 +9,7 @@ import Cocoa
 class ViewController: NSViewController, NSTextFieldDelegate {
     
     @IBOutlet private var searchText: NSTextField!
-    @IBOutlet private var resultsText: NSTextField!
+    @IBOutlet private var resultsText: ResultsView!
     
     var appList = [NSURL]()
     var appNameList = [String]()
@@ -44,53 +44,86 @@ class ViewController: NSViewController, NSTextFieldDelegate {
         
         do {
             let subs = try fileManager.contentsOfDirectoryAtPath(appDir.path!)
-            let totalFiles = subs.count
             
-            print(totalFiles)
             for sub in subs {
                 let dir = appDir.URLByAppendingPathComponent(sub)
                 
                 if dir.pathExtension == "app" {
-                    print("APP: \(sub)");
                     list.append(dir);
-                } else if (dir.hasDirectoryPath && recursive) {
-                    print("DIR enter!: \(dir.absoluteString)");
+                } else if dir.hasDirectoryPath && recursive {
                     list.appendContentsOf(self.getAppList(dir))
-                } else {
-                    print("NOAPP NODIR \(dir)")
                 }
             }
-        } catch _ {
-            NSLog("ERROR")
+        } catch {
+            print(error)
         }
         return list
     }
     
     override func controlTextDidChange(obj: NSNotification) {
         let list = self.getFuzzyList()
-            .map {($0.URLByDeletingPathExtension?.lastPathComponent)!}
         
-        self.resultsText.stringValue = (list).joinWithSeparator("  ")
+        if !list.isEmpty {
+            self.resultsText.list = list
+        } else {
+            self.resultsText.clear()
+        }
     }
     
-    override func controlTextDidEndEditing(obj: NSNotification) {
-        let list = self.getFuzzyList()
-        print(list.first?.absoluteString)
-        
-        if let app = list.first {
+    func control(control: NSControl, textView: NSTextView, doCommandBySelector commandSelector: Selector) -> Bool {
+        if commandSelector == "moveLeft:" {
+            self.resultsText.selectedAppIndex--
+            return true
+        } else if commandSelector == "moveRight:" {
+            self.resultsText.selectedAppIndex++
+            return true
+        } else if commandSelector == "insertTab:" {
+            let list = getStartingBy(searchText.stringValue)
+            if !list.isEmpty {
+                self.resultsText.list = list
+            } else {
+                self.resultsText.clear()
+            }
+            
+            return true
+        } else if commandSelector == "insertNewline:" {
+            //open current selected app
+            let app = resultsText.selectedApp
             NSWorkspace.sharedWorkspace().launchApplication(app.path!)
+            
+            self.clearFields()
+            return true
+        } else if commandSelector == "cancelOperation:" {
+            closeApp()
+            return true
         }
         
-        self.searchText.stringValue = ""
-        self.resultsText.stringValue = ""
+        return false
     }
     
-    @IBAction func closeApp(sender: NSButton) {
-        self.closeApp()
+    func clearFields() {
+        self.searchText.stringValue = ""
+        self.resultsText.clear()
     }
     
     func closeApp() {
+        clearFields()
         NSApplication.sharedApplication().hide(nil)
+    }
+    
+    func getStartingBy(text: String) -> [NSURL] {
+        //todo turn this into a regex
+        return appList.sort({
+            //make it sorted
+            let appName1 = ($0.URLByDeletingPathExtension!.lastPathComponent?.lowercaseString)!
+            let appName2 = ($1.URLByDeletingPathExtension!.lastPathComponent?.lowercaseString)!
+            
+            return appName1.localizedCaseInsensitiveCompare(appName2) == NSComparisonResult.OrderedAscending
+        }).filter({
+            let appName = ($0.URLByDeletingPathExtension!.lastPathComponent?.lowercaseString)!
+            return appName.hasPrefix(text.lowercaseString) ||
+                appName.containsString(" " + text.lowercaseString)
+        })
     }
     
     func getFuzzyList() -> [NSURL] {

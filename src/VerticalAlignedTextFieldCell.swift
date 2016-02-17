@@ -1,39 +1,48 @@
 //
 //  Created by Jose Pereira on 2/14/16.
-//  Copyright © 2016 Jose Pereira. All rights reserved.
+//  Copyright © 2016 fidalgo.io. All rights reserved.
 //
+//  Textfield with vertically centered text
 
 import Cocoa
 
 class VerticalAlignedTextFieldCell: NSTextFieldCell {
+    var editingOrSelecting: Bool = false
     
-    func adjustedFrameToVerticallyCenterText(frame: NSRect) -> NSRect {
-        let offset = floor((NSHeight(frame) -
-            (self.font!.ascender - self.font!.descender)) / CGFloat(2))
-        return NSInsetRect(frame, 0.0, offset)
+    override func drawingRectForBounds(theRect: NSRect) -> NSRect {
+        var newRect = super.drawingRectForBounds(theRect)
+        if !editingOrSelecting {
+            let textSize = self.cellSizeForBounds(theRect)
+            let heightDelta = newRect.size.height - textSize.height
+            if heightDelta > 0 {
+                newRect.size.height -= heightDelta;
+                newRect.origin.y += (heightDelta / 2);
+            }
+        }
+        return newRect
     }
     
-    override func editWithFrame(aRect: NSRect, inView controlView: NSView, editor textObj: NSText, delegate anObject: AnyObject?, event theEvent: NSEvent) {
-        
-        super.editWithFrame(self.adjustedFrameToVerticallyCenterText(aRect),
-            inView: controlView,
-            editor: textObj,
-            delegate: anObject,
-            event: theEvent)
-    }
-    
-    override func selectWithFrame(aRect: NSRect, inView controlView: NSView, editor textObj: NSText, delegate anObject: AnyObject?, start selStart: Int, length selLength: Int) {
-        super.selectWithFrame(self.adjustedFrameToVerticallyCenterText(aRect),
+    override func selectWithFrame(var aRect: NSRect, inView controlView: NSView, editor textObj: NSText, delegate anObject: AnyObject?, start selStart: Int, length selLength: Int) {
+        aRect = self.drawingRectForBounds(aRect)
+        editingOrSelecting = true;
+        super.selectWithFrame(aRect,
             inView: controlView,
             editor: textObj,
             delegate: anObject,
             start: selStart,
             length: selLength)
+        
+        editingOrSelecting = false;
     }
-
-    override func drawInteriorWithFrame(cellFrame: NSRect, inView controlView: NSView) {
-        super.drawInteriorWithFrame(self.adjustedFrameToVerticallyCenterText(cellFrame),
-            inView: controlView)
+    
+    override func editWithFrame(var aRect: NSRect, inView controlView: NSView, editor textObj: NSText, delegate anObject: AnyObject?, event theEvent: NSEvent) {
+        aRect = self.drawingRectForBounds(aRect)
+        editingOrSelecting = true;
+        self.editWithFrame(aRect,
+            inView: controlView,
+            editor: textObj,
+            delegate: anObject,
+            event: theEvent)
+        editingOrSelecting = false;
     }
-
 }

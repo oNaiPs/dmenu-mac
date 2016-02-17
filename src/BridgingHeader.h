@@ -1,9 +1,6 @@
 //
-//  BridgingHeader.h
-//  dmenu-mac
-//
-//  Created by Jose Pereira on 2/15/16.
-//  Copyright © 2016 Jose Pereira. All rights reserved.
+//  Created by Jose Pereira on 2/14/16.
+//  Copyright © 2016 fidalgo.io. All rights reserved.
 //
 
 #ifndef BridgingHeader_h
