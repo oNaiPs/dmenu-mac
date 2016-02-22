@@ -30,6 +30,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func resumeApp() {
         NSApplication.sharedApplication().activateIgnoringOtherApps(true)
         controllerWindow?.window?.orderFrontRegardless()
+        
+        let w = controllerWindow?.window as! SearchWindow;
+        w.updatePosition();
     }
 }
 
