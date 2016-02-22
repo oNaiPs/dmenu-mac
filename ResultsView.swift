@@ -35,9 +35,13 @@ class ResultsView: NSView {
         }
     }
     
-    var selectedApp: NSURL {
+    var selectedApp: NSURL? {
         get {
-            return _list[_selectedAppIndex]
+            if _selectedAppIndex < 0 || _selectedAppIndex >= _list.count {
+                return nil
+            } else {
+                return _list[_selectedAppIndex]
+            }
         }
     }
     

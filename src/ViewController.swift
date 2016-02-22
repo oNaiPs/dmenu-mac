@@ -88,8 +88,9 @@ class ViewController: NSViewController, NSTextFieldDelegate {
             return true
         } else if commandSelector == "insertNewline:" {
             //open current selected app
-            let app = resultsText.selectedApp
-            NSWorkspace.sharedWorkspace().launchApplication(app.path!)
+            if let app = resultsText.selectedApp {
+                NSWorkspace.sharedWorkspace().launchApplication(app.path!)
+            }
             
             self.clearFields()
             return true
