@@ -3,16 +3,27 @@
 //  Copyright © 2016 fidalgo.io. All rights reserved.
 //
 
-import Foundation
+import Carbon
 import Cocoa
 
-class ViewController: NSViewController, NSTextFieldDelegate {
+let kDefaultsGlobalShortcutKeycode = "kDefaultsGlobalShortcutKeycode"
+let kDefaultsGlobalShortcutModifiedFlags = "kDefaultsGlobalShortcutModifiedFlags"
+
+class SearchViewController: NSViewController, NSTextFieldDelegate,
+    NSWindowDelegate, SettingsViewControllerDelegate {
     
     @IBOutlet private var searchText: NSTextField!
     @IBOutlet private var resultsText: ResultsView!
+    var settingsWindow = NSWindow()
+    var hotkey: DDHotKey?
     
     var appList = [NSURL]()
     var appNameList = [String]()
+    
+    struct Shortcut {
+        let keycode: UInt16
+        let modifierFlags: UInt
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +47,48 @@ class ViewController: NSViewController, NSTextFieldDelegate {
             let appName = (app.URLByDeletingPathExtension?.lastPathComponent)
             appNameList.append(appName!)
         }
+        
+        NSUserDefaults.standardUserDefaults().registerDefaults([
+            //cmd+Space is the default shortcut
+            kDefaultsGlobalShortcutKeycode: kVK_Space,
+            kDefaultsGlobalShortcutModifiedFlags: NSEventModifierFlags.CommandKeyMask.rawValue
+        ])
+        
+        configureGlobalShortcut()
+    }
+    
+    func getGlobalShortcut() -> Shortcut {
+        let keycode =  NSUserDefaults.standardUserDefaults()
+            .integerForKey(kDefaultsGlobalShortcutKeycode)
+        let modifierFlags = NSUserDefaults.standardUserDefaults()
+            .integerForKey(kDefaultsGlobalShortcutModifiedFlags)
+        return Shortcut(keycode: UInt16(keycode), modifierFlags: UInt(modifierFlags))
+    }
+    
+    func configureGlobalShortcut() {
+        let globalShortcut = getGlobalShortcut()
+
+        if hotkey != nil {
+            DDHotKeyCenter.sharedHotKeyCenter()
+                .unregisterHotKey(hotkey)
+        }
+        
+        hotkey = DDHotKeyCenter.sharedHotKeyCenter()
+            .registerHotKeyWithKeyCode(globalShortcut.keycode,
+                modifierFlags: globalShortcut.modifierFlags,
+                target: self, action: Selector("resumeApp"), object: nil)
+
+        if hotkey == nil {
+            print("Could not register global shortcut.")
+        }
+    }
+    
+    func resumeApp() {
+        NSApplication.sharedApplication().activateIgnoringOtherApps(true)
+        view.window?.orderFrontRegardless()
+        
+        let controller = view.window as! SearchWindow;
+        controller.updatePosition();
     }
     
     func getAppList(appDir: NSURL, recursive: Bool = true) -> [NSURL] {
@@ -144,6 +197,31 @@ class ViewController: NSViewController, NSTextFieldDelegate {
         let resultsList = scoreDict
             .sort({$0.1 > $1.1}).map({$0.0})
         return resultsList
+    }
+    
+    @IBAction func openSettings(sender: AnyObject) {
+        let sb = NSStoryboard(name: "Settings", bundle: NSBundle.mainBundle())
+        let settingsView = sb.instantiateInitialController() as? SettingsViewController
+        settingsView?.delegate = self
+        
+        settingsWindow.contentViewController = settingsView
+        weak var wSettingsWindow = settingsWindow
+        
+        view.window?.beginSheet(settingsWindow,
+            completionHandler: { (response) -> Void in
+                wSettingsWindow?.contentViewController = nil
+        })
+    }
+    
+    func onSettingsApplied() {
+        view.window?.endSheet(settingsWindow)
+
+        //reconfigure global shortcuts if changed
+        configureGlobalShortcut()
+    }
+    
+    func onSettingsCanceled() {
+        view.window?.endSheet(settingsWindow)
     }
 }
 

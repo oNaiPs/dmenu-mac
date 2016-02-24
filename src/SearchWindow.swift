@@ -5,7 +5,7 @@
 
 import Cocoa
 
-class SearchWindow: NSPanel {
+class SearchWindow: NSWindow {
     
     override func awakeFromNib() {
         self.hasShadow = false
