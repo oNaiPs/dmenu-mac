@@ -12,3 +12,4 @@ deploy:
   file: 'dmenu-mac.app'
   on:
     repo: oNaiPs/dmenu-mac
+    tags: true
