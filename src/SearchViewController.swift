@@ -17,6 +17,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
     var settingsWindow = NSWindow()
     var hotkey: DDHotKey?
     
+    var appDirDict = [String: Bool]()
     var appList = [NSURL]()
     var appNameList = [String]()
     
@@ -29,13 +30,65 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         super.viewDidLoad()
         searchText.delegate = self;
         
-        // appName to dir recursivity key/valye dict
-        var appDirDict = [String: Bool]()
+        let applicationDir = NSSearchPathForDirectoriesInDomains(
+            .ApplicationDirectory, .LocalDomainMask, true)[0];
         
-        appDirDict[NSSearchPathForDirectoriesInDomains(
-            .ApplicationDirectory, .LocalDomainMask, true)[0]] = true
+        // appName to dir recursivity key/valye dict
+        appDirDict[applicationDir] = true
         appDirDict["/System/Library/CoreServices/"] = false
         
+        initFileWatch(Array(appDirDict.keys))
+        updateAppList()
+        
+        NSUserDefaults.standardUserDefaults().registerDefaults([
+            //cmd+Space is the default shortcut
+            kDefaultsGlobalShortcutKeycode: kVK_Space,
+            kDefaultsGlobalShortcutModifiedFlags: NSEventModifierFlags.CommandKeyMask.rawValue
+            ])
+        
+        configureGlobalShortcut()
+    }
+    
+    func initFileWatch(dirs: [String]) {
+        let allocator: CFAllocator? = kCFAllocatorDefault
+        
+        typealias FSEventStreamCallback = @convention(c) (ConstFSEventStreamRef, UnsafeMutablePointer<Void>, Int, UnsafeMutablePointer<Void>, UnsafePointer<FSEventStreamEventFlags>, UnsafePointer<FSEventStreamEventId>) -> Void
+        let callback: FSEventStreamCallback = {
+            (streamRef, clientCallBackInfo, numEvents, eventPaths, eventFlags, eventIds) -> Void in
+            let mySelf = Unmanaged<SearchViewController>.fromOpaque(
+                COpaquePointer(clientCallBackInfo)).takeUnretainedValue()
+
+            mySelf.updateAppList()
+        }
+        
+        var context = FSEventStreamContext(
+            version: 0,
+            info: UnsafeMutablePointer(Unmanaged.passUnretained(self).toOpaque()),
+            retain: nil,
+            release: nil,
+            copyDescription: nil)
+        
+        let sinceWhen: FSEventStreamEventId = UInt64(kFSEventStreamEventIdSinceNow)
+        let latency: CFTimeInterval = 1.0
+        let flags: FSEventStreamCreateFlags = UInt32(kFSEventStreamCreateFlagNone)
+        
+        let eventStream = FSEventStreamCreate(
+            allocator,
+            callback,
+            &context,
+            dirs,
+            sinceWhen,
+            latency,
+            flags
+        )
+        
+        FSEventStreamScheduleWithRunLoop(eventStream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode)
+        FSEventStreamStart(eventStream)
+    }
+    
+    func updateAppList() {
+        appList.removeAll()
+        appNameList.removeAll()
         for dir in appDirDict.keys {
             appList.appendContentsOf(
                 getAppList(
@@ -47,14 +100,6 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
             let appName = (app.URLByDeletingPathExtension?.lastPathComponent)
             appNameList.append(appName!)
         }
-        
-        NSUserDefaults.standardUserDefaults().registerDefaults([
-            //cmd+Space is the default shortcut
-            kDefaultsGlobalShortcutKeycode: kVK_Space,
-            kDefaultsGlobalShortcutModifiedFlags: NSEventModifierFlags.CommandKeyMask.rawValue
-        ])
-        
-        configureGlobalShortcut()
     }
     
     func getGlobalShortcut() -> Shortcut {
