@@ -18,10 +18,10 @@
 		7F32790B1C71DF2300AFB227 /* DDHotKeyUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F3279071C71DF2300AFB227 /* DDHotKeyUtilities.m */; };
 		7F32790C1C71DF2300AFB227 /* FuzzySearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3279081C71DF2300AFB227 /* FuzzySearch.swift */; };
 		7F32790E1C71DF3E00AFB227 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F32790D1C71DF3E00AFB227 /* Carbon.framework */; };
-		7F37D1A91C71FA3A00FD5662 /* ResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F37D1A81C71FA3A00FD5662 /* ResultsView.swift */; };
-		7F5355E21C7D8D88000CF999 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5355E11C7D8D88000CF999 /* SettingsViewController.swift */; };
-		7F61DA7E1C743951001F7C42 /* Empty.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F61DA7D1C743951001F7C42 /* Empty.storyboard */; };
-		7F61DA821C74603E001F7C42 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F61DA811C74603E001F7C42 /* Settings.storyboard */; };
+		7F5D0E261CACCD0100268983 /* ResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5D0E241CACCD0100268983 /* ResultsView.swift */; };
+		7F5D0E271CACCD0100268983 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5D0E251CACCD0100268983 /* SettingsViewController.swift */; };
+		7F5D0E2C1CACCDD400268983 /* Empty.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F5D0E281CACCDD400268983 /* Empty.storyboard */; };
+		7F5D0E2D1CACCDD400268983 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F5D0E2A1CACCDD400268983 /* Settings.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,10 +41,10 @@
 		7F3279081C71DF2300AFB227 /* FuzzySearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FuzzySearch.swift; path = "src/3rd-party/FuzzySearch.swift"; sourceTree = "<group>"; };
 		7F32790D1C71DF3E00AFB227 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		7F3279111C71E02300AFB227 /* BridgingHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BridgingHeader.h; path = src/BridgingHeader.h; sourceTree = "<group>"; };
-		7F37D1A81C71FA3A00FD5662 /* ResultsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultsView.swift; sourceTree = "<group>"; };
-		7F5355E11C7D8D88000CF999 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		7F61DA7D1C743951001F7C42 /* Empty.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Empty.storyboard; sourceTree = "<group>"; };
-		7F61DA811C74603E001F7C42 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
+		7F5D0E241CACCD0100268983 /* ResultsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResultsView.swift; path = src/ResultsView.swift; sourceTree = "<group>"; };
+		7F5D0E251CACCD0100268983 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = src/SettingsViewController.swift; sourceTree = "<group>"; };
+		7F5D0E291CACCDD400268983 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = src/Base.lproj/Empty.storyboard; sourceTree = "<group>"; };
+		7F5D0E2B1CACCDD400268983 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = src/Base.lproj/Settings.storyboard; sourceTree = "<group>"; };
 		7FE8A6481C717481000A2C4C /* dmenu-mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "dmenu-mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -64,16 +64,16 @@
 			isa = PBXGroup;
 			children = (
 				7F3279011C71DF1900AFB227 /* 3rd-party */,
-				7F3278FA1C71CA0200AFB227 /* Base.lproj */,
 				7F3278E91C71C9CE00AFB227 /* Assets.xcassets */,
+				7F3278FA1C71CA0200AFB227 /* Base.lproj */,
 				7F3279111C71E02300AFB227 /* BridgingHeader.h */,
 				7F3278EC1C71C9CE00AFB227 /* Info.plist */,
 				7F3278E81C71C9CE00AFB227 /* AppDelegate.swift */,
-				7F3278ED1C71C9CE00AFB227 /* SearchWindow.swift */,
-				7F3278FF1C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift */,
+				7F5D0E241CACCD0100268983 /* ResultsView.swift */,
 				7F3278EF1C71C9CE00AFB227 /* SearchViewController.swift */,
-				7F5355E11C7D8D88000CF999 /* SettingsViewController.swift */,
-				7F37D1A81C71FA3A00FD5662 /* ResultsView.swift */,
+				7F3278ED1C71C9CE00AFB227 /* SearchWindow.swift */,
+				7F5D0E251CACCD0100268983 /* SettingsViewController.swift */,
+				7F3278FF1C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift */,
 			);
 			name = "dmenu-mac";
 			sourceTree = "<group>";
@@ -81,9 +81,9 @@
 		7F3278FA1C71CA0200AFB227 /* Base.lproj */ = {
 			isa = PBXGroup;
 			children = (
+				7F5D0E281CACCDD400268983 /* Empty.storyboard */,
+				7F5D0E2A1CACCDD400268983 /* Settings.storyboard */,
 				7F3278FB1C71CA0E00AFB227 /* Search.storyboard */,
-				7F61DA7D1C743951001F7C42 /* Empty.storyboard */,
-				7F61DA811C74603E001F7C42 /* Settings.storyboard */,
 			);
 			name = Base.lproj;
 			sourceTree = "<group>";
@@ -186,10 +186,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7F61DA7E1C743951001F7C42 /* Empty.storyboard in Resources */,
+				7F5D0E2C1CACCDD400268983 /* Empty.storyboard in Resources */,
 				7F3278F11C71C9CE00AFB227 /* Assets.xcassets in Resources */,
 				7F3278FC1C71CA0E00AFB227 /* Search.storyboard in Resources */,
-				7F61DA821C74603E001F7C42 /* Settings.storyboard in Resources */,
+				7F5D0E2D1CACCDD400268983 /* Settings.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,11 +200,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7F5355E21C7D8D88000CF999 /* SettingsViewController.swift in Sources */,
 				7F3279001C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift in Sources */,
+				7F5D0E261CACCD0100268983 /* ResultsView.swift in Sources */,
 				7F3278F71C71C9CE00AFB227 /* SearchViewController.swift in Sources */,
+				7F5D0E271CACCD0100268983 /* SettingsViewController.swift in Sources */,
 				7F32790C1C71DF2300AFB227 /* FuzzySearch.swift in Sources */,
-				7F37D1A91C71FA3A00FD5662 /* ResultsView.swift in Sources */,
 				7F32790A1C71DF2300AFB227 /* DDHotKeyTextField.m in Sources */,
 				7F3278F01C71C9CE00AFB227 /* AppDelegate.swift in Sources */,
 				7F3279091C71DF2300AFB227 /* DDHotKeyCenter.m in Sources */,
@@ -214,6 +214,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		7F5D0E281CACCDD400268983 /* Empty.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7F5D0E291CACCDD400268983 /* Base */,
+			);
+			name = Empty.storyboard;
+			sourceTree = "<group>";
+		};
+		7F5D0E2A1CACCDD400268983 /* Settings.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7F5D0E2B1CACCDD400268983 /* Base */,
+			);
+			name = Settings.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		7FE8A6551C717481000A2C4C /* Debug */ = {
