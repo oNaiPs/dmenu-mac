@@ -167,10 +167,10 @@ public class FuzzySearch
                 {
                     if charOut==charIn
                     {
-                        searchIndex++
+                        searchIndex += 1
                         if searchIndex == tempStringToSearch.characters.count
                         {
-                            searchCount++
+                            searchCount += 1
                             searchIndex = 0
                         }
                         else
@@ -203,8 +203,11 @@ public class FuzzySearch
     The Array of String(s) if any are found otherwise an empty Array of String(s)
     */
     
-    public class func search(var originalString originalString: String, var stringToSearch: String, isCaseSensitive: Bool) -> [String]
+    public class func search(originalString original: String, stringToSearch string: String, isCaseSensitive: Bool) -> [String]
     {
+        var originalString = original
+        var stringToSearch = string
+        
         /*
         Either String is empty return false
         */
@@ -245,7 +248,7 @@ public class FuzzySearch
                     {
                         if charOut==charIn
                         {
-                            searchIndex++
+                            searchIndex += 1
                             if searchIndex==stringToSearch.characters.count
                             {
                                 approximateMatch.append(content)
@@ -345,7 +348,7 @@ public class FuzzySearch
             if let range = lowercaseString.rangeOfString(
                 String(lowercaseStringToMatch[lowercaseStringToMatch.startIndex.advancedBy(i)] as Character),
                 options: NSStringCompareOptions.CaseInsensitiveSearch,
-                range: Range<String.Index>( start: startAt, end: lowercaseString.endIndex),
+                range: startAt..<lowercaseString.endIndex,
                 locale: nil
                 )
             {

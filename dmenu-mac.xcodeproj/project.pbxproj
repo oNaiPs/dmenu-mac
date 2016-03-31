@@ -21,7 +21,6 @@
 		7F37D1A91C71FA3A00FD5662 /* ResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F37D1A81C71FA3A00FD5662 /* ResultsView.swift */; };
 		7F5355E21C7D8D88000CF999 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5355E11C7D8D88000CF999 /* SettingsViewController.swift */; };
 		7F61DA7E1C743951001F7C42 /* Empty.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F61DA7D1C743951001F7C42 /* Empty.storyboard */; };
-		7F61DA801C744F84001F7C42 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F61DA7F1C744F84001F7C42 /* TextField.swift */; };
 		7F61DA821C74603E001F7C42 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F61DA811C74603E001F7C42 /* Settings.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -45,7 +44,6 @@
 		7F37D1A81C71FA3A00FD5662 /* ResultsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultsView.swift; sourceTree = "<group>"; };
 		7F5355E11C7D8D88000CF999 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		7F61DA7D1C743951001F7C42 /* Empty.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Empty.storyboard; sourceTree = "<group>"; };
-		7F61DA7F1C744F84001F7C42 /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		7F61DA811C74603E001F7C42 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		7FE8A6481C717481000A2C4C /* dmenu-mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "dmenu-mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -76,7 +74,6 @@
 				7F3278EF1C71C9CE00AFB227 /* SearchViewController.swift */,
 				7F5355E11C7D8D88000CF999 /* SettingsViewController.swift */,
 				7F37D1A81C71FA3A00FD5662 /* ResultsView.swift */,
-				7F61DA7F1C744F84001F7C42 /* TextField.swift */,
 			);
 			name = "dmenu-mac";
 			sourceTree = "<group>";
@@ -207,7 +204,6 @@
 				7F3279001C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift in Sources */,
 				7F3278F71C71C9CE00AFB227 /* SearchViewController.swift in Sources */,
 				7F32790C1C71DF2300AFB227 /* FuzzySearch.swift in Sources */,
-				7F61DA801C744F84001F7C42 /* TextField.swift in Sources */,
 				7F37D1A91C71FA3A00FD5662 /* ResultsView.swift in Sources */,
 				7F32790A1C71DF2300AFB227 /* DDHotKeyTextField.m in Sources */,
 				7F3278F01C71C9CE00AFB227 /* AppDelegate.swift in Sources */,

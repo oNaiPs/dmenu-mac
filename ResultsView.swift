@@ -54,7 +54,7 @@ class ResultsView: NSView {
         let textFontAttributes = [String: AnyObject]()
         
         var textX = CGFloat(rectFillPadding)
-        for var i = 0; i < list.count; i++ {
+        for i in 0 ..< list.count {
             let appName = (_list[i].URLByDeletingPathExtension?.lastPathComponent)! as NSString
             let size = appName.sizeWithAttributes(textFontAttributes)
             let textY = (frame.height - size.height) / 2

@@ -121,7 +121,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         hotkey = DDHotKeyCenter.sharedHotKeyCenter()
             .registerHotKeyWithKeyCode(globalShortcut.keycode,
                 modifierFlags: globalShortcut.modifierFlags,
-                target: self, action: Selector("resumeApp"), object: nil)
+                target: self, action: #selector(resumeApp), object: nil)
 
         if hotkey == nil {
             print("Could not register global shortcut.")
@@ -169,13 +169,13 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
     }
     
     func control(control: NSControl, textView: NSTextView, doCommandBySelector commandSelector: Selector) -> Bool {
-        if commandSelector == "moveLeft:" {
-            self.resultsText.selectedAppIndex--
+        if commandSelector == #selector(moveLeft(_:)) {
+            self.resultsText.selectedAppIndex -= 1
             return true
-        } else if commandSelector == "moveRight:" {
-            self.resultsText.selectedAppIndex++
+        } else if commandSelector == #selector(moveRight(_:)) {
+            self.resultsText.selectedAppIndex += 1
             return true
-        } else if commandSelector == "insertTab:" {
+        } else if commandSelector == #selector(insertTab(_:)) {
             let list = getStartingBy(searchText.stringValue)
             if !list.isEmpty {
                 self.resultsText.list = list
@@ -184,7 +184,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
             }
             
             return true
-        } else if commandSelector == "insertNewline:" {
+        } else if commandSelector == #selector(insertNewline(_:)) {
             //open current selected app
             if let app = resultsText.selectedApp {
                 NSWorkspace.sharedWorkspace().launchApplication(app.path!)
@@ -192,7 +192,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
             
             self.clearFields()
             return true
-        } else if commandSelector == "cancelOperation:" {
+        } else if commandSelector == #selector(cancelOperation(_:)) {
             closeApp()
             return true
         }

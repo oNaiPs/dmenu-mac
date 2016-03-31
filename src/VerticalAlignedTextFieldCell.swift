@@ -22,8 +22,8 @@ class VerticalAlignedTextFieldCell: NSTextFieldCell {
         return newRect
     }
     
-    override func selectWithFrame(var aRect: NSRect, inView controlView: NSView, editor textObj: NSText, delegate anObject: AnyObject?, start selStart: Int, length selLength: Int) {
-        aRect = self.drawingRectForBounds(aRect)
+    override func selectWithFrame(aRect: NSRect, inView controlView: NSView, editor textObj: NSText, delegate anObject: AnyObject?, start selStart: Int, length selLength: Int) {
+        let aRect = self.drawingRectForBounds(aRect)
         editingOrSelecting = true;
         super.selectWithFrame(aRect,
             inView: controlView,
@@ -35,8 +35,8 @@ class VerticalAlignedTextFieldCell: NSTextFieldCell {
         editingOrSelecting = false;
     }
     
-    override func editWithFrame(var aRect: NSRect, inView controlView: NSView, editor textObj: NSText, delegate anObject: AnyObject?, event theEvent: NSEvent) {
-        aRect = self.drawingRectForBounds(aRect)
+    override func editWithFrame(aRect: NSRect, inView controlView: NSView, editor textObj: NSText, delegate anObject: AnyObject?, event theEvent: NSEvent) {
+        let aRect = self.drawingRectForBounds(aRect)
         editingOrSelecting = true;
         self.editWithFrame(aRect,
             inView: controlView,
