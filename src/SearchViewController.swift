@@ -130,6 +130,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
     
     func resumeApp() {
         NSApplication.sharedApplication().activateIgnoringOtherApps(true)
+        view.window?.collectionBehavior = NSWindowCollectionBehavior.CanJoinAllSpaces
         view.window?.orderFrontRegardless()
         
         let controller = view.window as! SearchWindow;
