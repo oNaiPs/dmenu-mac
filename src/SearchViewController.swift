@@ -43,7 +43,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         NSUserDefaults.standardUserDefaults().registerDefaults([
             //cmd+Space is the default shortcut
             kDefaultsGlobalShortcutKeycode: kVK_Space,
-            kDefaultsGlobalShortcutModifiedFlags: NSEventModifierFlags.CommandKeyMask.rawValue
+            kDefaultsGlobalShortcutModifiedFlags: NSEventModifierFlags.Command.rawValue
             ])
         
         configureGlobalShortcut()
@@ -145,7 +145,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
             let subs = try fileManager.contentsOfDirectoryAtPath(appDir.path!)
             
             for sub in subs {
-                let dir = appDir.URLByAppendingPathComponent(sub)
+                let dir = appDir.URLByAppendingPathComponent(sub)!
                 
                 if dir.pathExtension == "app" {
                     list.append(dir);
