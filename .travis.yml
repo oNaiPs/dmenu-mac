@@ -3,8 +3,7 @@ language: objective-c
 xcode_project: dmenu-mac.xcodeproj
 xcode_scheme: dmenu-mac
 script:
-  - xcodebuild -project dmenu-mac.xcodeproj -scheme dmenu-mac archive -archivePath dmenu-mac
-  - xcodebuild -exportArchive -archivePath dmenu-mac.xcarchive/ -exportPath dmenu-mac -exportFormat app
+  - fastlane gym
   - zip -r dmenu-mac.zip dmenu-mac.app
 deploy:
   provider: releases
