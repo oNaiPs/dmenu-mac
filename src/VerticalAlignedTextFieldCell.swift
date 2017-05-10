@@ -9,10 +9,10 @@ import Cocoa
 class VerticalAlignedTextFieldCell: NSTextFieldCell {
     var editingOrSelecting: Bool = false
     
-    override func drawingRectForBounds(theRect: NSRect) -> NSRect {
-        var newRect = super.drawingRectForBounds(theRect)
+    override func drawingRect(forBounds theRect: NSRect) -> NSRect {
+        var newRect = super.drawingRect(forBounds: theRect)
         if !editingOrSelecting {
-            let textSize = self.cellSizeForBounds(theRect)
+            let textSize = self.cellSize(forBounds: theRect)
             let heightDelta = newRect.size.height - textSize.height
             if heightDelta > 0 {
                 newRect.size.height -= heightDelta;
@@ -22,11 +22,11 @@ class VerticalAlignedTextFieldCell: NSTextFieldCell {
         return newRect
     }
     
-    override func selectWithFrame(aRect: NSRect, inView controlView: NSView, editor textObj: NSText, delegate anObject: AnyObject?, start selStart: Int, length selLength: Int) {
-        let aRect = self.drawingRectForBounds(aRect)
+    override func select(withFrame aRect: NSRect, in controlView: NSView, editor textObj: NSText, delegate anObject: Any?, start selStart: Int, length selLength: Int) {
+        let aRect = self.drawingRect(forBounds: aRect)
         editingOrSelecting = true;
-        super.selectWithFrame(aRect,
-            inView: controlView,
+        super.select(withFrame: aRect,
+            in: controlView,
             editor: textObj,
             delegate: anObject,
             start: selStart,
@@ -35,11 +35,11 @@ class VerticalAlignedTextFieldCell: NSTextFieldCell {
         editingOrSelecting = false;
     }
     
-    override func editWithFrame(aRect: NSRect, inView controlView: NSView, editor textObj: NSText, delegate anObject: AnyObject?, event theEvent: NSEvent) {
-        let aRect = self.drawingRectForBounds(aRect)
+    override func edit(withFrame aRect: NSRect, in controlView: NSView, editor textObj: NSText, delegate anObject: Any?, event theEvent: NSEvent?) {
+        let aRect = self.drawingRect(forBounds: aRect)
         editingOrSelecting = true;
-        self.editWithFrame(aRect,
-            inView: controlView,
+        self.edit(withFrame: aRect,
+            in: controlView,
             editor: textObj,
             delegate: anObject,
             event: theEvent)

@@ -160,6 +160,7 @@
 				TargetAttributes = {
 					7FE8A6471C717481000A2C4C = {
 						CreatedOnToolsVersion = 7.2.1;
+						LastSwiftMigration = 0830;
 					};
 				};
 			};
@@ -327,6 +328,7 @@
 				PRODUCT_NAME = "dmenu-mac";
 				SWIFT_OBJC_BRIDGING_HEADER = src/BridgingHeader.h;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -341,6 +343,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.fidalgo.dmenu-mac";
 				PRODUCT_NAME = "dmenu-mac";
 				SWIFT_OBJC_BRIDGING_HEADER = src/BridgingHeader.h;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

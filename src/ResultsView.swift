@@ -7,7 +7,7 @@ import Cocoa
 
 class ResultsView: NSView {
     let rectFillPadding:CGFloat = 5
-    var _list = [NSURL]()
+    var _list = [URL]()
     
     var _selectedAppIndex: Int = 0
     var selectedAppIndex: Int {
@@ -24,7 +24,7 @@ class ResultsView: NSView {
         }
     }
     
-    var list: [NSURL] {
+    var list: [URL] {
         get {
             return _list
         }
@@ -35,7 +35,7 @@ class ResultsView: NSView {
         }
     }
     
-    var selectedApp: NSURL? {
+    var selectedApp: URL? {
         get {
             if _selectedAppIndex < 0 || _selectedAppIndex >= _list.count {
                 return nil
@@ -50,17 +50,17 @@ class ResultsView: NSView {
         needsDisplay = true;
     }
     
-    override func drawRect(dirtyRect: NSRect) {
+    override func draw(_ dirtyRect: NSRect) {
         let textFontAttributes = [String: AnyObject]()
         
         var textX = CGFloat(rectFillPadding)
         for i in 0 ..< list.count {
-            let appName = (_list[i].URLByDeletingPathExtension?.lastPathComponent)! as NSString
-            let size = appName.sizeWithAttributes(textFontAttributes)
+            let appName = (_list[i].deletingPathExtension().lastPathComponent) as NSString
+            let size = appName.size(withAttributes: textFontAttributes)
             let textY = (frame.height - size.height) / 2
             
             if _selectedAppIndex == i {
-                NSColor.selectedTextBackgroundColor().setFill()
+                NSColor.selectedTextBackgroundColor.setFill()
                 NSRectFill(NSRect(
                     x: textX - rectFillPadding,
                     y: textY - rectFillPadding,
@@ -68,7 +68,7 @@ class ResultsView: NSView {
                     height: size.height + rectFillPadding * 2))
             }
             
-            appName.drawInRect(NSRect(
+            appName.draw(in: NSRect(
                 x: textX,
                 y: textY,
                 width: size.width,
