@@ -10,13 +10,13 @@ import Carbon
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     var controllerWindow: NSWindowController? = nil
     
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
-        let sb = NSStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
+        let sb = NSStoryboard(name: "Main", bundle: Bundle.main)
         controllerWindow = sb.instantiateInitialController() as? NSWindowController
         controllerWindow?.window?.orderFrontRegardless()
     }
     
-    func applicationWillTerminate(aNotification: NSNotification) {
+    func applicationWillTerminate(_ aNotification: Notification) {
     }
 }
 

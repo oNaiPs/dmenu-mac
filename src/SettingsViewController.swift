@@ -19,10 +19,10 @@ class SettingsViewController: NSViewController {
     var delegate: SettingsViewControllerDelegate?
     
     override func viewDidLoad() {
-        let keycode =  NSUserDefaults.standardUserDefaults()
-            .integerForKey(kDefaultsGlobalShortcutKeycode)
-        let modifierFlags = NSUserDefaults.standardUserDefaults()
-            .integerForKey(kDefaultsGlobalShortcutModifiedFlags)
+        let keycode =  UserDefaults.standard
+            .integer(forKey: kDefaultsGlobalShortcutKeycode)
+        let modifierFlags = UserDefaults.standard
+            .integer(forKey: kDefaultsGlobalShortcutModifiedFlags)
 
         hotkeyTextField.hotKey = DDHotKey(
             keyCode: UInt16(keycode),
@@ -30,16 +30,16 @@ class SettingsViewController: NSViewController {
             task: nil)
     }
     
-    @IBAction func applySettings(sender: AnyObject) {
-        NSUserDefaults.standardUserDefaults().setInteger(
+    @IBAction func applySettings(_ sender: AnyObject) {
+        UserDefaults.standard.set(
             Int(hotkeyTextField.hotKey.keyCode), forKey: kDefaultsGlobalShortcutKeycode)
-        NSUserDefaults.standardUserDefaults().setInteger(
+        UserDefaults.standard.set(
             Int(hotkeyTextField.hotKey.modifierFlags), forKey: kDefaultsGlobalShortcutModifiedFlags)
         
         delegate?.onSettingsApplied()
     }
     
-    @IBAction func cancelSettings(sender: AnyObject) {
+    @IBAction func cancelSettings(_ sender: AnyObject) {
         delegate?.onSettingsCanceled()
     }
 }

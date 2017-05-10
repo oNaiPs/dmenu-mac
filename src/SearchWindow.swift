@@ -17,7 +17,7 @@ class SearchWindow: NSWindow {
      */
     func updatePosition() {
         //TODO allow to reappear on different screen depending on current focus
-        let screenSize = NSScreen.mainScreen()
+        let screenSize = NSScreen.main()
         
         let frame = NSRect(x: 0, y: (screenSize?.frame.height)! - self.frame.height,
             width: (screenSize?.frame.width)!,
@@ -26,11 +26,11 @@ class SearchWindow: NSWindow {
         setFrame(frame, display: false)
     }
     
-    override var canBecomeKeyWindow: Bool {
+    override var canBecomeKey: Bool {
         return true
     }
     
-    override var canBecomeMainWindow: Bool {
+    override var canBecomeMain: Bool {
         return true
     }
 }

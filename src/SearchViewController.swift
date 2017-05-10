@@ -12,13 +12,13 @@ let kDefaultsGlobalShortcutModifiedFlags = "kDefaultsGlobalShortcutModifiedFlags
 class SearchViewController: NSViewController, NSTextFieldDelegate,
     NSWindowDelegate, SettingsViewControllerDelegate {
     
-    @IBOutlet private var searchText: NSTextField!
-    @IBOutlet private var resultsText: ResultsView!
+    @IBOutlet fileprivate var searchText: NSTextField!
+    @IBOutlet fileprivate var resultsText: ResultsView!
     var settingsWindow = NSWindow()
     var hotkey: DDHotKey?
     
     var appDirDict = [String: Bool]()
-    var appList = [NSURL]()
+    var appList = [URL]()
     var appNameList = [String]()
     
     struct Shortcut {
@@ -31,7 +31,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         searchText.delegate = self;
         
         let applicationDir = NSSearchPathForDirectoriesInDomains(
-            .ApplicationDirectory, .LocalDomainMask, true)[0];
+            .applicationDirectory, .localDomainMask, true)[0];
         
         // appName to dir recursivity key/valye dict
         appDirDict[applicationDir] = true
@@ -40,30 +40,32 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         initFileWatch(Array(appDirDict.keys))
         updateAppList()
         
-        NSUserDefaults.standardUserDefaults().registerDefaults([
+        UserDefaults.standard.register(defaults: [
             //cmd+Space is the default shortcut
             kDefaultsGlobalShortcutKeycode: kVK_Space,
-            kDefaultsGlobalShortcutModifiedFlags: NSEventModifierFlags.CommandKeyMask.rawValue
+            kDefaultsGlobalShortcutModifiedFlags: NSEventModifierFlags.command.rawValue
             ])
         
         configureGlobalShortcut()
     }
-    
-    func initFileWatch(dirs: [String]) {
+	
+	private let eventCallback: FSEventStreamCallback = { (stream: ConstFSEventStreamRef,
+		contextInfo: UnsafeMutableRawPointer?, numEvents: Int, eventPaths: UnsafeMutableRawPointer,
+		eventFlags: UnsafePointer<FSEventStreamEventFlags>?, eventIds: UnsafePointer<FSEventStreamEventId>?) in
+		
+		let mySelf: SearchViewController = unsafeBitCast(contextInfo, to: SearchViewController.self)
+		mySelf.updateAppList()
+
+	}
+	
+    func initFileWatch(_ dirs: [String]) {
         let allocator: CFAllocator? = kCFAllocatorDefault
         
-        typealias FSEventStreamCallback = @convention(c) (ConstFSEventStreamRef, UnsafeMutablePointer<Void>, Int, UnsafeMutablePointer<Void>, UnsafePointer<FSEventStreamEventFlags>, UnsafePointer<FSEventStreamEventId>) -> Void
-        let callback: FSEventStreamCallback = {
-            (streamRef, clientCallBackInfo, numEvents, eventPaths, eventFlags, eventIds) -> Void in
-            let mySelf = Unmanaged<SearchViewController>.fromOpaque(
-                COpaquePointer(clientCallBackInfo)).takeUnretainedValue()
-
-            mySelf.updateAppList()
-        }
-        
+        typealias FSEventStreamCallback = @convention(c) (ConstFSEventStreamRef, UnsafeMutableRawPointer, Int, UnsafeMutableRawPointer, UnsafePointer<FSEventStreamEventFlags>, UnsafePointer<FSEventStreamEventId>) -> Void
+		
         var context = FSEventStreamContext(
             version: 0,
-            info: UnsafeMutablePointer(Unmanaged.passUnretained(self).toOpaque()),
+            info: Unmanaged.passUnretained(self).toOpaque(),
             retain: nil,
             release: nil,
             copyDescription: nil)
@@ -71,18 +73,18 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         let sinceWhen: FSEventStreamEventId = UInt64(kFSEventStreamEventIdSinceNow)
         let latency: CFTimeInterval = 1.0
         let flags: FSEventStreamCreateFlags = UInt32(kFSEventStreamCreateFlagNone)
-        
-        let eventStream = FSEventStreamCreate(
+		
+		let eventStream: FSEventStreamRef! = FSEventStreamCreate(
             allocator,
-            callback,
+            eventCallback,
             &context,
-            dirs,
+            dirs as CFArray,
             sinceWhen,
             latency,
             flags
         )
         
-        FSEventStreamScheduleWithRunLoop(eventStream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode)
+        FSEventStreamScheduleWithRunLoop(eventStream, CFRunLoopGetCurrent(), CFRunLoopMode.defaultMode.rawValue)
         FSEventStreamStart(eventStream)
     }
     
@@ -90,23 +92,23 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         appList.removeAll()
         appNameList.removeAll()
         for dir in appDirDict.keys {
-            appList.appendContentsOf(
-                getAppList(
-                    NSURL(fileURLWithPath: dir, isDirectory: true),
+            appList.append(
+                contentsOf: getAppList(
+                    URL(fileURLWithPath: dir, isDirectory: true),
                     recursive: appDirDict[dir]!))
         }
         
         for app in appList {
-            let appName = (app.URLByDeletingPathExtension?.lastPathComponent)
-            appNameList.append(appName!)
+            let appName = (app.deletingPathExtension().lastPathComponent)
+            appNameList.append(appName)
         }
     }
     
     func getGlobalShortcut() -> Shortcut {
-        let keycode =  NSUserDefaults.standardUserDefaults()
-            .integerForKey(kDefaultsGlobalShortcutKeycode)
-        let modifierFlags = NSUserDefaults.standardUserDefaults()
-            .integerForKey(kDefaultsGlobalShortcutModifiedFlags)
+        let keycode =  UserDefaults.standard
+            .integer(forKey: kDefaultsGlobalShortcutKeycode)
+        let modifierFlags = UserDefaults.standard
+            .integer(forKey: kDefaultsGlobalShortcutModifiedFlags)
         return Shortcut(keycode: UInt16(keycode), modifierFlags: UInt(modifierFlags))
     }
     
@@ -114,12 +116,12 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         let globalShortcut = getGlobalShortcut()
 
         if hotkey != nil {
-            DDHotKeyCenter.sharedHotKeyCenter()
+            DDHotKeyCenter.shared()
                 .unregisterHotKey(hotkey)
         }
         
-        hotkey = DDHotKeyCenter.sharedHotKeyCenter()
-            .registerHotKeyWithKeyCode(globalShortcut.keycode,
+        hotkey = DDHotKeyCenter.shared()
+            .registerHotKey(withKeyCode: globalShortcut.keycode,
                 modifierFlags: globalShortcut.modifierFlags,
                 target: self, action: #selector(resumeApp), object: nil)
 
@@ -129,28 +131,28 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
     }
     
     func resumeApp() {
-        NSApplication.sharedApplication().activateIgnoringOtherApps(true)
-        view.window?.collectionBehavior = NSWindowCollectionBehavior.CanJoinAllSpaces
+        NSApplication.shared().activate(ignoringOtherApps: true)
+        view.window?.collectionBehavior = NSWindowCollectionBehavior.canJoinAllSpaces
         view.window?.orderFrontRegardless()
         
         let controller = view.window as! SearchWindow;
         controller.updatePosition();
     }
     
-    func getAppList(appDir: NSURL, recursive: Bool = true) -> [NSURL] {
-        var list = [NSURL]()
-        let fileManager = NSFileManager.defaultManager()
+    func getAppList(_ appDir: URL, recursive: Bool = true) -> [URL] {
+        var list = [URL]()
+        let fileManager = FileManager.default
         
         do {
-            let subs = try fileManager.contentsOfDirectoryAtPath(appDir.path!)
+            let subs = try fileManager.contentsOfDirectory(atPath: appDir.path)
             
             for sub in subs {
-                let dir = appDir.URLByAppendingPathComponent(sub)
+                let dir = appDir.appendingPathComponent(sub)
                 
                 if dir.pathExtension == "app" {
                     list.append(dir);
                 } else if dir.hasDirectoryPath && recursive {
-                    list.appendContentsOf(self.getAppList(dir))
+                    list.append(contentsOf: self.getAppList(dir))
                 }
             }
         } catch {
@@ -159,7 +161,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         return list
     }
     
-    override func controlTextDidChange(obj: NSNotification) {
+    override func controlTextDidChange(_ obj: Notification) {
         let list = self.getFuzzyList()
         
         if !list.isEmpty {
@@ -169,7 +171,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         }
     }
     
-    func control(control: NSControl, textView: NSTextView, doCommandBySelector commandSelector: Selector) -> Bool {
+    func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
         if commandSelector == #selector(moveLeft(_:)) {
             self.resultsText.selectedAppIndex -= 1
             return true
@@ -188,7 +190,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         } else if commandSelector == #selector(insertNewline(_:)) {
             //open current selected app
             if let app = resultsText.selectedApp {
-                NSWorkspace.sharedWorkspace().launchApplication(app.path!)
+                NSWorkspace.shared().launchApplication(app.path)
             }
             
             self.clearFields()
@@ -208,32 +210,32 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
     
     func closeApp() {
         clearFields()
-        NSApplication.sharedApplication().hide(nil)
+        NSApplication.shared().hide(nil)
     }
     
-    func getStartingBy(text: String) -> [NSURL] {
+    func getStartingBy(_ text: String) -> [URL] {
         //todo turn this into a regex
-        return appList.sort({
+        return appList.sorted(by: {
             //make it sorted
-            let appName1 = ($0.URLByDeletingPathExtension!.lastPathComponent?.lowercaseString)!
-            let appName2 = ($1.URLByDeletingPathExtension!.lastPathComponent?.lowercaseString)!
+            let appName1 = (($0 as NSURL).deletingPathExtension!.lastPathComponent.lowercased())
+            let appName2 = (($1 as NSURL).deletingPathExtension!.lastPathComponent.lowercased())
             
-            return appName1.localizedCaseInsensitiveCompare(appName2) == NSComparisonResult.OrderedAscending
+            return appName1.localizedCaseInsensitiveCompare(appName2) == ComparisonResult.orderedAscending
         }).filter({
-            let appName = ($0.URLByDeletingPathExtension!.lastPathComponent?.lowercaseString)!
-            return appName.hasPrefix(text.lowercaseString) ||
-                appName.containsString(" " + text.lowercaseString)
+            let appName = (($0 as NSURL).deletingPathExtension!.lastPathComponent.lowercased())
+            return appName.hasPrefix(text.lowercased()) ||
+                appName.contains(" " + text.lowercased())
         })
     }
     
-    func getFuzzyList() -> [NSURL] {
-        var scoreDict = [NSURL: Double]()
+    func getFuzzyList() -> [URL] {
+        var scoreDict = [URL: Double]()
         
         for app in appList {
-            let appName = (app.URLByDeletingPathExtension?.lastPathComponent)
+            let appName = (app.deletingPathExtension().lastPathComponent)
             
             let score = FuzzySearch.score(
-                originalString: appName!, stringToMatch: self.searchText.stringValue)
+                originalString: appName, stringToMatch: self.searchText.stringValue)
             
             if score > 0 {
                 scoreDict[app] = score
@@ -241,12 +243,12 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         }
         
         let resultsList = scoreDict
-            .sort({$0.1 > $1.1}).map({$0.0})
+            .sorted(by: {$0.1 > $1.1}).map({$0.0})
         return resultsList
     }
     
-    @IBAction func openSettings(sender: AnyObject) {
-        let sb = NSStoryboard(name: "Settings", bundle: NSBundle.mainBundle())
+    @IBAction func openSettings(_ sender: AnyObject) {
+        let sb = NSStoryboard(name: "Settings", bundle: Bundle.main)
         let settingsView = sb.instantiateInitialController() as? SettingsViewController
         settingsView?.delegate = self
         
