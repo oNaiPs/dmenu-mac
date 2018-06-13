@@ -46,17 +46,27 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
             kDefaultsGlobalShortcutModifiedFlags: NSEventModifierFlags.command.rawValue
             ])
         
+        guard let osxMode = UserDefaults.standard.string(forKey: "AppleInterfaceStyle") else {
+            // Default to normal color
+            return
+        }
+        
+        if (osxMode == "Dark") {
+            // Set Dark Mode
+            if self.view.layer != nil {
+                let color : CGColor = CGColor(red: 0.035, green: 0.035, blue: 0.035, alpha: 0.9)
+                self.view.layer?.backgroundColor = color
+            }
+        }
+    
+        
         configureGlobalShortcut()
     }
-	
-	private let eventCallback: FSEventStreamCallback = { (stream: ConstFSEventStreamRef,
-		contextInfo: UnsafeMutableRawPointer?, numEvents: Int, eventPaths: UnsafeMutableRawPointer,
-		eventFlags: UnsafePointer<FSEventStreamEventFlags>?, eventIds: UnsafePointer<FSEventStreamEventId>?) in
-		
-		let mySelf: SearchViewController = unsafeBitCast(contextInfo, to: SearchViewController.self)
-		mySelf.updateAppList()
-
-	}
+    
+    private let eventCallback: FSEventStreamCallback = { (stream: OpaquePointer, contextInfo: Optional<UnsafeMutableRawPointer>, numEvents: Int, eventPaths: UnsafeMutableRawPointer, eventFlags: UnsafePointer<UInt32>, eventIds: UnsafePointer<UInt64>) in
+        let mySelf: SearchViewController = unsafeBitCast(contextInfo, to: SearchViewController.self)
+        mySelf.updateAppList()
+    }
 	
     func initFileWatch(_ dirs: [String]) {
         let allocator: CFAllocator? = kCFAllocatorDefault
