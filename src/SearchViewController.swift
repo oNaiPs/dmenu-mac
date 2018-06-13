@@ -45,21 +45,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
             kDefaultsGlobalShortcutKeycode: kVK_Space,
             kDefaultsGlobalShortcutModifiedFlags: NSEventModifierFlags.command.rawValue
             ])
-        
-        guard let osxMode = UserDefaults.standard.string(forKey: "AppleInterfaceStyle") else {
-            // Default to normal color
-            return
-        }
-        
-        if (osxMode == "Dark") {
-            // Set Dark Mode
-            if self.view.layer != nil {
-                let color : CGColor = CGColor(red: 0.035, green: 0.035, blue: 0.035, alpha: 0.9)
-                self.view.layer?.backgroundColor = color
-            }
-        }
     
-        
         configureGlobalShortcut()
     }
     
@@ -144,6 +130,29 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         NSApplication.shared().activate(ignoringOtherApps: true)
         view.window?.collectionBehavior = NSWindowCollectionBehavior.canJoinAllSpaces
         view.window?.orderFrontRegardless()
+        
+        guard let osxMode = UserDefaults.standard.string(forKey: "AppleInterfaceStyle") else {
+            // Default to normal color
+            return
+        }
+        
+        if (osxMode == "Dark") {
+            // Set Dark Mode
+            if self.view.layer != nil {
+                let color : CGColor = CGColor(red: 0.035, green: 0.035, blue: 0.035, alpha: 0.9)
+                self.view.layer?.backgroundColor = color
+                searchText.textColor = NSColor.white
+                resultsText._textColor = NSColor.white
+            }
+        } else {
+            // Set light mode
+            if self.view.layer != nil {
+                let color : CGColor = CGColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.9)
+                self.view.layer?.backgroundColor = color
+                searchText.textColor = NSColor.black
+                resultsText._textColor = NSColor.black
+            }
+        }
         
         let controller = view.window as! SearchWindow;
         controller.updatePosition();
