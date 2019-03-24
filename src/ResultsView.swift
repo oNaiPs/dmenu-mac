@@ -56,12 +56,12 @@ class ResultsView: NSView {
         var textX = CGFloat(rectFillPadding)
         for i in 0 ..< list.count {
             let appName = (_list[i].deletingPathExtension().lastPathComponent) as NSString
-            let size = appName.size(withAttributes: textFontAttributes)
+            let size = appName.size(withAttributes: convertToOptionalNSAttributedStringKeyDictionary(textFontAttributes))
             let textY = (frame.height - size.height) / 2
             
             if _selectedAppIndex == i {
                 NSColor.selectedTextBackgroundColor.setFill()
-                NSRectFill(NSRect(
+                __NSRectFill(NSRect(
                     x: textX - rectFillPadding,
                     y: textY - rectFillPadding,
                     width: size.width + rectFillPadding * 2,
@@ -72,7 +72,7 @@ class ResultsView: NSView {
                 x: textX,
                 y: textY,
                 width: size.width,
-                height: size.height), withAttributes: [String: AnyObject]())
+                height: size.height), withAttributes: convertToOptionalNSAttributedStringKeyDictionary([String: AnyObject]()))
             
             textX += 10 + size.width;
             
@@ -82,4 +82,10 @@ class ResultsView: NSView {
             }
         }
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
 }

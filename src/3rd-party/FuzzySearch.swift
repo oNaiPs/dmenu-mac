@@ -134,7 +134,7 @@ open class FuzzySearch
 		/*
 		Either String is empty return false
 		*/
-		if tempOriginalString.characters.count == 0 || tempStringToSearch.characters.count == 0
+		if tempOriginalString.count == 0 || tempStringToSearch.count == 0
 		{
 			return 0
 		}
@@ -142,7 +142,7 @@ open class FuzzySearch
 		/*
 		stringToSearch is greater than the originalString return false
 		*/
-		if tempOriginalString.characters.count < tempStringToSearch.characters.count
+		if tempOriginalString.count < tempStringToSearch.count
 		{
 			return 0
 		}
@@ -161,14 +161,14 @@ open class FuzzySearch
 		/*
 		Search the contents of the originalString to determine if the stringToSearch can be found or not
 		*/
-		for charOut in tempOriginalString.characters {
-			for (indexIn, charIn) in tempStringToSearch.characters.enumerated() {
+		for charOut in tempOriginalString{
+			for (indexIn, charIn) in tempStringToSearch.enumerated() {
 				if indexIn == searchIndex
 				{
 					if charOut==charIn
 					{
 						searchIndex += 1
-						if searchIndex == tempStringToSearch.characters.count
+						if searchIndex == tempStringToSearch.count
 						{
 							searchCount += 1
 							searchIndex = 0
@@ -209,7 +209,7 @@ open class FuzzySearch
 		/*
 		Either String is empty return false
 		*/
-		if originalString.characters.count == 0 || stringToSearch.characters.count == 0
+		if originalString.count == 0 || stringToSearch.count == 0
 		{
 			return [String]()
 		}
@@ -217,7 +217,7 @@ open class FuzzySearch
 		/*
 		stringToSearch is greater than the originalString return false
 		*/
-		if originalString.characters.count < stringToSearch.characters.count
+		if originalString.count < stringToSearch.count
 		{
 			return [String]()
 		}
@@ -238,16 +238,16 @@ open class FuzzySearch
 		*/
 		for content in originalString.components(separatedBy: " ")
 		{
-			for charOut in content.characters
+			for charOut in content
 			{
-				for (indexIn, charIn) in stringToSearch.characters.enumerated()
+				for (indexIn, charIn) in stringToSearch.enumerated()
 				{
 					if indexIn == searchIndex
 					{
 						if charOut==charIn
 						{
 							searchIndex += 1
-							if searchIndex==stringToSearch.characters.count
+							if searchIndex==stringToSearch.count
 							{
 								approximateMatch.append(content)
 								searchIndex = 0
@@ -302,7 +302,7 @@ open class FuzzySearch
 		/*
 		the stringToMatch is greater than originalString return score of 0
 		*/
-		if originalString.characters.count < stringToMatch.characters.count
+		if originalString.count < stringToMatch.count
 		{
 			return 0
 		}
@@ -320,9 +320,9 @@ open class FuzzySearch
 		var charScore = 0.0
 		var finalScore = 0.0
 		let lowercaseString = originalString.lowercased()
-		let strLength = originalString.characters.count
+		let strLength = originalString.count
 		let lowercaseStringToMatch = stringToMatch.lowercased()
-		let wordLength = stringToMatch.characters.count
+		let wordLength = stringToMatch.count
 		var indexOfString:String.Index!
 		var startAt = lowercaseString.startIndex
 		var fuzzies = 1.0
@@ -344,7 +344,7 @@ open class FuzzySearch
 			*/
 			
 			if let range = lowercaseString.range(
-				of: String(lowercaseStringToMatch[lowercaseStringToMatch.characters.index(lowercaseStringToMatch.startIndex, offsetBy: i)] as Character),
+				of: String(lowercaseStringToMatch[lowercaseStringToMatch.index(lowercaseStringToMatch.startIndex, offsetBy: i)] as Character),
 				options: NSString.CompareOptions.caseInsensitive,
 				range: (startAt ..< lowercaseString.endIndex),
 				locale: nil
@@ -384,7 +384,7 @@ open class FuzzySearch
 			}
 			
 			/* Same case bonus. */
-			if (originalString[indexOfString] == stringToMatch[stringToMatch.characters.index(stringToMatch.startIndex, offsetBy: i)])
+			if (originalString[indexOfString] == stringToMatch[stringToMatch.index(stringToMatch.startIndex, offsetBy: i)])
 			{
 				charScore += 0.1
 			}

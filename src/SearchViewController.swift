@@ -43,7 +43,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         UserDefaults.standard.register(defaults: [
             //cmd+Space is the default shortcut
             kDefaultsGlobalShortcutKeycode: kVK_Space,
-            kDefaultsGlobalShortcutModifiedFlags: NSEventModifierFlags.command.rawValue
+            kDefaultsGlobalShortcutModifiedFlags: NSEvent.ModifierFlags.command.rawValue
             ])
         
         configureGlobalShortcut()
@@ -51,7 +51,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
 	
 	private let eventCallback: FSEventStreamCallback = { (stream: ConstFSEventStreamRef,
 		contextInfo: UnsafeMutableRawPointer?, numEvents: Int, eventPaths: UnsafeMutableRawPointer,
-		eventFlags: UnsafePointer<FSEventStreamEventFlags>?, eventIds: UnsafePointer<FSEventStreamEventId>?) in
+		eventFlags: UnsafePointer<FSEventStreamEventFlags>, eventIds: UnsafePointer<FSEventStreamEventId>) in
 		
 		let mySelf: SearchViewController = unsafeBitCast(contextInfo, to: SearchViewController.self)
 		mySelf.updateAppList()
@@ -130,9 +130,9 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         }
     }
     
-    func resumeApp() {
-        NSApplication.shared().activate(ignoringOtherApps: true)
-        view.window?.collectionBehavior = NSWindowCollectionBehavior.canJoinAllSpaces
+    @objc func resumeApp() {
+        NSApplication.shared.activate(ignoringOtherApps: true)
+        view.window?.collectionBehavior = NSWindow.CollectionBehavior.canJoinAllSpaces
         view.window?.orderFrontRegardless()
         
         let controller = view.window as! SearchWindow;
@@ -161,7 +161,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         return list
     }
     
-    override func controlTextDidChange(_ obj: Notification) {
+    func controlTextDidChange(_ obj: Notification) {
         let list = self.getFuzzyList()
         
         if !list.isEmpty {
@@ -190,7 +190,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         } else if commandSelector == #selector(insertNewline(_:)) {
             //open current selected app
             if let app = resultsText.selectedApp {
-                NSWorkspace.shared().launchApplication(app.path)
+                NSWorkspace.shared.launchApplication(app.path)
             }
             
             self.clearFields()
@@ -210,7 +210,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
     
     func closeApp() {
         clearFields()
-        NSApplication.shared().hide(nil)
+        NSApplication.shared.hide(nil)
     }
     
     func getStartingBy(_ text: String) -> [URL] {
