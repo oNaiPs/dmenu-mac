@@ -24,6 +24,7 @@ class VerticalAlignedTextFieldCell: NSTextFieldCell {
     
     override func select(withFrame aRect: NSRect, in controlView: NSView, editor textObj: NSText, delegate anObject: Any?, start selStart: Int, length selLength: Int) {
         let aRect = self.drawingRect(forBounds: aRect)
+        
         editingOrSelecting = true;
         super.select(withFrame: aRect,
             in: controlView,

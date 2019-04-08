@@ -13,6 +13,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         let sb = NSStoryboard(name: "Main", bundle: Bundle.main)
         controllerWindow = sb.instantiateInitialController() as? NSWindowController
+        controllerWindow?.window?.backgroundColor = NSColor.windowBackgroundColor
         controllerWindow?.window?.orderFrontRegardless()
     }
     
