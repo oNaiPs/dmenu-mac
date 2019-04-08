@@ -16,11 +16,12 @@ class SearchWindow: NSWindow {
      * Updates search window position.
      */
     func updatePosition() {
-        //TODO allow to reappear on different screen depending on current focus
-        let screenSize = NSScreen.main()
+        guard let screen = NSScreen.main else { return }
         
-        let frame = NSRect(x: 0, y: (screenSize?.frame.height)! - self.frame.height,
-            width: (screenSize?.frame.width)!,
+        let frame = NSRect(
+            x: screen.frame.minX,
+            y: screen.frame.minY + screen.frame.height - self.frame.height,
+            width: screen.frame.width,
             height: self.frame.height)
         
         setFrame(frame, display: false)
