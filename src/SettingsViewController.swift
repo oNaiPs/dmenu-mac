@@ -14,7 +14,7 @@ public protocol SettingsViewControllerDelegate {
 }
 
 class SettingsViewController: NSViewController {
-
+    
     @IBOutlet var hotkeyTextField: DDHotKeyTextField!
     var delegate: SettingsViewControllerDelegate?
     
@@ -23,7 +23,7 @@ class SettingsViewController: NSViewController {
             .integer(forKey: kDefaultsGlobalShortcutKeycode)
         let modifierFlags = UserDefaults.standard
             .integer(forKey: kDefaultsGlobalShortcutModifiedFlags)
-
+        
         hotkeyTextField.hotKey = DDHotKey(
             keyCode: UInt16(keycode),
             modifierFlags: UInt(modifierFlags),

@@ -43,15 +43,32 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         UserDefaults.standard.register(defaults: [
             //cmd+Space is the default shortcut
             kDefaultsGlobalShortcutKeycode: kVK_Space,
-            kDefaultsGlobalShortcutModifiedFlags: NSEventModifierFlags.command.rawValue
+            kDefaultsGlobalShortcutModifiedFlags: NSEvent.ModifierFlags.command.rawValue
             ])
         
         configureGlobalShortcut()
+        
+        DistributedNotificationCenter.default().addObserver(self,
+                                                            selector: #selector(interfaceModeChanged(sender:)),
+                                                            name: NSNotification.Name(rawValue: "AppleInterfaceThemeChangedNotification"),
+                                                            object: nil)
+    }
+    
+    @objc func interfaceModeChanged(sender: NSNotification) {
+        updateColors()
+    }
+    
+    func updateColors() {
+        guard let window = NSApp.windows.first else { return }
+        
+        window.isOpaque = false
+        window.backgroundColor = NSColor.windowBackgroundColor.withAlphaComponent(0.6)
+        searchText.textColor = NSColor.textColor
     }
 	
 	private let eventCallback: FSEventStreamCallback = { (stream: ConstFSEventStreamRef,
 		contextInfo: UnsafeMutableRawPointer?, numEvents: Int, eventPaths: UnsafeMutableRawPointer,
-		eventFlags: UnsafePointer<FSEventStreamEventFlags>?, eventIds: UnsafePointer<FSEventStreamEventId>?) in
+		eventFlags: UnsafePointer<FSEventStreamEventFlags>, eventIds: UnsafePointer<FSEventStreamEventId>) in
 		
 		let mySelf: SearchViewController = unsafeBitCast(contextInfo, to: SearchViewController.self)
 		mySelf.updateAppList()
@@ -98,9 +115,8 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
                     recursive: appDirDict[dir]!))
         }
         
-        for app in appList {
-            let appName = (app.deletingPathExtension().lastPathComponent)
-            appNameList.append(appName)
+        appNameList = appList.map { (app) -> String in
+            app.deletingPathExtension().lastPathComponent
         }
     }
     
@@ -116,12 +132,12 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         let globalShortcut = getGlobalShortcut()
 
         if hotkey != nil {
-            DDHotKeyCenter.shared()
-                .unregisterHotKey(hotkey)
+            DDHotKeyCenter.shared().unregisterHotKey(hotkey)
         }
         
         hotkey = DDHotKeyCenter.shared()
-            .registerHotKey(withKeyCode: globalShortcut.keycode,
+            .registerHotKey(
+                withKeyCode: globalShortcut.keycode,
                 modifierFlags: globalShortcut.modifierFlags,
                 target: self, action: #selector(resumeApp), object: nil)
 
@@ -130,13 +146,15 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         }
     }
     
-    func resumeApp() {
-        NSApplication.shared().activate(ignoringOtherApps: true)
-        view.window?.collectionBehavior = NSWindowCollectionBehavior.canJoinAllSpaces
+    @objc func resumeApp() {
+        NSApplication.shared.activate(ignoringOtherApps: true)
+        view.window?.collectionBehavior = NSWindow.CollectionBehavior.canJoinAllSpaces
         view.window?.orderFrontRegardless()
         
         let controller = view.window as! SearchWindow;
         controller.updatePosition();
+        
+        updateColors()
     }
     
     func getAppList(_ appDir: URL, recursive: Bool = true) -> [URL] {
@@ -161,7 +179,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         return list
     }
     
-    override func controlTextDidChange(_ obj: Notification) {
+    func controlTextDidChange(_ obj: Notification) {
         let list = self.getFuzzyList()
         
         if !list.isEmpty {
@@ -173,27 +191,29 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
     
     func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
         if commandSelector == #selector(moveLeft(_:)) {
-            self.resultsText.selectedAppIndex -= 1
+            resultsText.selectedAppIndex -= 1
             return true
         } else if commandSelector == #selector(moveRight(_:)) {
-            self.resultsText.selectedAppIndex += 1
+            resultsText.selectedAppIndex += 1
             return true
         } else if commandSelector == #selector(insertTab(_:)) {
             let list = getStartingBy(searchText.stringValue)
             if !list.isEmpty {
-                self.resultsText.list = list
+                resultsText.list = list
             } else {
-                self.resultsText.clear()
+                resultsText.clear()
             }
             
             return true
         } else if commandSelector == #selector(insertNewline(_:)) {
             //open current selected app
             if let app = resultsText.selectedApp {
-                NSWorkspace.shared().launchApplication(app.path)
+                DispatchQueue.main.async {
+                    NSWorkspace.shared.launchApplication(app.path)
+                }
             }
             
-            self.clearFields()
+            closeApp()
             return true
         } else if commandSelector == #selector(cancelOperation(_:)) {
             closeApp()
@@ -210,7 +230,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
     
     func closeApp() {
         clearFields()
-        NSApplication.shared().hide(nil)
+        NSApplication.shared.hide(nil)
     }
     
     func getStartingBy(_ text: String) -> [URL] {
@@ -235,18 +255,17 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
             let appName = (app.deletingPathExtension().lastPathComponent)
             
             let score = FuzzySearch.score(
-                originalString: appName, stringToMatch: self.searchText.stringValue)
+                originalString: appName,
+                stringToMatch: searchText.stringValue)
             
             if score > 0 {
                 scoreDict[app] = score
             }
         }
         
-        let resultsList = scoreDict
-            .sorted(by: {$0.1 > $1.1}).map({$0.0})
-        return resultsList
+        return scoreDict.sorted(by: {$0.1 > $1.1}).map({$0.0})
     }
-    
+
     @IBAction func openSettings(_ sender: AnyObject) {
         let sb = NSStoryboard(name: "Settings", bundle: Bundle.main)
         let settingsView = sb.instantiateInitialController() as? SettingsViewController
@@ -256,10 +275,11 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         weak var wSettingsWindow = settingsWindow
         
         view.window?.beginSheet(settingsWindow,
-            completionHandler: { (response) -> Void in
-                wSettingsWindow?.contentViewController = nil
+                                completionHandler: { (response) -> Void in
+                                    wSettingsWindow?.contentViewController = nil
         })
     }
+
     
     func onSettingsApplied() {
         view.window?.endSheet(settingsWindow)
