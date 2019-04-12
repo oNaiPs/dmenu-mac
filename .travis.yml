@@ -1,4 +1,4 @@
-osx_image: xcode8.3
+osx_image: xcode10.2
 language: objective-c
 xcode_project: dmenu-mac.xcodeproj
 xcode_scheme: dmenu-mac
