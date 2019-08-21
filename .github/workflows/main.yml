@@ -1,17 +1,45 @@
-name: CI
+name: Build
 
 on: [push]
 
 jobs:
   build:
+    runs-on: macOS-10.14
 
-    runs-on: ubuntu-latest
-    
     steps:
+    - name: Install Hub
+      run: brew install hub
+    - name: Install fastlane
+      run: sudo gem install fastlane -NV
     - uses: actions/checkout@v1
-    - name: Run a one-line script
-      run: echo Hello, world!
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+    - name: Build
+      run: fastlane gym
+    - name: Compress
+      run: zip -r dmenu-mac.zip dmenu-mac.app
+    - name: Release
+      if: startsWith(github.ref, 'refs/tags/')
+      run: hub edit -f dmenu-mac.zip $GITHUB_REF
+  # deploy:
+
+  #   - name: hub
+  #     env:
+  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     run: |
+  #       brew install hub
+        # wget https://github.com/github/hub/releases/download/v2.12.3/hub-darwin-amd64-2.12.3.tgz -O hub.tgz
+        # tar zxf hub.tgz
+        # ls -lh
+
+
+
+# script:
+#   - fastlane gym
+#   -
+# deploy:
+#   provider: releases
+#   skip_cleanup: true
+#   api_key:
+#     secure: hl/tdi4bdLli6z/9gWLrf+l/HIuQUVqUmWQ7BQQTsbslGsFo0Wix1V37I15tz1VNbEzvsYKAiqcJvNGWU8VNOGj6rDacU03t8bm5jiO9Nzgnz98+R5i4K3VWM2i2psijYUY+QK00xmkEEIwZq8aA3YviLwa48GjfRdvM52WyrdAaqnCaRfA0xhzE3Se42OeFQWfdHT+pARPBJ+e4aW3wftPE92Tb1/BHnrMHFAmEbQBWSiwG917LO6GHZRHdTz/DfSJFF0KTvLpYKC2sHJKmeO8VsoFpmrU0H5pQQcJJATQqmtiHfJDhrkNMPJYqbVcADK9lGpVuW6Zhgb107WPmqI+FHCadnlZbbxFZCT9vJ5vfFfVwaR7MenShaNiHpQAl0ufM7V7hqsdw6dlTEfqRwoH3Jqbpp4dfCtPjtmjulLv9BTsQ3D/EhHoDTouC0idMJkJe3e++OoYc7v1lUAVykGjew0p6jvkooMj5W0IZc1ypcyJMT5o+U6VpAztJbYsxKPk8q8qW9uUaR41Ykkgt2Rn8DQMEruBOe/ZR13Ge78qQW/hjH6JfNUOR9Uf+ZB5Q+aWkp4oVAZd7Lft9voJ/x7Jk+7rXVyLeJgCeaoYGHN7Wdw7qEcu9Or+NV48jDm+pIpJAPHzQGT5xlPN0FmPNW8joxhYiOFWi4uDm66OOpH0=
+#   file: 'dmenu-mac.zip'
+#   on:
+#     tags: true
