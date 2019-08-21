@@ -21,4 +21,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GITHUB_USER: "user"
-      run: hub release edit $GITHUB_REF -a dmenu-mac.zip -m ''
+      run: hub release edit ${GITHUB_REF//refs\/tags\//} -a dmenu-mac.zip -m ''
