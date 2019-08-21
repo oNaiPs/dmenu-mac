@@ -20,4 +20,5 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_USER: "user"
       run: hub release edit $GITHUB_REF -a dmenu-mac.zip -m ''
