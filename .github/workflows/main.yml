@@ -18,7 +18,7 @@ jobs:
       run: zip -r dmenu-mac.zip dmenu-mac.app
     - name: Release
       if: startsWith(github.ref, 'refs/tags/')
-      run: hub edit -f dmenu-mac.zip $GITHUB_REF
+      run: hub release edit -f dmenu-mac.zip $GITHUB_REF
   # deploy:
 
   #   - name: hub
