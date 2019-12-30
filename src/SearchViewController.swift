@@ -33,8 +33,13 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         let applicationDir = NSSearchPathForDirectoriesInDomains(
             .applicationDirectory, .localDomainMask, true)[0];
         
+        // Catalina moved default applications under a different mask.
+        let systemApplicationDir = NSSearchPathForDirectoriesInDomains(
+            .applicationDirectory, .systemDomainMask, true)[0];
+        
         // appName to dir recursivity key/valye dict
         appDirDict[applicationDir] = true
+        appDirDict[systemApplicationDir] = true
         appDirDict["/System/Library/CoreServices/"] = false
         
         initFileWatch(Array(appDirDict.keys))
