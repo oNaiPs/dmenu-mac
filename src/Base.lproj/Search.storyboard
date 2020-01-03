@@ -1,18 +1,21 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController storyboardIdentifier="SearchWindowController" id="B8D-0N-5wS" sceneMemberID="viewController">
-                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" hidesOnDeactivate="YES" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="IQv-IB-iLA" customClass="SearchWindow" customModule="dmenu_mac" customModuleProvider="target">
-                        <windowStyleMask key="styleMask" unifiedTitleAndToolbar="YES"/>
+                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" hidesOnDeactivate="YES" releasedWhenClosed="NO" animationBehavior="default" id="IQv-IB-iLA" customClass="SearchWindow" customModule="dmenu_mac" customModuleProvider="target">
                         <rect key="contentRect" x="196" y="0.0" width="485" height="25"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+                        <connections>
+                            <outlet property="delegate" destination="B8D-0N-5wS" id="WoP-cW-Qfs"/>
+                        </connections>
                     </window>
                     <connections>
                         <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="cq2-FE-JQM"/>
@@ -42,12 +45,32 @@
                                     <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                 </textFieldCell>
                             </textField>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="pT6-Na-ekE" customClass="ResultsView" customModule="dmenu_mac" customModuleProvider="target">
-                                <rect key="frame" x="168" y="0.0" width="416" height="31"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="31" id="OUr-nH-FXu"/>
-                                </constraints>
-                            </customView>
+                            <scrollView fixedFrame="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="QVh-If-BUC">
+                                <rect key="frame" x="106" y="0.0" width="416" height="31"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <clipView key="contentView" autoresizesSubviews="NO" ambiguous="YES" drawsBackground="NO" copiesOnScroll="NO" id="zRh-Jt-rH1">
+                                    <rect key="frame" x="0.0" y="0.0" width="416" height="31"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <view id="5lG-jR-0ih" customClass="ResultsView" customModule="dmenu_mac" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="-3674" width="418" height="31"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <connections>
+                                                <outlet property="scrollView" destination="QVh-If-BUC" id="PXN-Pz-YRx"/>
+                                            </connections>
+                                        </view>
+                                    </subviews>
+                                    <color key="backgroundColor" red="0.11764705882352941" green="0.11764705882352941" blue="0.11764705882352941" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                </clipView>
+                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="uQ2-nO-u0R">
+                                    <rect key="frame" x="-100" y="-100" width="181" height="16"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="Czm-aK-GgP">
+                                    <rect key="frame" x="-100" y="-100" width="16" height="94"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wei-Zc-XTz">
                                 <rect key="frame" x="592" y="0.0" width="37" height="31"/>
                                 <constraints>
@@ -64,19 +87,15 @@
                             </button>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="wei-Zc-XTz" firstAttribute="leading" secondItem="pT6-Na-ekE" secondAttribute="trailing" constant="8" id="0s3-pX-OuL"/>
                             <constraint firstAttribute="bottom" secondItem="Fjb-7T-x1e" secondAttribute="bottom" id="J9X-bX-kJ0"/>
-                            <constraint firstItem="pT6-Na-ekE" firstAttribute="leading" secondItem="Fjb-7T-x1e" secondAttribute="trailing" constant="8" id="NXQ-e6-90x"/>
-                            <constraint firstItem="pT6-Na-ekE" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="aLM-vb-JdU"/>
                             <constraint firstItem="wei-Zc-XTz" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="jB3-pG-Ztd"/>
                             <constraint firstAttribute="trailing" secondItem="wei-Zc-XTz" secondAttribute="trailing" id="m9l-uc-dgR"/>
-                            <constraint firstAttribute="bottom" secondItem="pT6-Na-ekE" secondAttribute="bottom" id="o3w-og-Osi"/>
                             <constraint firstItem="Fjb-7T-x1e" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="x2n-mW-u0G"/>
                             <constraint firstItem="Fjb-7T-x1e" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="10" id="yFY-Az-NlG"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="resultsText" destination="pT6-Na-ekE" id="J5I-V6-W1T"/>
+                        <outlet property="resultsText" destination="5lG-jR-0ih" id="bRp-pM-yOg"/>
                         <outlet property="searchText" destination="Fjb-7T-x1e" id="dUT-7x-0zh"/>
                     </connections>
                 </viewController>

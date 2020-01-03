@@ -6,8 +6,12 @@
 import Cocoa
 
 class ResultsView: NSView {
+    @IBOutlet fileprivate var scrollView: NSScrollView!
+    
     let rectFillPadding:CGFloat = 5
     var _list = [URL]()
+    
+    var dirtyWidth: Bool = false;
     
     var _selectedAppIndex: Int = 0
     var selectedAppIndex: Int {
@@ -23,6 +27,7 @@ class ResultsView: NSView {
             needsDisplay = true;
         }
     }
+    var selectedAppRect: NSRect = NSRect()
     
     var list: [URL] {
         get {
@@ -58,12 +63,13 @@ class ResultsView: NSView {
             let textY = (frame.height - size.height) / 2
             
             if _selectedAppIndex == i {
-                NSColor.selectedTextBackgroundColor.setFill()
-                __NSRectFill(NSRect(
+                selectedAppRect = NSRect(
                     x: textX - rectFillPadding,
                     y: textY - rectFillPadding,
                     width: size.width + rectFillPadding * 2,
-                    height: size.height + rectFillPadding * 2))
+                    height: size.height + rectFillPadding * 2)
+                NSColor.selectedTextBackgroundColor.setFill()
+                __NSRectFill(selectedAppRect)
             }
             
             appName.draw(in: NSRect(
@@ -75,12 +81,17 @@ class ResultsView: NSView {
                 ])
             
             textX += 10 + size.width;
-            
-            //stop drawing if we passed the visible frame
-            if textX > frame.width {
-                break;
-            }
         }
+        if dirtyWidth {
+            frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: textX, height: frame.height);
+            dirtyWidth = false
+            print(selectedAppRect)
+            scrollView.contentView.scrollToVisible(selectedAppRect)
+        }
+    }
+    
+    func updateWidth() {
+        dirtyWidth = true
     }
 }
 

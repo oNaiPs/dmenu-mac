@@ -192,6 +192,8 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         } else {
             self.resultsText.clear()
         }
+        
+        self.resultsText.updateWidth()
     }
     
     func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
@@ -199,11 +201,13 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
             if resultsText.selectedAppIndex > 0 {
                 resultsText.selectedAppIndex -= 1
             }
+            resultsText.updateWidth()
             return true
         } else if commandSelector == #selector(moveRight(_:)) {
             if resultsText.selectedAppIndex < resultsText.list.count - 1 {
                 resultsText.selectedAppIndex += 1
             }
+            resultsText.updateWidth()
             return true
         } else if commandSelector == #selector(insertTab(_:)) {
             let list = getStartingBy(searchText.stringValue)
