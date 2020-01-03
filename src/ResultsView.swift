@@ -85,7 +85,6 @@ class ResultsView: NSView {
         if dirtyWidth {
             frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: textX, height: frame.height);
             dirtyWidth = false
-            print(selectedAppRect)
             scrollView.contentView.scrollToVisible(selectedAppRect)
         }
     }
