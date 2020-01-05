@@ -3,7 +3,7 @@
 
 dmenu inspired application launcher.
 
-![dmenu-mac demo](https://media.giphy.com/media/ETW9mmSJAh2yA/giphy.gif)
+![dmenu-mac demo](./demo.gif)
 
 ## Who is it for
 Anyone that needs a quick and intuitive keyboard-only application launcher that does not rely on spotlight indexing.
