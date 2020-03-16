@@ -9,11 +9,17 @@ jobs:
     steps:
     - name: Install Hub
       run: brew install hub
-    - name: Install fastlane
-      run: sudo gem install fastlane -NV
     - uses: actions/checkout@v1
     - name: Build
-      run: fastlane gym
+      run: xcodebuild
+        -scheme dmenu-mac
+        -archivePath dmenu-mac.xcarchive archive
+    - name: Package
+      run: xcodebuild
+        -exportArchive
+        -archivePath dmenu-mac.xcarchive
+        -exportOptionsPlist mac-application-archive.plist
+        -exportPath .
     - name: Compress
       run: zip -r dmenu-mac.zip dmenu-mac.app
     - name: Release
