@@ -5,6 +5,7 @@
 
 import Carbon
 import Cocoa
+import Fuse
 
 let kDefaultsGlobalShortcutKeycode = "kDefaultsGlobalShortcutKeycode"
 let kDefaultsGlobalShortcutModifiedFlags = "kDefaultsGlobalShortcutModifiedFlags"
@@ -263,20 +264,19 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
     
     func getFuzzyList() -> [URL] {
         var scoreDict = [URL: Double]()
-        
+        let fuse = Fuse(threshold: 0.4)
+
         for app in appList {
             let appName = (app.deletingPathExtension().lastPathComponent)
             
-            let score = FuzzySearch.score(
-                originalString: appName,
-                stringToMatch: searchText.stringValue)
-            
-            if score > 0 {
-                scoreDict[app] = score
+            guard let result = fuse.search(searchText.stringValue, in: appName) else {
+                continue
             }
+            
+            scoreDict[app] = result.score
         }
         
-        return scoreDict.sorted(by: {$0.1 > $1.1}).map({$0.0})
+        return scoreDict.sorted(by: {$0.1 > $1.1}).reversed().map({$0.0})
     }
 
     @IBAction func openSettings(_ sender: AnyObject) {
