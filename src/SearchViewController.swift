@@ -54,10 +54,12 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         
         configureGlobalShortcut()
         
-        DistributedNotificationCenter.default().addObserver(self,
-                                                            selector: #selector(interfaceModeChanged(sender:)),
-                                                            name: NSNotification.Name(rawValue: "AppleInterfaceThemeChangedNotification"),
-                                                            object: nil)
+        DistributedNotificationCenter.default.addObserver(
+            self,
+            selector: #selector(interfaceModeChanged),
+            name: .AppleInterfaceThemeChangedNotification,
+            object: nil
+        )
     }
     
     @objc func interfaceModeChanged(sender: NSNotification) {
