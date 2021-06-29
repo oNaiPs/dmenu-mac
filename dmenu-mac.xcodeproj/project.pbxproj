@@ -41,7 +41,6 @@
 		7F3279071C71DF2300AFB227 /* DDHotKeyUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DDHotKeyUtilities.m; path = "src/3rd-party/DDHotKeyUtilities.m"; sourceTree = "<group>"; };
 		7F32790D1C71DF3E00AFB227 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		7F3279111C71E02300AFB227 /* BridgingHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BridgingHeader.h; path = src/BridgingHeader.h; sourceTree = "<group>"; };
-		7F37938C241FEDF000B82F4E /* Entitlements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		7F5D0E241CACCD0100268983 /* ResultsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResultsView.swift; path = src/ResultsView.swift; sourceTree = "<group>"; };
 		7F5D0E291CACCDD400268983 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = src/Base.lproj/Empty.storyboard; sourceTree = "<group>"; };
 		7F5D0E2B1CACCDD400268983 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = src/Base.lproj/Settings.storyboard; sourceTree = "<group>"; };
@@ -67,10 +66,9 @@
 		7F3278E71C71C96100AFB227 /* dmenu-mac */ = {
 			isa = PBXGroup;
 			children = (
-				7F7982A5241FF0FD0079AFD2 /* dmenu-mac.entitlements */,
-				7F3279011C71DF1900AFB227 /* 3rd-party */,
 				7F3278E91C71C9CE00AFB227 /* Assets.xcassets */,
 				7F3278FA1C71CA0200AFB227 /* Base.lproj */,
+				7F3279011C71DF1900AFB227 /* 3rd-party */,
 				7F3279111C71E02300AFB227 /* BridgingHeader.h */,
 				7F3278EC1C71C9CE00AFB227 /* Info.plist */,
 				7F3278E81C71C9CE00AFB227 /* AppDelegate.swift */,
@@ -79,6 +77,7 @@
 				7F3278ED1C71C9CE00AFB227 /* SearchWindow.swift */,
 				98F382332261217B005201F4 /* SettingsViewController.swift */,
 				7F3278FF1C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift */,
+				7F7982A5241FF0FD0079AFD2 /* dmenu-mac.entitlements */,
 			);
 			name = "dmenu-mac";
 			sourceTree = "<group>";
@@ -163,7 +162,7 @@
 			attributes = {
 				CLASSPREFIX = "";
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 1120;
+				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = "Jose Pereira";
 				TargetAttributes = {
 					7FE8A6471C717481000A2C4C = {
@@ -276,6 +275,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -348,6 +348,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
