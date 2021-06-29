@@ -60,6 +60,8 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
             name: .AppleInterfaceThemeChangedNotification,
             object: nil
         )
+        
+        resumeApp()
     }
     
     @objc func interfaceModeChanged(sender: NSNotification) {
@@ -142,11 +144,11 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
     
     @objc func resumeApp() {
         NSApplication.shared.activate(ignoringOtherApps: true)
-        view.window?.collectionBehavior = NSWindow.CollectionBehavior.canJoinAllSpaces
         view.window?.orderFrontRegardless()
         
-        let controller = view.window as! SearchWindow;
-        controller.updatePosition();
+        if let controller = view.window as? SearchWindow {
+            controller.updatePosition();
+        }
         
         updateColors()
     }

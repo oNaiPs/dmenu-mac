@@ -9,6 +9,7 @@ class SearchWindow: NSWindow {
     
     override func awakeFromNib() {
         self.hasShadow = false
+        self.collectionBehavior = NSWindow.CollectionBehavior.canJoinAllSpaces
         updatePosition()
     }
     
