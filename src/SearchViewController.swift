@@ -20,7 +20,6 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
     
     var appDirDict = [String: Bool]()
     var appList = [URL]()
-    var appNameList = [String]()
     
     struct Shortcut {
         let keycode: UInt16
@@ -113,16 +112,11 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
     
     func updateAppList() {
         appList.removeAll()
-        appNameList.removeAll()
         for dir in appDirDict.keys {
             appList.append(
                 contentsOf: getAppList(
                     URL(fileURLWithPath: dir, isDirectory: true),
                     recursive: appDirDict[dir]!))
-        }
-        
-        appNameList = appList.map { (app) -> String in
-            app.deletingPathExtension().lastPathComponent
         }
     }
     
