@@ -6,6 +6,7 @@
 import Carbon
 import Cocoa
 import Fuse
+import FileWatcher
 
 let kDefaultsGlobalShortcutKeycode = "kDefaultsGlobalShortcutKeycode"
 let kDefaultsGlobalShortcutModifiedFlags = "kDefaultsGlobalShortcutModifiedFlags"
@@ -71,53 +72,44 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         searchText.textColor = NSColor.textColor
     }
 	
-	private let eventCallback: FSEventStreamCallback = { (stream: ConstFSEventStreamRef,
-		contextInfo: UnsafeMutableRawPointer?, numEvents: Int, eventPaths: UnsafeMutableRawPointer,
-		eventFlags: UnsafePointer<FSEventStreamEventFlags>, eventIds: UnsafePointer<FSEventStreamEventId>) in
-		
-		let mySelf: SearchViewController = unsafeBitCast(contextInfo, to: SearchViewController.self)
-		mySelf.updateAppList()
-
-	}
-	
     func initFileWatch(_ dirs: [String]) {
-        let allocator: CFAllocator? = kCFAllocatorDefault
-        
-        typealias FSEventStreamCallback = @convention(c) (ConstFSEventStreamRef, UnsafeMutableRawPointer, Int, UnsafeMutableRawPointer, UnsafePointer<FSEventStreamEventFlags>, UnsafePointer<FSEventStreamEventId>) -> Void
-		
-        var context = FSEventStreamContext(
-            version: 0,
-            info: Unmanaged.passUnretained(self).toOpaque(),
-            retain: nil,
-            release: nil,
-            copyDescription: nil)
-        
-        let sinceWhen: FSEventStreamEventId = UInt64(kFSEventStreamEventIdSinceNow)
-        let latency: CFTimeInterval = 1.0
-        let flags: FSEventStreamCreateFlags = UInt32(kFSEventStreamCreateFlagNone)
-		
-		let eventStream: FSEventStreamRef! = FSEventStreamCreate(
-            allocator,
-            eventCallback,
-            &context,
-            dirs as CFArray,
-            sinceWhen,
-            latency,
-            flags
-        )
-        
-        FSEventStreamScheduleWithRunLoop(eventStream, CFRunLoopGetCurrent(), CFRunLoopMode.defaultMode.rawValue)
-        FSEventStreamStart(eventStream)
+        let filewatcher = FileWatcher(dirs);
+        filewatcher.callback = {event in
+            self.updateAppList()
+        }
+        filewatcher.start()
     }
     
     func updateAppList() {
-        appList.removeAll()
-        for dir in appDirDict.keys {
-            appList.append(
-                contentsOf: getAppList(
-                    URL(fileURLWithPath: dir, isDirectory: true),
-                    recursive: appDirDict[dir]!))
+        var newAppList = [URL]()
+        appDirDict.keys.forEach{ path in
+            let urlPath = URL(fileURLWithPath: path, isDirectory: true)
+            let list = getAppList(urlPath, recursive: appDirDict[path]!)
+            newAppList.append(contentsOf: list)
         }
+        appList = newAppList
+    }
+    
+    func getAppList(_ appDir: URL, recursive: Bool = true) -> [URL] {
+        var list = [URL]()
+        let fileManager = FileManager.default
+        
+        do {
+            let subs = try fileManager.contentsOfDirectory(atPath: appDir.path)
+            
+            for sub in subs {
+                let dir = appDir.appendingPathComponent(sub)
+                
+                if dir.pathExtension == "app" {
+                    list.append(dir);
+                } else if dir.hasDirectoryPath && recursive {
+                    list.append(contentsOf: self.getAppList(dir))
+                }
+            }
+        } catch {
+            print(error)
+        }
+        return list
     }
     
     func getGlobalShortcut() -> Shortcut {
@@ -155,28 +147,6 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         controller.updatePosition();
         
         updateColors()
-    }
-    
-    func getAppList(_ appDir: URL, recursive: Bool = true) -> [URL] {
-        var list = [URL]()
-        let fileManager = FileManager.default
-        
-        do {
-            let subs = try fileManager.contentsOfDirectory(atPath: appDir.path)
-            
-            for sub in subs {
-                let dir = appDir.appendingPathComponent(sub)
-                
-                if dir.pathExtension == "app" {
-                    list.append(dir);
-                } else if dir.hasDirectoryPath && recursive {
-                    list.append(contentsOf: self.getAppList(dir))
-                }
-            }
-        } catch {
-            print(error)
-        }
-        return list
     }
     
     func controlTextDidChange(_ obj: Notification) {

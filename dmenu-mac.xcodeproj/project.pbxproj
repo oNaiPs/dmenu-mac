@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7F2CCA1E268B10F700C14B29 /* FileWatcher in Frameworks */ = {isa = PBXBuildFile; productRef = 7F2CCA1D268B10F700C14B29 /* FileWatcher */; };
 		7F3278F01C71C9CE00AFB227 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278E81C71C9CE00AFB227 /* AppDelegate.swift */; };
 		7F3278F11C71C9CE00AFB227 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7F3278E91C71C9CE00AFB227 /* Assets.xcassets */; };
 		7F3278F51C71C9CE00AFB227 /* SearchWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278ED1C71C9CE00AFB227 /* SearchWindow.swift */; };
@@ -54,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F2CCA1E268B10F700C14B29 /* FileWatcher in Frameworks */,
 				7F32790E1C71DF3E00AFB227 /* Carbon.framework in Frameworks */,
 				7FDA366E241FDA5E00B51212 /* Fuse in Frameworks */,
 			);
@@ -147,6 +149,7 @@
 			name = "dmenu-mac";
 			packageProductDependencies = (
 				7FDA366D241FDA5E00B51212 /* Fuse */,
+				7F2CCA1D268B10F700C14B29 /* FileWatcher */,
 			);
 			productName = "dmenu-mac";
 			productReference = 7FE8A6481C717481000A2C4C /* dmenu-mac.app */;
@@ -181,6 +184,7 @@
 			mainGroup = 7FE8A63F1C717481000A2C4C;
 			packageReferences = (
 				7FDA366C241FDA5E00B51212 /* XCRemoteSwiftPackageReference "fuse-swift" */,
+				7F2CCA1C268B10F700C14B29 /* XCRemoteSwiftPackageReference "FileWatcher" */,
 			);
 			productRefGroup = 7FE8A6491C717481000A2C4C /* Products */;
 			projectDirPath = "";
@@ -457,6 +461,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		7F2CCA1C268B10F700C14B29 /* XCRemoteSwiftPackageReference "FileWatcher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/eonist/FileWatcher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.3;
+			};
+		};
 		7FDA366C241FDA5E00B51212 /* XCRemoteSwiftPackageReference "fuse-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/krisk/fuse-swift";
@@ -468,6 +480,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		7F2CCA1D268B10F700C14B29 /* FileWatcher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7F2CCA1C268B10F700C14B29 /* XCRemoteSwiftPackageReference "FileWatcher" */;
+			productName = FileWatcher;
+		};
 		7FDA366D241FDA5E00B51212 /* Fuse */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7FDA366C241FDA5E00B51212 /* XCRemoteSwiftPackageReference "fuse-swift" */;
