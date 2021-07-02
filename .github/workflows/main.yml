@@ -4,28 +4,34 @@ on: [push]
 
 jobs:
   build:
-    runs-on: macOS-10.15
+    runs-on: macos-10.15
 
     steps:
-    - name: Install Hub
-      run: brew install hub
     - uses: actions/checkout@v1
+
+    - name: Lint
+      run: swiftlint --strict
+
     - name: Build
       run: xcodebuild
         -scheme dmenu-mac
         -archivePath dmenu-mac.xcarchive archive
+
     - name: Package
       run: xcodebuild
         -exportArchive
         -archivePath dmenu-mac.xcarchive
         -exportOptionsPlist mac-application-archive.plist
         -exportPath .
+
     - name: Compress
       run: zip -r dmenu-mac.zip dmenu-mac.app
+
     - uses: actions/upload-artifact@v1
       with:
         name: dmenu-mac.zip
         path: dmenu-mac.zip
+
     - name: Release
       if: startsWith(github.ref, 'refs/tags/')
       env:

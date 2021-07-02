@@ -23,100 +23,100 @@ let kDefaultsGlobalShortcutKeycode = "kDefaultsGlobalShortcutKeycode"
 let kDefaultsGlobalShortcutModifiedFlags = "kDefaultsGlobalShortcutModifiedFlags"
 
 class SearchViewController: NSViewController, NSTextFieldDelegate,
-    NSWindowDelegate, SettingsViewControllerDelegate {
-    
+                            NSWindowDelegate, SettingsViewControllerDelegate {
+
     @IBOutlet fileprivate var searchText: NSTextField!
     @IBOutlet fileprivate var resultsText: ResultsView!
     var settingsWindow = NSWindow()
     var hotkey: DDHotKey?
-    
+
     var appDirDict = [String: Bool]()
     var appList = [URL]()
-    
+
     struct Shortcut {
         let keycode: UInt16
         let modifierFlags: UInt
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        searchText.delegate = self;
-        
+        searchText.delegate = self
+
         let applicationDir = NSSearchPathForDirectoriesInDomains(
-            .applicationDirectory, .localDomainMask, true)[0];
-        
+            .applicationDirectory, .localDomainMask, true)[0]
+
         // Catalina moved default applications under a different mask.
         let systemApplicationDir = NSSearchPathForDirectoriesInDomains(
-            .applicationDirectory, .systemDomainMask, true)[0];
-        
+            .applicationDirectory, .systemDomainMask, true)[0]
+
         // appName to dir recursivity key/valye dict
         appDirDict[applicationDir] = true
         appDirDict[systemApplicationDir] = true
         appDirDict["/System/Library/CoreServices/"] = false
-        
+
         initFileWatch(Array(appDirDict.keys))
         updateAppList()
-        
+
         UserDefaults.standard.register(defaults: [
-            //cmd+Space is the default shortcut
+            // cmd+Space is the default shortcut
             kDefaultsGlobalShortcutKeycode: kVK_Space,
             kDefaultsGlobalShortcutModifiedFlags: NSEvent.ModifierFlags.command.rawValue
-            ])
-        
+        ])
+
         configureGlobalShortcut()
-        
+
         DistributedNotificationCenter.default.addObserver(
             self,
             selector: #selector(interfaceModeChanged),
             name: .AppleInterfaceThemeChangedNotification,
             object: nil
         )
-        
+
         resumeApp()
     }
-    
+
     @objc func interfaceModeChanged(sender: NSNotification) {
         updateColors()
     }
-    
+
     func updateColors() {
         guard let window = NSApp.windows.first else { return }
-        
+
         window.isOpaque = false
         window.backgroundColor = NSColor.windowBackgroundColor.withAlphaComponent(0.6)
         searchText.textColor = NSColor.textColor
     }
-	
+
     func initFileWatch(_ dirs: [String]) {
-        let filewatcher = FileWatcher(dirs);
-        filewatcher.callback = {event in
+        let filewatcher = FileWatcher(dirs)
+        filewatcher.callback = {_ in
             self.updateAppList()
         }
         filewatcher.start()
     }
-    
+
     func updateAppList() {
         var newAppList = [URL]()
-        appDirDict.keys.forEach{ path in
+        appDirDict.keys.forEach { path in
             let urlPath = URL(fileURLWithPath: path, isDirectory: true)
             let list = getAppList(urlPath, recursive: appDirDict[path]!)
             newAppList.append(contentsOf: list)
         }
         appList = newAppList
     }
-    
+
     func getAppList(_ appDir: URL, recursive: Bool = true) -> [URL] {
         var list = [URL]()
         let fileManager = FileManager.default
-        
+
         do {
             let subs = try fileManager.contentsOfDirectory(atPath: appDir.path)
-            
+
             for sub in subs {
                 let dir = appDir.appendingPathComponent(sub)
-                
+
                 if dir.pathExtension == "app" {
-                    list.append(dir);
+                    list.append(dir)
                 } else if dir.hasDirectoryPath && recursive {
                     list.append(contentsOf: self.getAppList(dir))
                 }
@@ -126,7 +126,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         }
         return list
     }
-    
+
     func getGlobalShortcut() -> Shortcut {
         let keycode =  UserDefaults.standard
             .integer(forKey: kDefaultsGlobalShortcutKeycode)
@@ -134,14 +134,14 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
             .integer(forKey: kDefaultsGlobalShortcutModifiedFlags)
         return Shortcut(keycode: UInt16(keycode), modifierFlags: UInt(modifierFlags))
     }
-    
+
     func configureGlobalShortcut() {
         let globalShortcut = getGlobalShortcut()
 
         if hotkey != nil {
             DDHotKeyCenter.shared().unregisterHotKey(hotkey)
         }
-        
+
         hotkey = DDHotKeyCenter.shared()
             .registerHotKey(
                 withKeyCode: globalShortcut.keycode,
@@ -150,38 +150,59 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
 
         if hotkey == nil {
             print("Could not register global shortcut.")
+                let alert = NSAlert()
+                alert.messageText = """
+Could not register global shortcut.
+
+Ensure you are using a unique, valid shortcut.
+"""
+                alert.alertStyle = .warning
+                alert.addButton(withTitle: "Open settings")
+                alert.addButton(withTitle: "OK")
+        let res = alert.runModal()
+            if res == .alertFirstButtonReturn {
+                resumeApp()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
+                    openSettings(self)
+                }
+            }
         }
     }
-    
+
     @objc func resumeApp() {
         NSApplication.shared.activate(ignoringOtherApps: true)
         view.window?.orderFrontRegardless()
-        
+
         if let controller = view.window as? SearchWindow {
-            controller.updatePosition();
+            controller.updatePosition()
         }
-        
+
         updateColors()
     }
-    
+
     func controlTextDidChange(_ obj: Notification) {
         let list = self.getFuzzyList()
-        
+
         if !list.isEmpty {
             self.resultsText.list = list
         } else {
             self.resultsText.clear()
         }
-        
+
         self.resultsText.updateWidth()
     }
-    
+
     func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
-        let movingLeft:Bool = commandSelector == #selector(moveLeft(_:)) || commandSelector == #selector(insertBacktab(_:))
-        let movingRight:Bool = commandSelector == #selector(moveRight(_:)) || commandSelector == #selector(insertTab(_:))
+        let movingLeft: Bool =
+            commandSelector == #selector(moveLeft(_:)) ||
+            commandSelector == #selector(insertBacktab(_:))
+        let movingRight: Bool =
+            commandSelector == #selector(moveRight(_:)) ||
+            commandSelector == #selector(insertTab(_:))
 
         if movingLeft {
-            resultsText.selectedAppIndex = resultsText.selectedAppIndex == 0 ? resultsText.list.count - 1 : resultsText.selectedAppIndex - 1
+            resultsText.selectedAppIndex = resultsText.selectedAppIndex == 0 ?
+                resultsText.list.count - 1 : resultsText.selectedAppIndex - 1
             resultsText.updateWidth()
             return true
         } else if movingRight {
@@ -189,40 +210,40 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
             resultsText.updateWidth()
             return true
         } else if commandSelector == #selector(insertNewline(_:)) {
-            //open current selected app
-            if let app = resultsText.selectedApp {
+            // open current selected app
+            if let app = resultsText.selectedApp() {
                 DispatchQueue.main.async {
                     NSWorkspace.shared.launchApplication(app.path)
                 }
             }
-            
+
             closeApp()
             return true
         } else if commandSelector == #selector(cancelOperation(_:)) {
             closeApp()
             return true
         }
-        
+
         return false
     }
-    
+
     func clearFields() {
         self.searchText.stringValue = ""
         self.resultsText.clear()
     }
-    
+
     func closeApp() {
         clearFields()
         NSApplication.shared.hide(nil)
     }
-    
+
     func getStartingBy(_ text: String) -> [URL] {
-        //todo turn this into a regex
+        // todo turn this into a regex
         return appList.sorted(by: {
-            //make it sorted
+            // make it sorted
             let appName1 = (($0 as NSURL).deletingPathExtension!.lastPathComponent.lowercased())
             let appName2 = (($1 as NSURL).deletingPathExtension!.lastPathComponent.lowercased())
-            
+
             return appName1.localizedCaseInsensitiveCompare(appName2) == ComparisonResult.orderedAscending
         }).filter({
             let appName = (($0 as NSURL).deletingPathExtension!.lastPathComponent.lowercased())
@@ -230,48 +251,46 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
                 appName.contains(" " + text.lowercased())
         })
     }
-    
+
     func getFuzzyList() -> [URL] {
         var scoreDict = [URL: Double]()
         let fuse = Fuse(threshold: 0.4)
 
         for app in appList {
             let appName = (app.deletingPathExtension().lastPathComponent)
-            
+
             guard let result = fuse.search(searchText.stringValue, in: appName) else {
                 continue
             }
-            
+
             scoreDict[app] = result.score
         }
-        
+
         return scoreDict.sorted(by: {$0.1 > $1.1}).reversed().map({$0.0})
     }
 
     @IBAction func openSettings(_ sender: AnyObject) {
-        let sb = NSStoryboard(name: "Settings", bundle: Bundle.main)
-        let settingsView = sb.instantiateInitialController() as? SettingsViewController
+        let storyboard = NSStoryboard(name: "Settings", bundle: Bundle.main)
+        let settingsView = storyboard.instantiateInitialController() as? SettingsViewController
         settingsView?.delegate = self
-        
+
         settingsWindow.contentViewController = settingsView
         weak var wSettingsWindow = settingsWindow
-        
+
         view.window?.beginSheet(settingsWindow,
-                                completionHandler: { (response) -> Void in
+                                completionHandler: { (_) -> Void in
                                     wSettingsWindow?.contentViewController = nil
-        })
+                                })
     }
 
-    
     func onSettingsApplied() {
         view.window?.endSheet(settingsWindow)
 
-        //reconfigure global shortcuts if changed
+        // reconfigure global shortcuts if changed
         configureGlobalShortcut()
     }
-    
+
     func onSettingsCanceled() {
         view.window?.endSheet(settingsWindow)
     }
 }
-

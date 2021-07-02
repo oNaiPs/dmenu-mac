@@ -140,6 +140,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7FE8A6571C717481000A2C4C /* Build configuration list for PBXNativeTarget "dmenu-mac" */;
 			buildPhases = (
+				7F2CCA26268F996200C14B29 /* ShellScript */,
 				7FE8A6441C717481000A2C4C /* Sources */,
 				7FE8A6451C717481000A2C4C /* Frameworks */,
 				7FE8A6461C717481000A2C4C /* Resources */,
@@ -210,6 +211,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		7F2CCA26268F996200C14B29 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		7FE8A6441C717481000A2C4C /* Sources */ = {

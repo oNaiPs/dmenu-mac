@@ -18,62 +18,60 @@ import Cocoa
 
 class ResultsView: NSView {
     @IBOutlet fileprivate var scrollView: NSScrollView!
-    
-    let rectFillPadding:CGFloat = 5
-    var _list = [URL]()
-    
-    var dirtyWidth: Bool = false;
-    
-    var _selectedAppIndex: Int = 0
+
+    let rectFillPadding: CGFloat = 5
+    var resultsList = [URL]()
+
+    var dirtyWidth: Bool = false
+
+    var selectedAppIndexValue: Int = 0
     var selectedAppIndex: Int {
         get {
-            return _selectedAppIndex
+            return selectedAppIndexValue
         }
         set {
-            if newValue < 0 || newValue >= _list.count {
+            if newValue < 0 || newValue >= resultsList.count {
                 return
             }
-            
-            _selectedAppIndex = newValue
-            needsDisplay = true;
+
+            selectedAppIndexValue = newValue
+            needsDisplay = true
         }
     }
     var selectedAppRect: NSRect = NSRect()
-    
+
     var list: [URL] {
         get {
-            return _list
+            return resultsList
         }
         set {
-            _selectedAppIndex = 0
-            _list = newValue;
-            needsDisplay = true;
+            selectedAppIndexValue = 0
+            resultsList = newValue
+            needsDisplay = true
         }
     }
-    
-    var selectedApp: URL? {
-        get {
-            if _selectedAppIndex < 0 || _selectedAppIndex >= _list.count {
-                return nil
-            } else {
-                return _list[_selectedAppIndex]
-            }
+
+    func selectedApp() -> URL? {
+        if selectedAppIndexValue < 0 || selectedAppIndexValue >= resultsList.count {
+            return nil
+        } else {
+            return resultsList[selectedAppIndexValue]
         }
     }
-    
+
     func clear() {
-        _list.removeAll()
-        needsDisplay = true;
+        resultsList.removeAll()
+        needsDisplay = true
     }
-    
+
     override func draw(_ dirtyRect: NSRect) {
         var textX = CGFloat(rectFillPadding)
         for i in 0 ..< list.count {
-            let appName = (_list[i].deletingPathExtension().lastPathComponent) as NSString
+            let appName = (resultsList[i].deletingPathExtension().lastPathComponent) as NSString
             let size = appName.size(withAttributes: [NSAttributedString.Key: Any]())
             let textY = (frame.height - size.height) / 2
-            
-            if _selectedAppIndex == i {
+
+            if selectedAppIndexValue == i {
                 selectedAppRect = NSRect(
                     x: textX - rectFillPadding,
                     y: textY - rectFillPadding,
@@ -82,31 +80,25 @@ class ResultsView: NSView {
                 NSColor.selectedTextBackgroundColor.setFill()
                 __NSRectFill(selectedAppRect)
             }
-            
+
             appName.draw(in: NSRect(
-                x: textX,
-                y: textY,
-                width: size.width,
-                height: size.height), withAttributes: [
-                    NSAttributedString.Key.foregroundColor: NSColor.textColor
-                ])
-            
-            textX += 10 + size.width;
+                            x: textX,
+                            y: textY,
+                            width: size.width,
+                            height: size.height), withAttributes: [
+                                NSAttributedString.Key.foregroundColor: NSColor.textColor
+                            ])
+
+            textX += 10 + size.width
         }
         if dirtyWidth {
-            frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: textX, height: frame.height);
+            frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: textX, height: frame.height)
             dirtyWidth = false
             scrollView.contentView.scrollToVisible(selectedAppRect)
         }
     }
-    
+
     func updateWidth() {
         dirtyWidth = true
     }
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
-	guard let input = input else { return nil }
-	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
 }

@@ -19,16 +19,15 @@ import Carbon
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
-    var controllerWindow: NSWindowController? = nil
-    
+    var controllerWindow: NSWindowController?
+
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        let sb = NSStoryboard(name: "Main", bundle: Bundle.main)
-        controllerWindow = sb.instantiateInitialController() as? NSWindowController
+        let storyboard = NSStoryboard(name: "Main", bundle: Bundle.main)
+        controllerWindow = storyboard.instantiateInitialController() as? NSWindowController
         controllerWindow?.window?.backgroundColor = NSColor.windowBackgroundColor
         controllerWindow?.window?.orderFrontRegardless()
     }
-    
+
     func applicationWillTerminate(_ aNotification: Notification) {
     }
 }
-
