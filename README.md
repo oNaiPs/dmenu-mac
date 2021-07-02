@@ -23,13 +23,19 @@ If you are like me and have a shit-ton of files on your computer, and spotlight 
 2. Optionally, you can change the binding by clicking the ... on the right of the menu.
 3. Type the application you want to open, hit enter to run the one selected.
 
-## Download
+## Installation
 
-You can download it [here](https://github.com/oNaiPs/dmenu-mac/releases).
+dmenu-mac can be installed with [brew](https://brew.sh/) running:
+
+```
+brew install dmenu-mac
+```
+
+Optionally, you can download it [here](https://github.com/oNaiPs/dmenu-mac/releases).
 
 NOTE: the releases are not signed yet, use it at your own risk. I'll take care of that as soon as we can assess the number of people interested in the project.
 
-*Mac OS X 10.8 or greater required.
+*Mac OS X 10.12 or greater required.
 
 ## Features
 
@@ -37,11 +43,6 @@ NOTE: the releases are not signed yet, use it at your own risk. I'll take care o
 - Configurable global hotkey
 - Multi-display support
 - Not dependant on spotlight indexing
-
-## Todo
-- Better handling of arrow keys
-- Add support for application actions (through [Dock Tile Plugin](https://developer.apple.com/library/mac/documentation/Carbon/Conceptual/customizing_docktile/CreatingaDockTilePlug-in/CreatingaDockTilePlug-in.html))
-- Better multi-desktop support
 
 # Pull requests
 Any improvement/bugfix is welcome.
