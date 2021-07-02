@@ -177,26 +177,16 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
     }
     
     func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
-        if commandSelector == #selector(moveLeft(_:)) {
-            if resultsText.selectedAppIndex > 0 {
-                resultsText.selectedAppIndex -= 1
-            }
+        let movingLeft:Bool = commandSelector == #selector(moveLeft(_:)) || commandSelector == #selector(insertBacktab(_:))
+        let movingRight:Bool = commandSelector == #selector(moveRight(_:)) || commandSelector == #selector(insertTab(_:))
+
+        if movingLeft {
+            resultsText.selectedAppIndex = resultsText.selectedAppIndex == 0 ? resultsText.list.count - 1 : resultsText.selectedAppIndex - 1
             resultsText.updateWidth()
             return true
-        } else if commandSelector == #selector(moveRight(_:)) {
-            if resultsText.selectedAppIndex < resultsText.list.count - 1 {
-                resultsText.selectedAppIndex += 1
-            }
+        } else if movingRight {
+            resultsText.selectedAppIndex = (resultsText.selectedAppIndex + 1) % resultsText.list.count
             resultsText.updateWidth()
-            return true
-        } else if commandSelector == #selector(insertTab(_:)) {
-            let list = getStartingBy(searchText.stringValue)
-            if !list.isEmpty {
-                resultsText.list = list
-            } else {
-                resultsText.clear()
-            }
-            
             return true
         } else if commandSelector == #selector(insertNewline(_:)) {
             //open current selected app
