@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Jose Pereira <onaips@gmail.com>.
+ * Copyright (c) 2020 Jose Pereira <onaips@gmail.com>.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,16 +14,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Cocoa
-import Carbon
+import Foundation
 
-@NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
-    var controllerWindow: NSWindowController?
+protocol ListProvider {
+    // Returns list of items
+    func get() -> [ListItem]
 
-    func applicationDidFinishLaunching(_ aNotification: Notification) {
-    }
+    // Performs action on a selected item
+    func doAction(item: ListItem)
+}
 
-    func applicationWillTerminate(_ aNotification: Notification) {
-    }
+struct ListItem {
+    var name: String
+    var data: Any
 }

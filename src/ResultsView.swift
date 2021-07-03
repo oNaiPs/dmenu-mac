@@ -20,42 +20,42 @@ class ResultsView: NSView {
     @IBOutlet fileprivate var scrollView: NSScrollView!
 
     let rectFillPadding: CGFloat = 5
-    var resultsList = [URL]()
+    var resultsList: [ListItem] = []
 
     var dirtyWidth: Bool = false
+    var selectedRect = NSRect()
 
-    var selectedAppIndexValue: Int = 0
-    var selectedAppIndex: Int {
+    var selectedIndexValue: Int = 0
+    var selectedIndex: Int {
         get {
-            return selectedAppIndexValue
+            return selectedIndexValue
         }
         set {
             if newValue < 0 || newValue >= resultsList.count {
                 return
             }
 
-            selectedAppIndexValue = newValue
+            selectedIndexValue = newValue
             needsDisplay = true
         }
     }
-    var selectedAppRect: NSRect = NSRect()
 
-    var list: [URL] {
+    var list: [ListItem] {
         get {
             return resultsList
         }
         set {
-            selectedAppIndexValue = 0
+            selectedIndexValue = 0
             resultsList = newValue
             needsDisplay = true
         }
     }
 
-    func selectedApp() -> URL? {
-        if selectedAppIndexValue < 0 || selectedAppIndexValue >= resultsList.count {
+    func selectedItem() -> ListItem? {
+        if selectedIndexValue < 0 || selectedIndexValue >= resultsList.count {
             return nil
         } else {
-            return resultsList[selectedAppIndexValue]
+            return resultsList[selectedIndexValue]
         }
     }
 
@@ -67,21 +67,21 @@ class ResultsView: NSView {
     override func draw(_ dirtyRect: NSRect) {
         var textX = CGFloat(rectFillPadding)
         for i in 0 ..< list.count {
-            let appName = (resultsList[i].deletingPathExtension().lastPathComponent) as NSString
-            let size = appName.size(withAttributes: [NSAttributedString.Key: Any]())
+            let item = (resultsList[i].name) as NSString
+            let size = item.size(withAttributes: [NSAttributedString.Key: Any]())
             let textY = (frame.height - size.height) / 2
 
-            if selectedAppIndexValue == i {
-                selectedAppRect = NSRect(
+            if selectedIndexValue == i {
+                selectedRect = NSRect(
                     x: textX - rectFillPadding,
                     y: textY - rectFillPadding,
                     width: size.width + rectFillPadding * 2,
                     height: size.height + rectFillPadding * 2)
                 NSColor.selectedTextBackgroundColor.setFill()
-                __NSRectFill(selectedAppRect)
+                __NSRectFill(selectedRect)
             }
 
-            appName.draw(in: NSRect(
+            item.draw(in: NSRect(
                             x: textX,
                             y: textY,
                             width: size.width,
@@ -94,7 +94,7 @@ class ResultsView: NSView {
         if dirtyWidth {
             frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: textX, height: frame.height)
             dirtyWidth = false
-            scrollView.contentView.scrollToVisible(selectedAppRect)
+            scrollView.contentView.scrollToVisible(selectedRect)
         }
     }
 

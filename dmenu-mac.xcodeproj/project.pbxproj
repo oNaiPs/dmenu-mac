@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		7F2CCA1E268B10F700C14B29 /* FileWatcher in Frameworks */ = {isa = PBXBuildFile; productRef = 7F2CCA1D268B10F700C14B29 /* FileWatcher */; };
 		7F2CCA23268B195F00C14B29 /* Notification+Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F2CCA22268B195F00C14B29 /* Notification+Name.swift */; };
+		7F2CCA2E268FE37900C14B29 /* ListProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F2CCA2D268FE37900C14B29 /* ListProvider.swift */; };
+		7F2CCA30268FE38C00C14B29 /* AppListProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F2CCA2F268FE38C00C14B29 /* AppListProvider.swift */; };
 		7F3278F01C71C9CE00AFB227 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278E81C71C9CE00AFB227 /* AppDelegate.swift */; };
 		7F3278F11C71C9CE00AFB227 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7F3278E91C71C9CE00AFB227 /* Assets.xcassets */; };
 		7F3278F51C71C9CE00AFB227 /* SearchWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278ED1C71C9CE00AFB227 /* SearchWindow.swift */; };
@@ -28,6 +30,8 @@
 
 /* Begin PBXFileReference section */
 		7F2CCA22268B195F00C14B29 /* Notification+Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Notification+Name.swift"; path = "src/Notification+Name.swift"; sourceTree = "<group>"; };
+		7F2CCA2D268FE37900C14B29 /* ListProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ListProvider.swift; path = src/ListProvider.swift; sourceTree = "<group>"; };
+		7F2CCA2F268FE38C00C14B29 /* AppListProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppListProvider.swift; path = src/AppListProvider.swift; sourceTree = "<group>"; };
 		7F3278E81C71C9CE00AFB227 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = src/AppDelegate.swift; sourceTree = "<group>"; };
 		7F3278E91C71C9CE00AFB227 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = src/Assets.xcassets; sourceTree = "<group>"; };
 		7F3278EC1C71C9CE00AFB227 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = src/Info.plist; sourceTree = "<group>"; };
@@ -81,6 +85,8 @@
 				7F3278FF1C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift */,
 				7F2CCA22268B195F00C14B29 /* Notification+Name.swift */,
 				7F7982A5241FF0FD0079AFD2 /* dmenu-mac.entitlements */,
+				7F2CCA2D268FE37900C14B29 /* ListProvider.swift */,
+				7F2CCA2F268FE38C00C14B29 /* AppListProvider.swift */,
 			);
 			name = "dmenu-mac";
 			sourceTree = "<group>";
@@ -238,11 +244,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				7F3279001C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift in Sources */,
+				7F2CCA30268FE38C00C14B29 /* AppListProvider.swift in Sources */,
 				7F5D0E261CACCD0100268983 /* ResultsView.swift in Sources */,
 				7F3278F71C71C9CE00AFB227 /* SearchViewController.swift in Sources */,
 				98F382342261217B005201F4 /* SettingsViewController.swift in Sources */,
 				7F32790A1C71DF2300AFB227 /* DDHotKeyTextField.m in Sources */,
 				7F3278F01C71C9CE00AFB227 /* AppDelegate.swift in Sources */,
+				7F2CCA2E268FE37900C14B29 /* ListProvider.swift in Sources */,
 				7F3279091C71DF2300AFB227 /* DDHotKeyCenter.m in Sources */,
 				7F32790B1C71DF2300AFB227 /* DDHotKeyUtilities.m in Sources */,
 				7F2CCA23268B195F00C14B29 /* Notification+Name.swift in Sources */,
