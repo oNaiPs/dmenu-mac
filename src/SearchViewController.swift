@@ -28,7 +28,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
     @IBOutlet fileprivate var resultsText: ResultsView!
     var settingsWindow = NSWindow()
     var hotkey: DDHotKey?
-    var listProvider: ListProvider = AppListProvider()
+    var listProvider: ListProvider?
 
     struct Shortcut {
         let keycode: UInt16
@@ -54,6 +54,13 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
             object: nil
         )
 
+        if !StdinEmptyDetection.isStdinEmpty() {
+            listProvider = PipeListProvider()
+        } else {
+            listProvider = AppListProvider()
+        }
+
+        clearFields()
         resumeApp()
     }
 
@@ -123,13 +130,18 @@ Ensure you are using a unique, valid shortcut.
     }
 
     func controlTextDidChange(_ obj: Notification) {
+        if searchText.stringValue == "" {
+            clearFields()
+            return
+        }
+
         // Get provider list, filter using fuzzy search, apply
         var scoreDict = [Int: Double]()
 
         let fuse = Fuse(threshold: 0.4)
         let pattern = fuse.createPattern(from: searchText.stringValue)
 
-        let list = listProvider.get()
+        let list = listProvider?.get() ?? []
 
         for (idx, item) in list.enumerated() {
             guard let result = fuse.search(pattern, in: item.name) else {
@@ -168,7 +180,7 @@ Ensure you are using a unique, valid shortcut.
         } else if commandSelector == #selector(insertNewline(_:)) {
             // open current selected app
             if let item = resultsText.selectedItem() {
-                listProvider.doAction(item: item)
+                listProvider?.doAction(item: item)
             }
 
             closeApp()
@@ -183,7 +195,7 @@ Ensure you are using a unique, valid shortcut.
 
     func clearFields() {
         self.searchText.stringValue = ""
-        self.resultsText.clear()
+        self.resultsText.list = listProvider?.get().sorted(by: {$0.name < $1.name}) ?? []
     }
 
     func closeApp() {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Jose Pereira <onaips@gmail.com>.
+ * Copyright (c) 2020 Jose Pereira <onaips@gmail.com>.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,11 +14,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BridgingHeader_h
-#define BridgingHeader_h
+#import <Foundation/Foundation.h>
 
-#import "DDHotKeyCenter.h"
-#import "DDHotKeyTextField.h"
-#import "StdinEmptyDetection.h"
+NS_ASSUME_NONNULL_BEGIN
 
-#endif /* BridgingHeader_h */
+@interface StdinEmptyDetection : NSObject
+
++(bool)isStdinEmpty;
+
+@end
+
+NS_ASSUME_NONNULL_END

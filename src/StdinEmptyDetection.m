@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Jose Pereira <onaips@gmail.com>.
+ * Copyright (c) 2020 Jose Pereira <onaips@gmail.com>.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,11 +14,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BridgingHeader_h
-#define BridgingHeader_h
-
-#import "DDHotKeyCenter.h"
-#import "DDHotKeyTextField.h"
 #import "StdinEmptyDetection.h"
 
-#endif /* BridgingHeader_h */
+#import <poll.h>
+
+@implementation StdinEmptyDetection
+
++ (bool)isStdinEmpty {
+    struct pollfd stdin_poll = {
+        .fd = STDIN_FILENO,
+        .events = POLLIN | POLLRDBAND | POLLRDNORM | POLLPRI
+    };
+
+    if (poll(&stdin_poll, 1, 0) == 1) {
+        return false;
+    }
+    return true;
+}
+
+@end

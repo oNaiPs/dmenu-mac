@@ -16,15 +16,26 @@
 
 import Foundation
 
-protocol ListProvider {
-    // Returns list of items
-    func get() -> [ListItem]
+/**
+ * Provide a list from a terminal pipe. When action is performed, quit app since we act like a prompt
+ */
+class PipeListProvider: ListProvider {
 
-    // Performs action on a selected item
-    func doAction(item: ListItem)
-}
+    var choices = [String]()
 
-struct ListItem {
-    var name: String
-    var data: Any?
+    init() {
+        let pipe = FileHandle.standardInput
+        let data = pipe.availableData
+        let str = String(decoding: data, as: UTF8.self)
+        choices = str.trimmingCharacters(in: .whitespacesAndNewlines).components(separatedBy: " ")
+    }
+
+    func get() -> [ListItem] {
+        return choices.map({ListItem(name: $0, data: nil)})
+    }
+
+    func doAction(item: ListItem) {
+        print(item.name)
+        NSApplication.shared.terminate(self)
+    }
 }
