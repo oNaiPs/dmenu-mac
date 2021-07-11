@@ -20,14 +20,14 @@ import Foundation
  * Provide a list from a terminal pipe. When action is performed, quit app since we act like a prompt
  */
 class PipeListProvider: ListProvider {
-
     var choices = [String]()
 
     init() {
         let pipe = FileHandle.standardInput
         let data = pipe.availableData
         let str = String(decoding: data, as: UTF8.self)
-        choices = str.trimmingCharacters(in: .whitespacesAndNewlines).components(separatedBy: " ")
+        choices = str.trimmingCharacters(in: .whitespacesAndNewlines)
+            .components(separatedBy: "\n")
     }
 
     func get() -> [ListItem] {
