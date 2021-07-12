@@ -23,6 +23,13 @@ If you are like me and have a shit-ton of files on your computer, and spotlight 
 2. Optionally, you can change the binding by clicking the ... on the right of the menu.
 3. Type the application you want to open, hit enter to run the one selected.
 
+### Pipes
+You can make dmenu-mac part of your scripting toolbox, use it to prompt the user for options:
+```
+echo "Yes\nNo" | dmenu-mac -p "Are you sure?"
+Yes
+```
+
 ## Installation
 
 dmenu-mac can be installed with [brew](https://brew.sh/) running:
