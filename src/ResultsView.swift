@@ -66,8 +66,10 @@ class ResultsView: NSView {
 
     override func draw(_ dirtyRect: NSRect) {
         var textX = CGFloat(rectFillPadding)
-        for i in 0 ..< list.count {
-            let item = (resultsList[i].name) as NSString
+        let drawList = list.count > 0 ? list : [ListItem(name: "No results", data: nil)]
+
+        for i in 0 ..< drawList.count {
+            let item = (drawList[i].name) as NSString
             let size = item.size(withAttributes: [NSAttributedString.Key: Any]())
             let textY = (frame.height - size.height) / 2
 
