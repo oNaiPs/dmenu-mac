@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7F25568F269CF945002324AC /* CommandArguments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F25568E269CF945002324AC /* CommandArguments.swift */; };
+		7F255692269CF988002324AC /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 7F255691269CF988002324AC /* ArgumentParser */; };
 		7F255694269D01FF002324AC /* InputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F255693269D01FF002324AC /* InputField.swift */; };
 		7F2CCA1E268B10F700C14B29 /* FileWatcher in Frameworks */ = {isa = PBXBuildFile; productRef = 7F2CCA1D268B10F700C14B29 /* FileWatcher */; };
 		7F2CCA23268B195F00C14B29 /* Notification+Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F2CCA22268B195F00C14B29 /* Notification+Name.swift */; };
@@ -32,6 +34,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7F25568E269CF945002324AC /* CommandArguments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CommandArguments.swift; path = src/CommandArguments.swift; sourceTree = "<group>"; };
 		7F255693269D01FF002324AC /* InputField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = InputField.swift; path = src/InputField.swift; sourceTree = "<group>"; };
 		7F2CCA22268B195F00C14B29 /* Notification+Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Notification+Name.swift"; path = "src/Notification+Name.swift"; sourceTree = "<group>"; };
 		7F2CCA2D268FE37900C14B29 /* ListProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ListProvider.swift; path = src/ListProvider.swift; sourceTree = "<group>"; };
@@ -69,6 +72,7 @@
 			files = (
 				7F2CCA1E268B10F700C14B29 /* FileWatcher in Frameworks */,
 				7F32790E1C71DF3E00AFB227 /* Carbon.framework in Frameworks */,
+				7F255692269CF988002324AC /* ArgumentParser in Frameworks */,
 				7FDA366E241FDA5E00B51212 /* Fuse in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -85,6 +89,7 @@
 				7F3279111C71E02300AFB227 /* BridgingHeader.h */,
 				7F3278EC1C71C9CE00AFB227 /* Info.plist */,
 				7F3278E81C71C9CE00AFB227 /* AppDelegate.swift */,
+				7F25568E269CF945002324AC /* CommandArguments.swift */,
 				7F5D0E241CACCD0100268983 /* ResultsView.swift */,
 				7F3278EF1C71C9CE00AFB227 /* SearchViewController.swift */,
 				7F3278ED1C71C9CE00AFB227 /* SearchWindow.swift */,
@@ -170,6 +175,7 @@
 			packageProductDependencies = (
 				7FDA366D241FDA5E00B51212 /* Fuse */,
 				7F2CCA1D268B10F700C14B29 /* FileWatcher */,
+				7F255691269CF988002324AC /* ArgumentParser */,
 			);
 			productName = "dmenu-mac";
 			productReference = 7FE8A6481C717481000A2C4C /* dmenu-mac.app */;
@@ -205,6 +211,7 @@
 			packageReferences = (
 				7FDA366C241FDA5E00B51212 /* XCRemoteSwiftPackageReference "fuse-swift" */,
 				7F2CCA1C268B10F700C14B29 /* XCRemoteSwiftPackageReference "FileWatcher" */,
+				7F255690269CF988002324AC /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
 			);
 			productRefGroup = 7FE8A6491C717481000A2C4C /* Products */;
 			projectDirPath = "";
@@ -261,6 +268,7 @@
 				98F382342261217B005201F4 /* SettingsViewController.swift in Sources */,
 				7F32790A1C71DF2300AFB227 /* DDHotKeyTextField.m in Sources */,
 				7F3278F01C71C9CE00AFB227 /* AppDelegate.swift in Sources */,
+				7F25568F269CF945002324AC /* CommandArguments.swift in Sources */,
 				7F2CCA2E268FE37900C14B29 /* ListProvider.swift in Sources */,
 				7F3279091C71DF2300AFB227 /* DDHotKeyCenter.m in Sources */,
 				7F2CCA32268FEDF600C14B29 /* PipeListProvider.swift in Sources */,
@@ -362,7 +370,6 @@
 				STRINGS_FILE_OUTPUT_ENCODING = "UTF-8";
 				SWIFT_DISABLE_SAFETY_CHECKS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_REFLECTION_METADATA_LEVEL = none;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -431,7 +438,6 @@
 				STRINGS_FILE_OUTPUT_ENCODING = "UTF-8";
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_DISABLE_SAFETY_CHECKS = YES;
-				SWIFT_REFLECTION_METADATA_LEVEL = none;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -509,6 +515,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		7F255690269CF988002324AC /* XCRemoteSwiftPackageReference "swift-argument-parser" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-argument-parser";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.4.3;
+			};
+		};
 		7F2CCA1C268B10F700C14B29 /* XCRemoteSwiftPackageReference "FileWatcher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/eonist/FileWatcher.git";
@@ -528,6 +542,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		7F255691269CF988002324AC /* ArgumentParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7F255690269CF988002324AC /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
+			productName = ArgumentParser;
+		};
 		7F2CCA1D268B10F700C14B29 /* FileWatcher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7F2CCA1C268B10F700C14B29 /* XCRemoteSwiftPackageReference "FileWatcher" */;

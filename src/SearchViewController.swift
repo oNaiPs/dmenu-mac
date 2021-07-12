@@ -29,6 +29,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
     var settingsWindow = NSWindow()
     var hotkey: DDHotKey?
     var listProvider: ListProvider?
+    var promptValue = ""
 
     struct Shortcut {
         let keycode: UInt16
@@ -58,6 +59,11 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
             listProvider = PipeListProvider()
         } else {
             listProvider = AppListProvider()
+        }
+
+        let options = DmenuMac.parseOrExit()
+        if options.prompt != nil {
+            promptValue = options.prompt!
         }
 
         clearFields()
@@ -181,9 +187,9 @@ Ensure you are using a unique, valid shortcut.
             // open current selected app
             if let item = resultsText.selectedItem() {
                 listProvider?.doAction(item: item)
+                closeApp()
             }
 
-            closeApp()
             return true
         } else if commandSelector == #selector(cancelOperation(_:)) {
             closeApp()
@@ -194,13 +200,15 @@ Ensure you are using a unique, valid shortcut.
     }
 
     func clearFields() {
-        self.searchText.stringValue = ""
+        self.searchText.stringValue = promptValue
         self.resultsText.list = listProvider?.get().sorted(by: {$0.name < $1.name}) ?? []
     }
 
     func closeApp() {
         clearFields()
-        NSApplication.shared.hide(nil)
+        if promptValue == "" {
+            NSApplication.shared.hide(nil)
+        }
     }
 
     @IBAction func openSettings(_ sender: AnyObject) {
