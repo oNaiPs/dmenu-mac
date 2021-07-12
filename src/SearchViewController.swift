@@ -24,7 +24,7 @@ let kDefaultsGlobalShortcutModifiedFlags = "kDefaultsGlobalShortcutModifiedFlags
 class SearchViewController: NSViewController, NSTextFieldDelegate,
                             NSWindowDelegate, SettingsViewControllerDelegate {
 
-    @IBOutlet fileprivate var searchText: NSTextField!
+    @IBOutlet fileprivate var searchText: InputField!
     @IBOutlet fileprivate var resultsText: ResultsView!
     var settingsWindow = NSWindow()
     var hotkey: DDHotKey?

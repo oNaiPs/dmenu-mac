@@ -33,7 +33,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="629" height="31"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Fjb-7T-x1e">
+                            <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Fjb-7T-x1e" customClass="InputField" customModule="dmenu_mac" customModuleProvider="target">
                                 <rect key="frame" x="10" y="0.0" width="150" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="150" id="gz9-SZ-TTB"/>
