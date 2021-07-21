@@ -22,10 +22,7 @@ import Foundation
 class PipeListProvider: ListProvider {
     var choices = [String]()
 
-    init() {
-        let pipe = FileHandle.standardInput
-        let data = pipe.availableData
-        let str = String(decoding: data, as: UTF8.self)
+    init(str: String) {
         choices = str.trimmingCharacters(in: .whitespacesAndNewlines)
             .components(separatedBy: "\n")
     }

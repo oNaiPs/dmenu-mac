@@ -14,22 +14,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import "StdinEmptyDetection.h"
+#import "ReadStdin.h"
 
 #import <poll.h>
 
-@implementation StdinEmptyDetection
+@implementation ReadStdin
 
-+ (bool)isStdinEmpty {
-    struct pollfd stdin_poll = {
-        .fd = STDIN_FILENO,
-        .events = POLLIN | POLLRDBAND | POLLRDNORM | POLLPRI
-    };
++(NSString *)read {
+    char buf[BUFSIZ];
 
-    if (poll(&stdin_poll, 1, 0) == 1) {
-        return false;
+    NSMutableString *str = [NSMutableString string];
+    while (fgets(buf, sizeof(BUFSIZ), stdin) != 0) {
+        [str appendString:[NSString stringWithUTF8String:buf]];
     }
-    return true;
+    
+    return str;
 }
 
 @end

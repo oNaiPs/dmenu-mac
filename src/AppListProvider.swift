@@ -79,7 +79,7 @@ class AppListProvider: ListProvider {
                 }
             }
         } catch {
-            print(error)
+            NSLog("Error on getAppList: %@", error.localizedDescription)
         }
         return list
     }
@@ -90,7 +90,7 @@ class AppListProvider: ListProvider {
 
     func doAction(item: ListItem) {
         guard let app: URL = item.data as? URL else {
-            print("Cannot do action on item \(item.name)")
+            NSLog("Cannot do action on item \(item.name)")
             return
         }
         DispatchQueue.main.async {

@@ -19,6 +19,6 @@
 
 #import "DDHotKeyCenter.h"
 #import "DDHotKeyTextField.h"
-#import "StdinEmptyDetection.h"
+#import "ReadStdin.h"
 
 #endif /* BridgingHeader_h */

@@ -18,10 +18,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface StdinEmptyDetection : NSObject
+@interface ReadStdin : NSObject
 
-+(bool)isStdinEmpty;
-
++(NSString *)read;
 @end
 
 NS_ASSUME_NONNULL_END

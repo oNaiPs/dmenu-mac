@@ -55,8 +55,9 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
             object: nil
         )
 
-        if !StdinEmptyDetection.isStdinEmpty() {
-            listProvider = PipeListProvider()
+        let stdinStr = ReadStdin.read()
+        if stdinStr.count > 0 {
+            listProvider = PipeListProvider(str: stdinStr)
         } else {
             listProvider = AppListProvider()
         }
@@ -104,7 +105,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
                 target: self, action: #selector(resumeApp), object: nil)
 
         if hotkey == nil {
-            print("Could not register global shortcut.")
+            NSLog("Could not register global shortcut.")
                 let alert = NSAlert()
                 alert.messageText = """
 Could not register global shortcut.
