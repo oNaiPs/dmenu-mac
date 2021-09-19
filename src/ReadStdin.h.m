@@ -23,6 +23,12 @@
 +(NSString *)read {
     char buf[BUFSIZ];
 
+    // prevent fgets from being blocked
+    int flags;
+    flags = fcntl(STDIN_FILENO, F_GETFL, 0);
+    flags |= O_NONBLOCK;
+    fcntl(STDIN_FILENO, F_SETFL, flags);
+
     NSMutableString *str = [NSMutableString string];
     while (fgets(buf, sizeof(BUFSIZ), stdin) != 0) {
         [str appendString:[NSString stringWithUTF8String:buf]];
