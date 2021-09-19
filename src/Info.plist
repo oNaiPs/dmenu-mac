@@ -31,7 +31,7 @@
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2016 Jose Pereira. All rights reserved.</string>
 	<key>NSMainStoryboardFile</key>
-	<string>Search</string>
+	<string>Main</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 </dict>

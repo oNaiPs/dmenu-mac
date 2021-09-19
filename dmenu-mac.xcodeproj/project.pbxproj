@@ -20,14 +20,13 @@
 		7F3278F11C71C9CE00AFB227 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7F3278E91C71C9CE00AFB227 /* Assets.xcassets */; };
 		7F3278F51C71C9CE00AFB227 /* SearchWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278ED1C71C9CE00AFB227 /* SearchWindow.swift */; };
 		7F3278F71C71C9CE00AFB227 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278EF1C71C9CE00AFB227 /* SearchViewController.swift */; };
-		7F3278FC1C71CA0E00AFB227 /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F3278FB1C71CA0E00AFB227 /* Search.storyboard */; };
 		7F3279001C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278FF1C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift */; };
 		7F3279091C71DF2300AFB227 /* DDHotKeyCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F3279031C71DF2300AFB227 /* DDHotKeyCenter.m */; };
 		7F32790A1C71DF2300AFB227 /* DDHotKeyTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F3279051C71DF2300AFB227 /* DDHotKeyTextField.m */; };
 		7F32790B1C71DF2300AFB227 /* DDHotKeyUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F3279071C71DF2300AFB227 /* DDHotKeyUtilities.m */; };
 		7F32790E1C71DF3E00AFB227 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F32790D1C71DF3E00AFB227 /* Carbon.framework */; };
 		7F5D0E261CACCD0100268983 /* ResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5D0E241CACCD0100268983 /* ResultsView.swift */; };
-		7F5D0E2C1CACCDD400268983 /* Empty.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F5D0E281CACCDD400268983 /* Empty.storyboard */; };
+		7F5D0E2C1CACCDD400268983 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F5D0E281CACCDD400268983 /* Main.storyboard */; };
 		7F5D0E2D1CACCDD400268983 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F5D0E2A1CACCDD400268983 /* Settings.storyboard */; };
 		7FDA366E241FDA5E00B51212 /* Fuse in Frameworks */ = {isa = PBXBuildFile; productRef = 7FDA366D241FDA5E00B51212 /* Fuse */; };
 		98F382342261217B005201F4 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F382332261217B005201F4 /* SettingsViewController.swift */; };
@@ -47,7 +46,6 @@
 		7F3278EC1C71C9CE00AFB227 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = src/Info.plist; sourceTree = "<group>"; };
 		7F3278ED1C71C9CE00AFB227 /* SearchWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchWindow.swift; path = src/SearchWindow.swift; sourceTree = "<group>"; };
 		7F3278EF1C71C9CE00AFB227 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchViewController.swift; path = src/SearchViewController.swift; sourceTree = "<group>"; };
-		7F3278FB1C71CA0E00AFB227 /* Search.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Search.storyboard; path = src/Base.lproj/Search.storyboard; sourceTree = "<group>"; };
 		7F3278FF1C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VerticalAlignedTextFieldCell.swift; path = src/VerticalAlignedTextFieldCell.swift; sourceTree = "<group>"; };
 		7F3279021C71DF2300AFB227 /* DDHotKeyCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DDHotKeyCenter.h; path = "src/3rd-party/DDHotKeyCenter.h"; sourceTree = "<group>"; };
 		7F3279031C71DF2300AFB227 /* DDHotKeyCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DDHotKeyCenter.m; path = "src/3rd-party/DDHotKeyCenter.m"; sourceTree = "<group>"; };
@@ -58,7 +56,7 @@
 		7F32790D1C71DF3E00AFB227 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		7F3279111C71E02300AFB227 /* BridgingHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BridgingHeader.h; path = src/BridgingHeader.h; sourceTree = "<group>"; };
 		7F5D0E241CACCD0100268983 /* ResultsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResultsView.swift; path = src/ResultsView.swift; sourceTree = "<group>"; };
-		7F5D0E291CACCDD400268983 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = src/Base.lproj/Empty.storyboard; sourceTree = "<group>"; };
+		7F5D0E291CACCDD400268983 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = src/Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7F5D0E2B1CACCDD400268983 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = src/Base.lproj/Settings.storyboard; sourceTree = "<group>"; };
 		7F7982A5241FF0FD0079AFD2 /* dmenu-mac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "dmenu-mac.entitlements"; sourceTree = "<group>"; };
 		7FE8A6481C717481000A2C4C /* dmenu-mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "dmenu-mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -110,9 +108,8 @@
 		7F3278FA1C71CA0200AFB227 /* Base.lproj */ = {
 			isa = PBXGroup;
 			children = (
-				7F5D0E281CACCDD400268983 /* Empty.storyboard */,
+				7F5D0E281CACCDD400268983 /* Main.storyboard */,
 				7F5D0E2A1CACCDD400268983 /* Settings.storyboard */,
-				7F3278FB1C71CA0E00AFB227 /* Search.storyboard */,
 			);
 			name = Base.lproj;
 			sourceTree = "<group>";
@@ -227,9 +224,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7F5D0E2C1CACCDD400268983 /* Empty.storyboard in Resources */,
+				7F5D0E2C1CACCDD400268983 /* Main.storyboard in Resources */,
 				7F3278F11C71C9CE00AFB227 /* Assets.xcassets in Resources */,
-				7F3278FC1C71CA0E00AFB227 /* Search.storyboard in Resources */,
 				7F5D0E2D1CACCDD400268983 /* Settings.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -283,12 +279,12 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		7F5D0E281CACCDD400268983 /* Empty.storyboard */ = {
+		7F5D0E281CACCDD400268983 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				7F5D0E291CACCDD400268983 /* Base */,
 			);
-			name = Empty.storyboard;
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		7F5D0E2A1CACCDD400268983 /* Settings.storyboard */ = {
