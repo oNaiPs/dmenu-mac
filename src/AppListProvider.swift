@@ -26,8 +26,12 @@ class AppListProvider: ListProvider {
     var appDirDict = [String: Bool]()
 
     var appList = [URL]()
+    
+    let exitFlag: Bool
 
-    init() {
+    init(exitFlag: Bool) {
+        self.exitFlag = exitFlag
+        
         let applicationDir = NSSearchPathForDirectoriesInDomains(
             .applicationDirectory, .localDomainMask, true)[0]
 
@@ -41,7 +45,7 @@ class AppListProvider: ListProvider {
         appDirDict["/System/Library/CoreServices/"] = false
 
         initFileWatch(Array(appDirDict.keys))
-        updateAppList()
+        updateAppList()        
     }
 
     func initFileWatch(_ dirs: [String]) {
@@ -93,8 +97,12 @@ class AppListProvider: ListProvider {
             NSLog("Cannot do action on item \(item.name)")
             return
         }
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
             NSWorkspace.shared.launchApplication(app.path)
+            
+            if self?.exitFlag ?? false {
+                NSApplication.shared.terminate(self)
+            }
         }
     }
 }

@@ -19,4 +19,7 @@ import ArgumentParser
 struct DmenuMac: ParsableArguments {
     @Option(name: .shortAndLong, help: "Show a prompt instead of the search input.")
     var prompt: String?
+    
+    @Flag(name: .shortAndLong, help: "Exit the process after an item is selected.")
+    var exit: Bool = false
 }
