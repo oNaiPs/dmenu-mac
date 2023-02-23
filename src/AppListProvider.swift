@@ -94,7 +94,7 @@ class AppListProvider: ListProvider {
             return
         }
         DispatchQueue.main.async {
-            NSWorkspace.shared.launchApplication(app.path)
+            NSWorkspace.shared.open(app)
         }
     }
 }

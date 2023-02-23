@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21507" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21507"/>
+        <capability name="NSView safe area layout guides" minToolsVersion="12.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="GeneralSettingsViewController" customModule="dmenu_mac" customModuleProvider="target">
+            <connections>
+                <outlet property="customView" destination="4nh-zO-SVY" id="voW-MV-1d4"/>
+                <outlet property="view" destination="c22-O7-iKe" id="ZQe-UH-LCX"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView wantsLayer="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c22-O7-iKe">
+            <rect key="frame" x="0.0" y="0.0" width="510" height="65"/>
+            <subviews>
+                <customView autoresizesSubviews="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4nh-zO-SVY">
+                    <rect key="frame" x="210" y="20" width="300" height="25"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="25" id="Bgf-ZC-F3a"/>
+                        <constraint firstAttribute="width" constant="300" id="DUS-S2-npV"/>
+                    </constraints>
+                    <shadow key="shadow">
+                        <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </shadow>
+                    <viewLayoutGuide key="safeArea" id="yaK-ue-AZE"/>
+                    <viewLayoutGuide key="layoutMargins" id="Le8-6r-xay"/>
+                </customView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Vt6-jC-8Jo">
+                    <rect key="frame" x="18" y="25" width="186" height="16"/>
+                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Global Shortcut" id="uKy-ok-dDi">
+                        <font key="font" usesAppearanceFont="YES"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="4nh-zO-SVY" secondAttribute="trailing" id="ANe-tV-l64"/>
+                <constraint firstItem="4nh-zO-SVY" firstAttribute="leading" secondItem="Vt6-jC-8Jo" secondAttribute="trailing" constant="8" symbolic="YES" id="Czy-5O-KIG"/>
+                <constraint firstItem="4nh-zO-SVY" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="20" symbolic="YES" id="El7-4y-U6x"/>
+                <constraint firstItem="Vt6-jC-8Jo" firstAttribute="centerY" secondItem="4nh-zO-SVY" secondAttribute="centerY" id="Vbd-sJ-pbv"/>
+                <constraint firstItem="4nh-zO-SVY" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="bEk-HF-Wfw"/>
+                <constraint firstItem="Vt6-jC-8Jo" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="y8M-U2-sKU"/>
+                <constraint firstItem="Vt6-jC-8Jo" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="20" symbolic="YES" id="yXa-2Y-xkG"/>
+            </constraints>
+            <point key="canvasLocation" x="71" y="294.5"/>
+        </customView>
+    </objects>
+</document>

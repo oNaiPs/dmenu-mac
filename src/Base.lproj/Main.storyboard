@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18122"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21507"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -42,7 +42,7 @@
         <!--Search View Controller-->
         <scene sceneID="hIz-AP-VOD">
             <objects>
-                <viewController id="XfG-lQ-9wD" customClass="SearchViewController" customModule="dmenu_mac" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SearchViewController" id="XfG-lQ-9wD" customClass="SearchViewController" customModule="dmenu_mac" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
                         <rect key="frame" x="0.0" y="0.0" width="629" height="31"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -59,20 +59,6 @@
                                     <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                 </textFieldCell>
                             </textField>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wei-Zc-XTz">
-                                <rect key="frame" x="592" y="0.0" width="37" height="31"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="37" id="Kua-Rf-Dfv"/>
-                                    <constraint firstAttribute="height" constant="31" id="psQ-wL-BWi"/>
-                                </constraints>
-                                <buttonCell key="cell" type="bevel" title="..." bezelStyle="rounded" alignment="center" inset="2" id="Pbg-wo-DSl">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="openSettings:" target="XfG-lQ-9wD" id="8hb-qD-IXV"/>
-                                </connections>
-                            </button>
                             <scrollView fixedFrame="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="QVh-If-BUC">
                                 <rect key="frame" x="174" y="0.0" width="416" height="31"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -102,8 +88,6 @@
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="Fjb-7T-x1e" secondAttribute="bottom" id="J9X-bX-kJ0"/>
-                            <constraint firstItem="wei-Zc-XTz" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="jB3-pG-Ztd"/>
-                            <constraint firstAttribute="trailing" secondItem="wei-Zc-XTz" secondAttribute="trailing" id="m9l-uc-dgR"/>
                             <constraint firstItem="Fjb-7T-x1e" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="x2n-mW-u0G"/>
                             <constraint firstItem="Fjb-7T-x1e" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="10" id="yFY-Az-NlG"/>
                         </constraints>
