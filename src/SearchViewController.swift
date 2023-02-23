@@ -17,36 +17,23 @@
 import Carbon
 import Cocoa
 import Fuse
+import KeyboardShortcuts
 
-let kDefaultsGlobalShortcutKeycode = "kDefaultsGlobalShortcutKeycode"
-let kDefaultsGlobalShortcutModifiedFlags = "kDefaultsGlobalShortcutModifiedFlags"
-
-class SearchViewController: NSViewController, NSTextFieldDelegate,
-                            NSWindowDelegate, SettingsViewControllerDelegate {
+class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDelegate {
 
     @IBOutlet fileprivate var searchText: InputField!
     @IBOutlet fileprivate var resultsText: ResultsView!
-    var settingsWindow = NSWindow()
     var hotkey: DDHotKey?
     var listProvider: ListProvider?
     var promptValue = ""
-
-    struct Shortcut {
-        let keycode: UInt16
-        let modifierFlags: UInt
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         searchText.delegate = self
 
-        UserDefaults.standard.register(defaults: [
-            // cmd+Space is the default shortcut
-            kDefaultsGlobalShortcutKeycode: kVK_Space,
-            kDefaultsGlobalShortcutModifiedFlags: NSEvent.ModifierFlags.command.rawValue
-        ])
-
-        configureGlobalShortcut()
+        KeyboardShortcuts.onKeyUp(for: .activateSearch) { [self] in
+            resumeApp()
+        }
 
         DistributedNotificationCenter.default.addObserver(
             self,
@@ -81,48 +68,6 @@ class SearchViewController: NSViewController, NSTextFieldDelegate,
         window.isOpaque = false
         window.backgroundColor = NSColor.windowBackgroundColor.withAlphaComponent(0.6)
         searchText.textColor = NSColor.textColor
-    }
-
-    func getGlobalShortcut() -> Shortcut {
-        let keycode =  UserDefaults.standard
-            .integer(forKey: kDefaultsGlobalShortcutKeycode)
-        let modifierFlags = UserDefaults.standard
-            .integer(forKey: kDefaultsGlobalShortcutModifiedFlags)
-        return Shortcut(keycode: UInt16(keycode), modifierFlags: UInt(modifierFlags))
-    }
-
-    func configureGlobalShortcut() {
-        let globalShortcut = getGlobalShortcut()
-
-        if hotkey != nil {
-            DDHotKeyCenter.shared().unregisterHotKey(hotkey)
-        }
-
-        hotkey = DDHotKeyCenter.shared()
-            .registerHotKey(
-                withKeyCode: globalShortcut.keycode,
-                modifierFlags: globalShortcut.modifierFlags,
-                target: self, action: #selector(resumeApp), object: nil)
-
-        if hotkey == nil {
-            NSLog("Could not register global shortcut.")
-                let alert = NSAlert()
-                alert.messageText = """
-Could not register global shortcut.
-
-Ensure you are using a unique, valid shortcut.
-"""
-                alert.alertStyle = .warning
-                alert.addButton(withTitle: "Open settings")
-                alert.addButton(withTitle: "OK")
-        let res = alert.runModal()
-            if res == .alertFirstButtonReturn {
-                resumeApp()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-                    openSettings(self)
-                }
-            }
-        }
     }
 
     @objc func resumeApp() {
@@ -210,30 +155,5 @@ Ensure you are using a unique, valid shortcut.
         if promptValue == "" {
             NSApplication.shared.hide(nil)
         }
-    }
-
-    @IBAction func openSettings(_ sender: AnyObject) {
-        let storyboard = NSStoryboard(name: "Settings", bundle: Bundle.main)
-        let settingsView = storyboard.instantiateInitialController() as? SettingsViewController
-        settingsView?.delegate = self
-
-        settingsWindow.contentViewController = settingsView
-        weak var wSettingsWindow = settingsWindow
-
-        view.window?.beginSheet(settingsWindow,
-                                completionHandler: { (_) -> Void in
-                                    wSettingsWindow?.contentViewController = nil
-                                })
-    }
-
-    func onSettingsApplied() {
-        view.window?.endSheet(settingsWindow)
-
-        // reconfigure global shortcuts if changed
-        configureGlobalShortcut()
-    }
-
-    func onSettingsCanceled() {
-        view.window?.endSheet(settingsWindow)
     }
 }
