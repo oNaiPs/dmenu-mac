@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7F0A88F42D6A344B008B3822 /* Settings in Frameworks */ = {isa = PBXBuildFile; productRef = 7F0A88F32D6A344B008B3822 /* Settings */; };
+		7F0A88F72D6A3620008B3822 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 7F0A88F62D6A3620008B3822 /* LaunchAtLogin */; };
 		7F25568F269CF945002324AC /* CommandArguments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F25568E269CF945002324AC /* CommandArguments.swift */; };
 		7F255692269CF988002324AC /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 7F255691269CF988002324AC /* ArgumentParser */; };
 		7F255694269D01FF002324AC /* InputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F255693269D01FF002324AC /* InputField.swift */; };
@@ -27,12 +29,10 @@
 		7F32790E1C71DF3E00AFB227 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F32790D1C71DF3E00AFB227 /* Carbon.framework */; };
 		7F5D0E261CACCD0100268983 /* ResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5D0E241CACCD0100268983 /* ResultsView.swift */; };
 		7F5D0E2C1CACCDD400268983 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F5D0E281CACCDD400268983 /* Main.storyboard */; };
-		7F6511F529A617F8007D3EB3 /* Preferences in Frameworks */ = {isa = PBXBuildFile; productRef = 7F6511F429A617F8007D3EB3 /* Preferences */; };
 		7F6511F729A619DE007D3EB3 /* GeneralSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6511F629A619DE007D3EB3 /* GeneralSettingsViewController.swift */; };
 		7F6511FB29A61A4E007D3EB3 /* GeneralSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F6511F929A61A4E007D3EB3 /* GeneralSettingsViewController.xib */; };
 		7F6511FE29A61C32007D3EB3 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 7F6511FD29A61C32007D3EB3 /* KeyboardShortcuts */; };
 		7F90D2D226FDE2400003EC7E /* dmenu-mac in Resources */ = {isa = PBXBuildFile; fileRef = 7F90D2D126FDE2400003EC7E /* dmenu-mac */; };
-		7FA29F6C29A55B0B00B27359 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 7FA29F6B29A55B0B00B27359 /* LaunchAtLogin */; };
 		7FDA366E241FDA5E00B51212 /* Fuse in Frameworks */ = {isa = PBXBuildFile; productRef = 7FDA366D241FDA5E00B51212 /* Fuse */; };
 /* End PBXBuildFile section */
 
@@ -73,12 +73,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F0A88F42D6A344B008B3822 /* Settings in Frameworks */,
 				7F2CCA1E268B10F700C14B29 /* FileWatcher in Frameworks */,
+				7F0A88F72D6A3620008B3822 /* LaunchAtLogin in Frameworks */,
 				7F6511FE29A61C32007D3EB3 /* KeyboardShortcuts in Frameworks */,
-				7F6511F529A617F8007D3EB3 /* Preferences in Frameworks */,
 				7F32790E1C71DF3E00AFB227 /* Carbon.framework in Frameworks */,
 				7F255692269CF988002324AC /* ArgumentParser in Frameworks */,
-				7FA29F6C29A55B0B00B27359 /* LaunchAtLogin in Frameworks */,
 				7FDA366E241FDA5E00B51212 /* Fuse in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -184,24 +184,23 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7FE8A6571C717481000A2C4C /* Build configuration list for PBXNativeTarget "dmenu-mac" */;
 			buildPhases = (
-				7F2CCA26268F996200C14B29 /* ShellScript */,
 				7FE8A6441C717481000A2C4C /* Sources */,
 				7FE8A6451C717481000A2C4C /* Frameworks */,
 				7FE8A6461C717481000A2C4C /* Resources */,
-				7FA29F6D29A6139B00B27359 /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				7F0A88EE2D6A3025008B3822 /* PBXTargetDependency */,
 			);
 			name = "dmenu-mac";
 			packageProductDependencies = (
 				7FDA366D241FDA5E00B51212 /* Fuse */,
 				7F2CCA1D268B10F700C14B29 /* FileWatcher */,
 				7F255691269CF988002324AC /* ArgumentParser */,
-				7FA29F6B29A55B0B00B27359 /* LaunchAtLogin */,
-				7F6511F429A617F8007D3EB3 /* Preferences */,
 				7F6511FD29A61C32007D3EB3 /* KeyboardShortcuts */,
+				7F0A88F32D6A344B008B3822 /* Settings */,
+				7F0A88F62D6A3620008B3822 /* LaunchAtLogin */,
 			);
 			productName = "dmenu-mac";
 			productReference = 7FE8A6481C717481000A2C4C /* dmenu-mac.app */;
@@ -238,9 +237,10 @@
 				7FDA366C241FDA5E00B51212 /* XCRemoteSwiftPackageReference "fuse-swift" */,
 				7F2CCA1C268B10F700C14B29 /* XCRemoteSwiftPackageReference "FileWatcher" */,
 				7F255690269CF988002324AC /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
-				7FA29F6A29A55B0B00B27359 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */,
-				7F6511F329A617F7007D3EB3 /* XCRemoteSwiftPackageReference "Preferences" */,
 				7F6511FC29A61C32007D3EB3 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
+				7F0A88EC2D6A301C008B3822 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
+				7F0A88F22D6A344B008B3822 /* XCRemoteSwiftPackageReference "Settings" */,
+				7F0A88F52D6A3620008B3822 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */,
 			);
 			productRefGroup = 7FE8A6491C717481000A2C4C /* Products */;
 			projectDirPath = "";
@@ -264,44 +264,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		7F2CCA26268F996200C14B29 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-		7FA29F6D29A6139B00B27359 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${BUILT_PRODUCTS_DIR}/LaunchAtLogin_LaunchAtLogin.bundle/Contents/Resources/copy-helper-swiftpm.sh\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		7FE8A6441C717481000A2C4C /* Sources */ = {
@@ -328,6 +290,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7F0A88EE2D6A3025008B3822 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 7F0A88ED2D6A3025008B3822 /* SwiftLintBuildToolPlugin */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		7F5D0E281CACCDD400268983 /* Main.storyboard */ = {
@@ -505,7 +474,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.onaips.dmenu-macos";
 				PRODUCT_NAME = "dmenu-mac";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -531,7 +500,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.onaips.dmenu-macos";
 				PRODUCT_NAME = "dmenu-mac";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -564,6 +533,30 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		7F0A88EC2D6A301C008B3822 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SimplyDanny/SwiftLintPlugins";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.58.2;
+			};
+		};
+		7F0A88F22D6A344B008B3822 /* XCRemoteSwiftPackageReference "Settings" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/Settings";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.1;
+			};
+		};
+		7F0A88F52D6A3620008B3822 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin-Modern";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.0;
+			};
+		};
 		7F255690269CF988002324AC /* XCRemoteSwiftPackageReference "swift-argument-parser" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-argument-parser";
@@ -580,41 +573,40 @@
 				minimumVersion = 0.2.3;
 			};
 		};
-		7F6511F329A617F7007D3EB3 /* XCRemoteSwiftPackageReference "Preferences" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sindresorhus/Preferences";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 		7F6511FC29A61C32007D3EB3 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/KeyboardShortcuts";
 			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
-		7FA29F6A29A55B0B00B27359 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin";
-			requirement = {
-				branch = main;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.4;
 			};
 		};
 		7FDA366C241FDA5E00B51212 /* XCRemoteSwiftPackageReference "fuse-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/krisk/fuse-swift";
 			requirement = {
-				branch = master;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		7F0A88ED2D6A3025008B3822 /* SwiftLintBuildToolPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7F0A88EC2D6A301C008B3822 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
+			productName = "plugin:SwiftLintBuildToolPlugin";
+		};
+		7F0A88F32D6A344B008B3822 /* Settings */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7F0A88F22D6A344B008B3822 /* XCRemoteSwiftPackageReference "Settings" */;
+			productName = Settings;
+		};
+		7F0A88F62D6A3620008B3822 /* LaunchAtLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7F0A88F52D6A3620008B3822 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */;
+			productName = LaunchAtLogin;
+		};
 		7F255691269CF988002324AC /* ArgumentParser */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7F255690269CF988002324AC /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
@@ -625,20 +617,10 @@
 			package = 7F2CCA1C268B10F700C14B29 /* XCRemoteSwiftPackageReference "FileWatcher" */;
 			productName = FileWatcher;
 		};
-		7F6511F429A617F8007D3EB3 /* Preferences */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7F6511F329A617F7007D3EB3 /* XCRemoteSwiftPackageReference "Preferences" */;
-			productName = Preferences;
-		};
 		7F6511FD29A61C32007D3EB3 /* KeyboardShortcuts */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7F6511FC29A61C32007D3EB3 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
 			productName = KeyboardShortcuts;
-		};
-		7FA29F6B29A55B0B00B27359 /* LaunchAtLogin */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7FA29F6A29A55B0B00B27359 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */;
-			productName = LaunchAtLogin;
 		};
 		7FDA366D241FDA5E00B51212 /* Fuse */ = {
 			isa = XCSwiftPackageProductDependency;

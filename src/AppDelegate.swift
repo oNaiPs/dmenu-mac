@@ -17,7 +17,7 @@
 import Cocoa
 import Carbon
 import LaunchAtLogin
-import Preferences
+import Settings
 import KeyboardShortcuts
 
 extension Settings.PaneIdentifier {
@@ -102,7 +102,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     ]
 
     private lazy var settingsWindowController = SettingsWindowController(
-        preferencePanes: settings,
+        panes: settings,
         style: .segmentedControl,
         animated: true,
         hidesToolbarForSingleItem: true
