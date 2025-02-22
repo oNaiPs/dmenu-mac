@@ -1,19 +1,33 @@
 name: Build
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
 
 jobs:
-  build:
-    runs-on: macos-12
+  lint:
+    runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
 
-    - name: Lint
-      run: swiftlint --strict
+    - name: GitHub Action for SwiftLint with --strict
+      uses: norio-nomura/action-swiftlint@3.2.1
+      with:
+        args: --strict
+
+  build:
+    runs-on: macos-15
+
+    steps:
+    - uses: actions/checkout@v4
 
     - name: Build
       run: xcodebuild
+        -skipPackagePluginValidation
+        -skipMacroValidation
         -scheme dmenu-mac
         -archivePath dmenu-mac.xcarchive archive
 
@@ -27,7 +41,7 @@ jobs:
     - name: Compress
       run: zip -r dmenu-mac.zip dmenu-mac.app
 
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v4
       with:
         name: dmenu-mac.zip
         path: dmenu-mac.zip
