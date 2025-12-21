@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		42312E27230649C0A82474D4 /* PipeListProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4A6EB6FC9D42409B853E7D /* PipeListProviderTests.swift */; };
+		7E81C57FFE39431782C98B80 /* CommandArgumentsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFA97BFB86D4BBEA3CA3C69 /* CommandArgumentsTests.swift */; };
 		7F0A88F42D6A344B008B3822 /* Settings in Frameworks */ = {isa = PBXBuildFile; productRef = 7F0A88F32D6A344B008B3822 /* Settings */; };
 		7F0A88F72D6A3620008B3822 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 7F0A88F62D6A3620008B3822 /* LaunchAtLogin */; };
 		7F25568F269CF945002324AC /* CommandArguments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F25568E269CF945002324AC /* CommandArguments.swift */; };
@@ -34,9 +36,22 @@
 		7F6511FE29A61C32007D3EB3 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 7F6511FD29A61C32007D3EB3 /* KeyboardShortcuts */; };
 		7F90D2D226FDE2400003EC7E /* dmenu-mac in Resources */ = {isa = PBXBuildFile; fileRef = 7F90D2D126FDE2400003EC7E /* dmenu-mac */; };
 		7FDA366E241FDA5E00B51212 /* Fuse in Frameworks */ = {isa = PBXBuildFile; productRef = 7FDA366D241FDA5E00B51212 /* Fuse */; };
+		B587A216B6D840909FF34BE0 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A741D70BEA39425CA2842ABC /* XCTest.framework */; };
+		CAA73A0945C642C6A1A7CD3D /* NotificationNameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9315B77060242E2BEE75F2C /* NotificationNameTests.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		3DABDF17154045C5972A4C41 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7FE8A6401C717481000A2C4C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7FE8A6471C717481000A2C4C;
+			remoteInfo = "dmenu-mac";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		2B4A6EB6FC9D42409B853E7D /* PipeListProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PipeListProviderTests.swift; path = "dmenu-macTests/PipeListProviderTests.swift"; sourceTree = "<group>"; };
 		7F25568E269CF945002324AC /* CommandArguments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CommandArguments.swift; path = src/CommandArguments.swift; sourceTree = "<group>"; };
 		7F255693269D01FF002324AC /* InputField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = InputField.swift; path = src/InputField.swift; sourceTree = "<group>"; };
 		7F2CCA22268B195F00C14B29 /* Notification+Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Notification+Name.swift"; path = "src/Notification+Name.swift"; sourceTree = "<group>"; };
@@ -66,9 +81,21 @@
 		7F7982A5241FF0FD0079AFD2 /* dmenu-mac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "dmenu-mac.entitlements"; sourceTree = "<group>"; };
 		7F90D2D126FDE2400003EC7E /* dmenu-mac */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "dmenu-mac"; sourceTree = "<group>"; };
 		7FE8A6481C717481000A2C4C /* dmenu-mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "dmenu-mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7FF33D15E7A14B9FB84318F3 /* dmenu-macTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "dmenu-macTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A741D70BEA39425CA2842ABC /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = System/Library/Frameworks/XCTest.framework; sourceTree = SDKROOT; };
+		B9315B77060242E2BEE75F2C /* NotificationNameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NotificationNameTests.swift; path = "dmenu-macTests/NotificationNameTests.swift"; sourceTree = "<group>"; };
+		BAFA97BFB86D4BBEA3CA3C69 /* CommandArgumentsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CommandArgumentsTests.swift; path = "dmenu-macTests/CommandArgumentsTests.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		0814C0D97F054084BBA02A42 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B587A216B6D840909FF34BE0 /* XCTest.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7FE8A6451C717481000A2C4C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -86,11 +113,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		50282B1E7AAE47DA8326948B /* dmenu-macTests */ = {
+			isa = PBXGroup;
+			children = (
+				BAFA97BFB86D4BBEA3CA3C69 /* CommandArgumentsTests.swift */,
+				2B4A6EB6FC9D42409B853E7D /* PipeListProviderTests.swift */,
+				B9315B77060242E2BEE75F2C /* NotificationNameTests.swift */,
+			);
+			name = "dmenu-macTests";
+			sourceTree = "<group>";
+		};
 		7F3278E71C71C96100AFB227 /* dmenu-mac */ = {
 			isa = PBXGroup;
 			children = (
 				7F3279011C71DF1900AFB227 /* 3rd-party */,
 				7F6511F829A619FD007D3EB3 /* src */,
+				50282B1E7AAE47DA8326948B /* dmenu-macTests */,
 				7F3278E91C71C9CE00AFB227 /* Assets.xcassets */,
 				7F3278FA1C71CA0200AFB227 /* Base.lproj */,
 				7F3279111C71E02300AFB227 /* BridgingHeader.h */,
@@ -127,6 +165,7 @@
 			isa = PBXGroup;
 			children = (
 				7F32790D1C71DF3E00AFB227 /* Carbon.framework */,
+				A741D70BEA39425CA2842ABC /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -173,6 +212,7 @@
 			isa = PBXGroup;
 			children = (
 				7FE8A6481C717481000A2C4C /* dmenu-mac.app */,
+				7FF33D15E7A14B9FB84318F3 /* dmenu-macTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -180,6 +220,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		094D6B1FF2884639A796E31E /* dmenu-macTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AA9C6F9EDA2D453D8CEEDB61 /* Build configuration list for PBXNativeTarget "dmenu-macTests" */;
+			buildPhases = (
+				C4F90D29C4AB49D38842F547 /* Sources */,
+				0814C0D97F054084BBA02A42 /* Frameworks */,
+				9A8F2EECB5C343F6BE937DA3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				46FFBE46CACC423AAAE42E32 /* PBXTargetDependency */,
+			);
+			name = "dmenu-macTests";
+			productName = "dmenu-macTests";
+			productReference = 7FF33D15E7A14B9FB84318F3 /* dmenu-macTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		7FE8A6471C717481000A2C4C /* dmenu-mac */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7FE8A6571C717481000A2C4C /* Build configuration list for PBXNativeTarget "dmenu-mac" */;
@@ -215,9 +273,13 @@
 				BuildIndependentTargetsInParallel = YES;
 				CLASSPREFIX = "";
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 1620;
+				LastUpgradeCheck = 2620;
 				ORGANIZATIONNAME = "Jose Pereira";
 				TargetAttributes = {
+					094D6B1FF2884639A796E31E = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 7FE8A6471C717481000A2C4C;
+					};
 					7FE8A6471C717481000A2C4C = {
 						CreatedOnToolsVersion = 7.2.1;
 						LastSwiftMigration = 1020;
@@ -248,6 +310,7 @@
 			projectRoot = "";
 			targets = (
 				7FE8A6471C717481000A2C4C /* dmenu-mac */,
+				094D6B1FF2884639A796E31E /* dmenu-macTests */,
 			);
 		};
 /* End PBXProject section */
@@ -261,6 +324,13 @@
 				7F90D2D226FDE2400003EC7E /* dmenu-mac in Resources */,
 				7F5D0E2C1CACCDD400268983 /* Main.storyboard in Resources */,
 				7F3278F11C71C9CE00AFB227 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A8F2EECB5C343F6BE937DA3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -290,9 +360,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C4F90D29C4AB49D38842F547 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7E81C57FFE39431782C98B80 /* CommandArgumentsTests.swift in Sources */,
+				42312E27230649C0A82474D4 /* PipeListProviderTests.swift in Sources */,
+				CAA73A0945C642C6A1A7CD3D /* NotificationNameTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		46FFBE46CACC423AAAE42E32 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7FE8A6471C717481000A2C4C /* dmenu-mac */;
+			targetProxy = 3DABDF17154045C5972A4C41 /* PBXContainerItemProxy */;
+		};
 		7F0A88EE2D6A3025008B3822 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = 7F0A88ED2D6A3025008B3822 /* SwiftLintBuildToolPlugin */;
@@ -387,6 +472,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				STRINGS_FILE_OUTPUT_ENCODING = "UTF-8";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_DISABLE_SAFETY_CHECKS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.10;
@@ -457,6 +543,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = macosx;
 				STRINGS_FILE_OUTPUT_ENCODING = "UTF-8";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_DISABLE_SAFETY_CHECKS = YES;
 				SWIFT_VERSION = 5.10;
@@ -514,6 +601,48 @@
 			};
 			name = Release;
 		};
+		80BF13C20BCA42678C905656 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "-";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "dmenu-macTests";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACH_O_TYPE = mh_bundle;
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.onaips.dmenu-macosTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/dmenu-mac.app/Contents/MacOS/dmenu-mac";
+			};
+			name = Debug;
+		};
+		608C5C3F06D343D0B16DF05E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "-";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "dmenu-macTests";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACH_O_TYPE = mh_bundle;
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.onaips.dmenu-macosTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/dmenu-mac.app/Contents/MacOS/dmenu-mac";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -531,6 +660,15 @@
 			buildConfigurations = (
 				7FE8A6581C717481000A2C4C /* Debug */,
 				7FE8A6591C717481000A2C4C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AA9C6F9EDA2D453D8CEEDB61 /* Build configuration list for PBXNativeTarget "dmenu-macTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				80BF13C20BCA42678C905656 /* Debug */,
+				608C5C3F06D343D0B16DF05E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

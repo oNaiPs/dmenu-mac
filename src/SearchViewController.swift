@@ -49,9 +49,11 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
             listProvider = AppListProvider()
         }
 
-        let options = DmenuMac.parseOrExit()
-        if options.prompt != nil {
-            promptValue = options.prompt!
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
+            let options = DmenuMac.parseOrExit()
+            if options.prompt != nil {
+                promptValue = options.prompt!
+            }
         }
 
         clearFields()
