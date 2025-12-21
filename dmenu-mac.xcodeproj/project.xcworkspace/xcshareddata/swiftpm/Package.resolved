@@ -1,5 +1,5 @@
 {
-  "originHash" : "319ef6972a794b0c1c0b87ae293be8afd3b6198cea68b6ecf8b2efcaeed184cf",
+  "originHash" : "31636e46622247be386b57e5664d3a04035559e23c90b6eecb77faff92bafa9b",
   "pins" : [
     {
       "identity" : "filewatcher",
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/sindresorhus/KeyboardShortcuts",
       "state" : {
-        "revision" : "7ecc38bb6edf7d087d30e737057b8d8a9b7f51eb",
-        "version" : "2.2.4"
+        "revision" : "1aef85578fdd4f9eaeeb8d53b7b4fc31bf08fe27",
+        "version" : "2.4.0"
       }
     },
     {
@@ -51,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-argument-parser",
       "state" : {
-        "revision" : "986d191f94cec88f6350056da59c2e59e83d1229",
-        "version" : "0.4.3"
+        "revision" : "c5d11a805e765f52ba34ec7284bd4fcd6ba68615",
+        "version" : "1.7.0"
       }
     },
     {
@@ -60,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SimplyDanny/SwiftLintPlugins",
       "state" : {
-        "revision" : "7a3d77f3dd9f91d5cea138e52c20cfceabf352de",
-        "version" : "0.58.2"
+        "revision" : "ecafb5b056cb7995324f0d310a61f30661d00cad",
+        "version" : "0.62.2"
       }
     }
   ],
