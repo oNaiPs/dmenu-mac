@@ -35,6 +35,12 @@
 		7F6511FB29A61A4E007D3EB3 /* GeneralSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F6511F929A61A4E007D3EB3 /* GeneralSettingsViewController.xib */; };
 		7F6511FE29A61C32007D3EB3 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 7F6511FD29A61C32007D3EB3 /* KeyboardShortcuts */; };
 		7F90D2D226FDE2400003EC7E /* dmenu-mac in Resources */ = {isa = PBXBuildFile; fileRef = 7F90D2D126FDE2400003EC7E /* dmenu-mac */; };
+		7FCEF3DD2EF89BAE00301202 /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF3DB2EF89BAE00301202 /* SearchService.swift */; };
+		7FCEF3DF2EF89BAE00301202 /* ProviderFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF3DA2EF89BAE00301202 /* ProviderFactory.swift */; };
+		7FCEF3E42EF89BB900301202 /* AppListProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF3E02EF89BB900301202 /* AppListProviderTests.swift */; };
+		7FCEF3E52EF89BB900301202 /* MockListProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF3E12EF89BB900301202 /* MockListProvider.swift */; };
+		7FCEF3E62EF89BB900301202 /* SearchViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF3E32EF89BB900301202 /* SearchViewControllerTests.swift */; };
+		7FCEF3E72EF89BB900301202 /* SearchServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF3E22EF89BB900301202 /* SearchServiceTests.swift */; };
 		7FDA366E241FDA5E00B51212 /* Fuse in Frameworks */ = {isa = PBXBuildFile; productRef = 7FDA366D241FDA5E00B51212 /* Fuse */; };
 		B587A216B6D840909FF34BE0 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A741D70BEA39425CA2842ABC /* XCTest.framework */; };
 		CAA73A0945C642C6A1A7CD3D /* NotificationNameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9315B77060242E2BEE75F2C /* NotificationNameTests.swift */; };
@@ -80,6 +86,12 @@
 		7F6511FA29A61A4E007D3EB3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = src/Base.lproj/GeneralSettingsViewController.xib; sourceTree = "<group>"; };
 		7F7982A5241FF0FD0079AFD2 /* dmenu-mac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "dmenu-mac.entitlements"; sourceTree = "<group>"; };
 		7F90D2D126FDE2400003EC7E /* dmenu-mac */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "dmenu-mac"; sourceTree = "<group>"; };
+		7FCEF3DA2EF89BAE00301202 /* ProviderFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProviderFactory.swift; path = src/ProviderFactory.swift; sourceTree = "<group>"; };
+		7FCEF3DB2EF89BAE00301202 /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchService.swift; path = src/SearchService.swift; sourceTree = "<group>"; };
+		7FCEF3E02EF89BB900301202 /* AppListProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppListProviderTests.swift; path = "dmenu-macTests/AppListProviderTests.swift"; sourceTree = "<group>"; };
+		7FCEF3E12EF89BB900301202 /* MockListProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MockListProvider.swift; path = "dmenu-macTests/MockListProvider.swift"; sourceTree = "<group>"; };
+		7FCEF3E22EF89BB900301202 /* SearchServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchServiceTests.swift; path = "dmenu-macTests/SearchServiceTests.swift"; sourceTree = "<group>"; };
+		7FCEF3E32EF89BB900301202 /* SearchViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchViewControllerTests.swift; path = "dmenu-macTests/SearchViewControllerTests.swift"; sourceTree = "<group>"; };
 		7FE8A6481C717481000A2C4C /* dmenu-mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "dmenu-mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FF33D15E7A14B9FB84318F3 /* dmenu-macTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "dmenu-macTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A741D70BEA39425CA2842ABC /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = System/Library/Frameworks/XCTest.framework; sourceTree = SDKROOT; };
@@ -116,6 +128,10 @@
 		50282B1E7AAE47DA8326948B /* dmenu-macTests */ = {
 			isa = PBXGroup;
 			children = (
+				7FCEF3E02EF89BB900301202 /* AppListProviderTests.swift */,
+				7FCEF3E12EF89BB900301202 /* MockListProvider.swift */,
+				7FCEF3E22EF89BB900301202 /* SearchServiceTests.swift */,
+				7FCEF3E32EF89BB900301202 /* SearchViewControllerTests.swift */,
 				BAFA97BFB86D4BBEA3CA3C69 /* CommandArgumentsTests.swift */,
 				2B4A6EB6FC9D42409B853E7D /* PipeListProviderTests.swift */,
 				B9315B77060242E2BEE75F2C /* NotificationNameTests.swift */,
@@ -173,6 +189,8 @@
 		7F6511F829A619FD007D3EB3 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				7FCEF3DA2EF89BAE00301202 /* ProviderFactory.swift */,
+				7FCEF3DB2EF89BAE00301202 /* SearchService.swift */,
 				7F3278E81C71C9CE00AFB227 /* AppDelegate.swift */,
 				7F2CCA2F268FE38C00C14B29 /* AppListProvider.swift */,
 				7F25568E269CF945002324AC /* CommandArguments.swift */,
@@ -350,6 +368,8 @@
 				7F25568F269CF945002324AC /* CommandArguments.swift in Sources */,
 				7F2CCA2E268FE37900C14B29 /* ListProvider.swift in Sources */,
 				7F6511F729A619DE007D3EB3 /* GeneralSettingsViewController.swift in Sources */,
+				7FCEF3DD2EF89BAE00301202 /* SearchService.swift in Sources */,
+				7FCEF3DF2EF89BAE00301202 /* ProviderFactory.swift in Sources */,
 				7F3279091C71DF2300AFB227 /* DDHotKeyCenter.m in Sources */,
 				7F2CCA32268FEDF600C14B29 /* PipeListProvider.swift in Sources */,
 				7F2CCA3F268FFDB500C14B29 /* ReadStdin.h.m in Sources */,
@@ -365,6 +385,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E81C57FFE39431782C98B80 /* CommandArgumentsTests.swift in Sources */,
+				7FCEF3E42EF89BB900301202 /* AppListProviderTests.swift in Sources */,
+				7FCEF3E52EF89BB900301202 /* MockListProvider.swift in Sources */,
+				7FCEF3E62EF89BB900301202 /* SearchViewControllerTests.swift in Sources */,
+				7FCEF3E72EF89BB900301202 /* SearchServiceTests.swift in Sources */,
 				42312E27230649C0A82474D4 /* PipeListProviderTests.swift in Sources */,
 				CAA73A0945C642C6A1A7CD3D /* NotificationNameTests.swift in Sources */,
 			);
@@ -404,6 +428,27 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		608C5C3F06D343D0B16DF05E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "-";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "dmenu-macTests";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACH_O_TYPE = mh_bundle;
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.onaips.dmenu-macosTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/dmenu-mac.app/Contents/MacOS/dmenu-mac";
+			};
+			name = Release;
+		};
 		7FE8A6551C717481000A2C4C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -621,27 +666,6 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/dmenu-mac.app/Contents/MacOS/dmenu-mac";
 			};
 			name = Debug;
-		};
-		608C5C3F06D343D0B16DF05E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "-";
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "dmenu-macTests";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
-				MACH_O_TYPE = mh_bundle;
-				MACOSX_DEPLOYMENT_TARGET = 13.5;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.onaips.dmenu-macosTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/dmenu-mac.app/Contents/MacOS/dmenu-mac";
-			};
-			name = Release;
 		};
 /* End XCBuildConfiguration section */
 

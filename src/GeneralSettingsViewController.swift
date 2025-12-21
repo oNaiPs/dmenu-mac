@@ -24,15 +24,32 @@ final class GeneralSettingsViewController: NSViewController, SettingsPane {
     let toolbarItemIcon = NSImage(systemSymbolName: "gearshape", accessibilityDescription: "General settings")!
 
     @IBOutlet weak var customView: NSView?
+    private var keyboardRecorder: KeyboardShortcuts.RecorderCocoa?
 
     override var nibName: NSNib.Name? { "GeneralSettingsViewController" }
 
-    override func loadView() {
-        super.loadView()
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupKeyboardRecorder()
+    }
+
+    private func setupKeyboardRecorder() {
+        guard let customView = customView else {
+            return
+        }
 
         let recorder = KeyboardShortcuts.RecorderCocoa(for: .activateSearch)
-        recorder.frame = CGRect(x: 0, y: 0, width: 150, height: 25)
-        customView?.addSubview(recorder)
+        recorder.translatesAutoresizingMaskIntoConstraints = false
+        self.keyboardRecorder = recorder
 
+        customView.addSubview(recorder)
+
+        // Add Auto Layout constraints
+        NSLayoutConstraint.activate([
+            recorder.leadingAnchor.constraint(equalTo: customView.leadingAnchor),
+            recorder.trailingAnchor.constraint(equalTo: customView.trailingAnchor),
+            recorder.topAnchor.constraint(equalTo: customView.topAnchor),
+            recorder.bottomAnchor.constraint(equalTo: customView.bottomAnchor)
+        ])
     }
 }
