@@ -18,6 +18,21 @@ jobs:
       with:
         args: --strict
 
+  tests:
+    runs-on: macos-15
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Run Xcode tests
+      run: xcodebuild
+        -skipPackagePluginValidation
+        -skipMacroValidation
+        -project dmenu-mac.xcodeproj
+        -scheme dmenu-mac
+        -configuration Debug
+        test
+
   build:
     runs-on: macos-15
 
