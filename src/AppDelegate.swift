@@ -38,7 +38,7 @@ extension KeyboardShortcuts.Name {
             [.command]))
 }
 
-@NSApplicationMain
+@main
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     @IBOutlet var controllerWindow: NSWindowController?
 
@@ -52,9 +52,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             button.title = "d"
         }
         setupMenus()
+        setupKeyboardShortcut()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
+    }
+
+    private func setupKeyboardShortcut() {
+        KeyboardShortcuts.onKeyUp(for: .activateSearch) { [weak self] in
+            self?.resumeApp()
+        }
     }
 
     func setupMenus() {
@@ -73,7 +80,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
 
         menu.addItem(NSMenuItem.separator())
 
-        menu.addItem(NSMenuItem(title: "Quit dmenu-mac", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
+        menu.addItem(NSMenuItem(title: "Quit dmenu-mac",
+                                action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
 
         statusItem.menu = menu
     }
@@ -101,10 +109,21 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         GeneralSettingsViewController()
     ]
 
-    private lazy var settingsWindowController = SettingsWindowController(
-        panes: settings,
-        style: .segmentedControl,
-        animated: true,
-        hidesToolbarForSingleItem: true
-    )
+    private lazy var settingsWindowController: SettingsWindowController = {
+        let controller = SettingsWindowController(
+            panes: settings,
+            style: .toolbarItems,
+            animated: true,
+            hidesToolbarForSingleItem: true
+        )
+
+        // Configure window appearance
+        if let window = controller.window {
+            window.styleMask.remove(.resizable)
+            window.standardWindowButton(.miniaturizeButton)?.isHidden = true
+            window.standardWindowButton(.zoomButton)?.isHidden = true
+        }
+
+        return controller
+    }()
 }

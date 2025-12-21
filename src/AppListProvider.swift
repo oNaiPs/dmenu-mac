@@ -25,7 +25,8 @@ class AppListProvider: ListProvider {
 
     var appDirDict = [String: Bool]()
 
-    var appList = [URL]()
+    private var appList = [URL]()
+    private let appListQueue = DispatchQueue(label: "com.dmenu-mac.applist", attributes: .concurrent)
 
     init() {
         let applicationDir = NSSearchPathForDirectoriesInDomains(
@@ -59,7 +60,9 @@ class AppListProvider: ListProvider {
             let list = getAppList(urlPath, recursive: appDirDict[path]!)
             newAppList.append(contentsOf: list)
         }
-        appList = newAppList
+        appListQueue.async(flags: .barrier) {
+            self.appList = newAppList
+        }
     }
 
     func getAppList(_ appDir: URL, recursive: Bool = true) -> [URL] {
@@ -85,7 +88,9 @@ class AppListProvider: ListProvider {
     }
 
     func get() -> [ListItem] {
-        return appList.map({ListItem(name: $0.deletingPathExtension().lastPathComponent, data: $0)})
+        return appListQueue.sync {
+            appList.map({ListItem(name: $0.deletingPathExtension().lastPathComponent, data: $0)})
+        }
     }
 
     func doAction(item: ListItem) {

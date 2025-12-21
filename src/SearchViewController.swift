@@ -23,17 +23,17 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
 
     @IBOutlet fileprivate var searchText: InputField!
     @IBOutlet fileprivate var resultsText: ResultsView!
-    var hotkey: DDHotKey?
     var listProvider: ListProvider?
+    var searchService: SearchService?
     var promptValue = ""
+
+    deinit {
+        DistributedNotificationCenter.default.removeObserver(self)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         searchText.delegate = self
-
-        KeyboardShortcuts.onKeyUp(for: .activateSearch) { [self] in
-            resumeApp()
-        }
 
         DistributedNotificationCenter.default.addObserver(
             self,
@@ -42,11 +42,16 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
             object: nil
         )
 
-        let stdinStr = ReadStdin.read()
-        if stdinStr.count > 0 {
-            listProvider = PipeListProvider(str: stdinStr)
-        } else {
-            listProvider = AppListProvider()
+        // Use dependency injection if provider already set, otherwise create default
+        if listProvider == nil {
+            let factory = ProviderFactory()
+            let stdinStr = ReadStdin.read()
+            listProvider = factory.createProvider(stdinContent: stdinStr)
+        }
+
+        // Create search service
+        if let provider = listProvider {
+            searchService = SearchService(provider: provider)
         }
 
         if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
@@ -89,24 +94,15 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
             return
         }
 
-        // Get provider list, filter using fuzzy search, apply
-        var scoreDict = [Int: Double]()
-
-        let fuse = Fuse(threshold: 0.4)
-        let pattern = fuse.createPattern(from: searchText.stringValue)
-
-        let list = listProvider?.get() ?? []
-
-        for (idx, item) in list.enumerated() {
-            guard let result = fuse.search(pattern, in: item.name) else {
-                continue
-            }
-            scoreDict[idx] = result.score
+        // Use SearchService for fuzzy search
+        guard let searchService = searchService else {
+            return
         }
 
-        let sortedScoreDict = scoreDict.sorted(by: {$0.1 < $1.1}).map({list[$0.0]})
-        if !sortedScoreDict.isEmpty {
-            self.resultsText.list = sortedScoreDict
+        let results = searchService.search(query: searchText.stringValue)
+
+        if !results.isEmpty {
+            self.resultsText.list = results
         } else {
             self.resultsText.clear()
         }
@@ -149,7 +145,8 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
 
     func clearFields() {
         self.searchText.stringValue = promptValue
-        self.resultsText.list = listProvider?.get().sorted(by: {$0.name < $1.name}) ?? []
+        // Use SearchService for consistent sorting (search with empty query returns sorted list)
+        self.resultsText.list = searchService?.search(query: "") ?? []
     }
 
     func closeApp() {
