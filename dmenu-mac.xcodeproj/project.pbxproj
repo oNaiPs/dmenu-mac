@@ -25,9 +25,6 @@
 		7F3278F51C71C9CE00AFB227 /* SearchWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278ED1C71C9CE00AFB227 /* SearchWindow.swift */; };
 		7F3278F71C71C9CE00AFB227 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278EF1C71C9CE00AFB227 /* SearchViewController.swift */; };
 		7F3279001C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278FF1C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift */; };
-		7F3279091C71DF2300AFB227 /* DDHotKeyCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F3279031C71DF2300AFB227 /* DDHotKeyCenter.m */; };
-		7F32790A1C71DF2300AFB227 /* DDHotKeyTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F3279051C71DF2300AFB227 /* DDHotKeyTextField.m */; };
-		7F32790B1C71DF2300AFB227 /* DDHotKeyUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F3279071C71DF2300AFB227 /* DDHotKeyUtilities.m */; };
 		7F32790E1C71DF3E00AFB227 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F32790D1C71DF3E00AFB227 /* Carbon.framework */; };
 		7F5D0E261CACCD0100268983 /* ResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5D0E241CACCD0100268983 /* ResultsView.swift */; };
 		7F5D0E2C1CACCDD400268983 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F5D0E281CACCDD400268983 /* Main.storyboard */; };
@@ -75,12 +72,6 @@
 		7F3278ED1C71C9CE00AFB227 /* SearchWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchWindow.swift; path = src/SearchWindow.swift; sourceTree = "<group>"; };
 		7F3278EF1C71C9CE00AFB227 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchViewController.swift; path = src/SearchViewController.swift; sourceTree = "<group>"; };
 		7F3278FF1C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VerticalAlignedTextFieldCell.swift; path = src/VerticalAlignedTextFieldCell.swift; sourceTree = "<group>"; };
-		7F3279021C71DF2300AFB227 /* DDHotKeyCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DDHotKeyCenter.h; path = "src/3rd-party/DDHotKeyCenter.h"; sourceTree = "<group>"; };
-		7F3279031C71DF2300AFB227 /* DDHotKeyCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DDHotKeyCenter.m; path = "src/3rd-party/DDHotKeyCenter.m"; sourceTree = "<group>"; };
-		7F3279041C71DF2300AFB227 /* DDHotKeyTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DDHotKeyTextField.h; path = "src/3rd-party/DDHotKeyTextField.h"; sourceTree = "<group>"; };
-		7F3279051C71DF2300AFB227 /* DDHotKeyTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DDHotKeyTextField.m; path = "src/3rd-party/DDHotKeyTextField.m"; sourceTree = "<group>"; };
-		7F3279061C71DF2300AFB227 /* DDHotKeyUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DDHotKeyUtilities.h; path = "src/3rd-party/DDHotKeyUtilities.h"; sourceTree = "<group>"; };
-		7F3279071C71DF2300AFB227 /* DDHotKeyUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DDHotKeyUtilities.m; path = "src/3rd-party/DDHotKeyUtilities.m"; sourceTree = "<group>"; };
 		7F32790D1C71DF3E00AFB227 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		7F3279111C71E02300AFB227 /* BridgingHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BridgingHeader.h; path = src/BridgingHeader.h; sourceTree = "<group>"; };
 		7F5D0E241CACCD0100268983 /* ResultsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResultsView.swift; path = src/ResultsView.swift; sourceTree = "<group>"; };
@@ -148,7 +139,6 @@
 		7F3278E71C71C96100AFB227 /* dmenu-mac */ = {
 			isa = PBXGroup;
 			children = (
-				7F3279011C71DF1900AFB227 /* 3rd-party */,
 				7F6511F829A619FD007D3EB3 /* src */,
 				50282B1E7AAE47DA8326948B /* dmenu-macTests */,
 				7F3278E91C71C9CE00AFB227 /* Assets.xcassets */,
@@ -169,19 +159,6 @@
 				7F6511F929A61A4E007D3EB3 /* GeneralSettingsViewController.xib */,
 			);
 			name = Base.lproj;
-			sourceTree = "<group>";
-		};
-		7F3279011C71DF1900AFB227 /* 3rd-party */ = {
-			isa = PBXGroup;
-			children = (
-				7F3279021C71DF2300AFB227 /* DDHotKeyCenter.h */,
-				7F3279031C71DF2300AFB227 /* DDHotKeyCenter.m */,
-				7F3279041C71DF2300AFB227 /* DDHotKeyTextField.h */,
-				7F3279051C71DF2300AFB227 /* DDHotKeyTextField.m */,
-				7F3279061C71DF2300AFB227 /* DDHotKeyUtilities.h */,
-				7F3279071C71DF2300AFB227 /* DDHotKeyUtilities.m */,
-			);
-			name = "3rd-party";
 			sourceTree = "<group>";
 		};
 		7F32790F1C71DF4600AFB227 /* Frameworks */ = {
@@ -375,17 +352,14 @@
 				7FCEF4112EFBE70300301202 /* AppearanceSettings.swift in Sources */,
 				7FCEF4122EFBE70300301202 /* AppearanceSettingsViewController.swift in Sources */,
 				7F3278F71C71C9CE00AFB227 /* SearchViewController.swift in Sources */,
-				7F32790A1C71DF2300AFB227 /* DDHotKeyTextField.m in Sources */,
 				7F3278F01C71C9CE00AFB227 /* AppDelegate.swift in Sources */,
 				7F25568F269CF945002324AC /* CommandArguments.swift in Sources */,
 				7F2CCA2E268FE37900C14B29 /* ListProvider.swift in Sources */,
 				7F6511F729A619DE007D3EB3 /* GeneralSettingsViewController.swift in Sources */,
 				7FCEF3DD2EF89BAE00301202 /* SearchService.swift in Sources */,
 				7FCEF3DF2EF89BAE00301202 /* ProviderFactory.swift in Sources */,
-				7F3279091C71DF2300AFB227 /* DDHotKeyCenter.m in Sources */,
 				7F2CCA32268FEDF600C14B29 /* PipeListProvider.swift in Sources */,
 				7F2CCA3F268FFDB500C14B29 /* ReadStdin.h.m in Sources */,
-				7F32790B1C71DF2300AFB227 /* DDHotKeyUtilities.m in Sources */,
 				7F2CCA23268B195F00C14B29 /* Notification+Name.swift in Sources */,
 				7F3278F51C71C9CE00AFB227 /* SearchWindow.swift in Sources */,
 				7F255694269D01FF002324AC /* InputField.swift in Sources */,

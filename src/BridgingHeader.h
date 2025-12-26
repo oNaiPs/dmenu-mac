@@ -17,8 +17,6 @@
 #ifndef BridgingHeader_h
 #define BridgingHeader_h
 
-#import "DDHotKeyCenter.h"
-#import "DDHotKeyTextField.h"
 #import "ReadStdin.h"
 
 #endif /* BridgingHeader_h */
