@@ -22,6 +22,7 @@ import KeyboardShortcuts
 
 extension Settings.PaneIdentifier {
     static let general = Self("general")
+    static let appearance = Self("appearance")
 }
 
 // import legacy settings if they existed
@@ -106,7 +107,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     }
 
     private lazy var settings: [SettingsPane] = [
-        GeneralSettingsViewController()
+        GeneralSettingsViewController(),
+        AppearanceSettingsViewController()
     ]
 
     private lazy var settingsWindowController: SettingsWindowController = {
@@ -114,7 +116,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             panes: settings,
             style: .toolbarItems,
             animated: true,
-            hidesToolbarForSingleItem: true
+            hidesToolbarForSingleItem: false
         )
 
         // Configure window appearance

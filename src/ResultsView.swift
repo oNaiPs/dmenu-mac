@@ -20,6 +20,7 @@ class ResultsView: NSView {
     @IBOutlet fileprivate var scrollView: NSScrollView!
 
     let rectFillPadding: CGFloat = 5
+    private let appearanceManager = AppearanceManager.shared
     var resultsList: [ListItem] = []
 
     var dirtyWidth: Bool = false
@@ -68,9 +69,15 @@ class ResultsView: NSView {
         var textX = CGFloat(rectFillPadding)
         let drawList = list.count > 0 ? list : [ListItem(name: "No results", data: nil)]
 
+        let textFont = appearanceManager.currentFont
+        let textAttributes: [NSAttributedString.Key: Any] = [
+            .font: textFont,
+            .foregroundColor: appearanceManager.resultsTextColor
+        ]
+
         for i in 0 ..< drawList.count {
             let item = (drawList[i].name) as NSString
-            let size = item.size(withAttributes: [NSAttributedString.Key: Any]())
+            let size = item.size(withAttributes: textAttributes)
             let textY = (frame.height - size.height) / 2
 
             if selectedIndexValue == i {
@@ -79,7 +86,7 @@ class ResultsView: NSView {
                     y: textY - rectFillPadding,
                     width: size.width + rectFillPadding * 2,
                     height: size.height + rectFillPadding * 2)
-                NSColor.selectedTextBackgroundColor.setFill()
+                appearanceManager.selectionHighlightColor.setFill()
                 __NSRectFill(selectedRect)
             }
 
@@ -87,9 +94,7 @@ class ResultsView: NSView {
                             x: textX,
                             y: textY,
                             width: size.width,
-                            height: size.height), withAttributes: [
-                                NSAttributedString.Key.foregroundColor: NSColor.textColor
-                            ])
+                            height: size.height), withAttributes: textAttributes)
 
             textX += 10 + size.width
         }

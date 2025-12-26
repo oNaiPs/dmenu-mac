@@ -41,6 +41,9 @@
 		7FCEF3E52EF89BB900301202 /* MockListProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF3E12EF89BB900301202 /* MockListProvider.swift */; };
 		7FCEF3E62EF89BB900301202 /* SearchViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF3E32EF89BB900301202 /* SearchViewControllerTests.swift */; };
 		7FCEF3E72EF89BB900301202 /* SearchServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF3E22EF89BB900301202 /* SearchServiceTests.swift */; };
+		7FCEF4112EFBE70300301202 /* AppearanceSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF40F2EFBE70300301202 /* AppearanceSettings.swift */; };
+		7FCEF4122EFBE70300301202 /* AppearanceSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF4102EFBE70300301202 /* AppearanceSettingsViewController.swift */; };
+		7FCEF4152EFBE71400301202 /* AppearanceSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FCEF4132EFBE71400301202 /* AppearanceSettingsViewController.xib */; };
 		7FDA366E241FDA5E00B51212 /* Fuse in Frameworks */ = {isa = PBXBuildFile; productRef = 7FDA366D241FDA5E00B51212 /* Fuse */; };
 		B587A216B6D840909FF34BE0 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A741D70BEA39425CA2842ABC /* XCTest.framework */; };
 		CAA73A0945C642C6A1A7CD3D /* NotificationNameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9315B77060242E2BEE75F2C /* NotificationNameTests.swift */; };
@@ -92,6 +95,9 @@
 		7FCEF3E12EF89BB900301202 /* MockListProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MockListProvider.swift; path = "dmenu-macTests/MockListProvider.swift"; sourceTree = "<group>"; };
 		7FCEF3E22EF89BB900301202 /* SearchServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchServiceTests.swift; path = "dmenu-macTests/SearchServiceTests.swift"; sourceTree = "<group>"; };
 		7FCEF3E32EF89BB900301202 /* SearchViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchViewControllerTests.swift; path = "dmenu-macTests/SearchViewControllerTests.swift"; sourceTree = "<group>"; };
+		7FCEF40F2EFBE70300301202 /* AppearanceSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppearanceSettings.swift; path = src/AppearanceSettings.swift; sourceTree = "<group>"; };
+		7FCEF4102EFBE70300301202 /* AppearanceSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppearanceSettingsViewController.swift; path = src/AppearanceSettingsViewController.swift; sourceTree = "<group>"; };
+		7FCEF4142EFBE71400301202 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = src/Base.lproj/AppearanceSettingsViewController.xib; sourceTree = "<group>"; };
 		7FE8A6481C717481000A2C4C /* dmenu-mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "dmenu-mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FF33D15E7A14B9FB84318F3 /* dmenu-macTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "dmenu-macTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A741D70BEA39425CA2842ABC /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = System/Library/Frameworks/XCTest.framework; sourceTree = SDKROOT; };
@@ -158,6 +164,7 @@
 		7F3278FA1C71CA0200AFB227 /* Base.lproj */ = {
 			isa = PBXGroup;
 			children = (
+				7FCEF4132EFBE71400301202 /* AppearanceSettingsViewController.xib */,
 				7F5D0E281CACCDD400268983 /* Main.storyboard */,
 				7F6511F929A61A4E007D3EB3 /* GeneralSettingsViewController.xib */,
 			);
@@ -189,6 +196,8 @@
 		7F6511F829A619FD007D3EB3 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				7FCEF40F2EFBE70300301202 /* AppearanceSettings.swift */,
+				7FCEF4102EFBE70300301202 /* AppearanceSettingsViewController.swift */,
 				7FCEF3DA2EF89BAE00301202 /* ProviderFactory.swift */,
 				7FCEF3DB2EF89BAE00301202 /* SearchService.swift */,
 				7F3278E81C71C9CE00AFB227 /* AppDelegate.swift */,
@@ -339,6 +348,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7F6511FB29A61A4E007D3EB3 /* GeneralSettingsViewController.xib in Resources */,
+				7FCEF4152EFBE71400301202 /* AppearanceSettingsViewController.xib in Resources */,
 				7F90D2D226FDE2400003EC7E /* dmenu-mac in Resources */,
 				7F5D0E2C1CACCDD400268983 /* Main.storyboard in Resources */,
 				7F3278F11C71C9CE00AFB227 /* Assets.xcassets in Resources */,
@@ -362,6 +372,8 @@
 				7F3279001C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift in Sources */,
 				7F2CCA30268FE38C00C14B29 /* AppListProvider.swift in Sources */,
 				7F5D0E261CACCD0100268983 /* ResultsView.swift in Sources */,
+				7FCEF4112EFBE70300301202 /* AppearanceSettings.swift in Sources */,
+				7FCEF4122EFBE70300301202 /* AppearanceSettingsViewController.swift in Sources */,
 				7F3278F71C71C9CE00AFB227 /* SearchViewController.swift in Sources */,
 				7F32790A1C71DF2300AFB227 /* DDHotKeyTextField.m in Sources */,
 				7F3278F01C71C9CE00AFB227 /* AppDelegate.swift in Sources */,
@@ -423,6 +435,14 @@
 				7F6511FA29A61A4E007D3EB3 /* Base */,
 			);
 			name = GeneralSettingsViewController.xib;
+			sourceTree = "<group>";
+		};
+		7FCEF4132EFBE71400301202 /* AppearanceSettingsViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7FCEF4142EFBE71400301202 /* Base */,
+			);
+			name = AppearanceSettingsViewController.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

@@ -26,9 +26,11 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
     var listProvider: ListProvider?
     var searchService: SearchService?
     var promptValue = ""
+    private let appearanceManager = AppearanceManager.shared
 
     deinit {
         DistributedNotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 
     override func viewDidLoad() {
@@ -39,6 +41,13 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
             self,
             selector: #selector(interfaceModeChanged),
             name: .AppleInterfaceThemeChangedNotification,
+            object: nil
+        )
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appearanceSettingsChanged),
+            name: .appearanceSettingsChanged,
             object: nil
         )
 
@@ -69,12 +78,51 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
         updateColors()
     }
 
+    @objc func appearanceSettingsChanged(sender: NSNotification) {
+        updateColors()
+        updateFonts()
+    }
+
     func updateColors() {
         guard let window = NSApp.windows.first else { return }
 
         window.isOpaque = false
-        window.backgroundColor = NSColor.windowBackgroundColor.withAlphaComponent(0.6)
-        searchText.textColor = NSColor.textColor
+        window.backgroundColor = appearanceManager.windowBackgroundColor
+            .withAlphaComponent(appearanceManager.windowOpacity)
+        searchText.textColor = appearanceManager.searchTextColor
+
+        resultsText.needsDisplay = true
+    }
+
+    func updateFonts() {
+        searchText.font = appearanceManager.currentFont
+
+        // Update field editor if searchText is currently being edited
+        if let fieldEditor = searchText.window?.fieldEditor(false, for: searchText) as? NSTextView {
+            fieldEditor.font = appearanceManager.currentFont
+        }
+
+        // Update placeholder text font
+        let placeholderText: String
+        if let attributedPlaceholder = searchText.placeholderAttributedString {
+            placeholderText = attributedPlaceholder.string
+        } else if let plainPlaceholder = searchText.placeholderString {
+            placeholderText = plainPlaceholder
+        } else {
+            placeholderText = ""
+        }
+
+        if !placeholderText.isEmpty {
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: appearanceManager.currentFont
+            ]
+            searchText.placeholderAttributedString = NSAttributedString(
+                string: placeholderText,
+                attributes: attributes
+            )
+        }
+
+        resultsText.needsDisplay = true
     }
 
     @objc func resumeApp() {
@@ -86,6 +134,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
         }
 
         updateColors()
+        updateFonts()
     }
 
     func controlTextDidChange(_ obj: Notification) {
