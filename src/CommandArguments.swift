@@ -15,8 +15,20 @@
  */
 
 import ArgumentParser
+import Darwin
 
 struct DmenuMac: ParsableArguments {
     @Option(name: .shortAndLong, help: "Show a prompt instead of the search input.")
     var prompt: String?
+
+    @Flag(inversion: .prefixedNo, help: ArgumentHelp(
+        "Exit after a selection instead of staying in the background.",
+        discussion: "Defaults to exiting when started from a shell, staying when opened as an app."))
+    var exit: Bool?
+
+    /// Opened via LaunchServices (Finder, Dock, login items, `open`) the parent is launchd;
+    /// anything else (a shell, skhd, ...) is a one-shot invocation that should not linger.
+    static func shouldExitOnClose(flag: Bool?, parentPID: pid_t = getppid()) -> Bool {
+        return flag ?? (parentPID != 1)
+    }
 }

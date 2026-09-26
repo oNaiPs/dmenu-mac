@@ -23,6 +23,12 @@ If you are like me and have a shit-ton of files on your computer, and spotlight 
 2. Optionally, you can change the binding by clicking the ... on the right of the menu.
 3. Type the application you want to open, hit enter to run the one selected.
 
+### Running from a shell
+When opened as an app (Finder, Dock, login items), dmenu-mac stays in the background waiting for its hotkey.
+When started from a shell or a hotkey daemon like [skhd](https://github.com/koekeishiya/skhd), it exits after
+you pick an app or press Esc, so it can be bound to a key without piling up processes.
+Use `--exit` or `--no-exit` to force either behaviour.
+
 ### Pipes
 You can make dmenu-mac part of your scripting toolbox, use it to prompt the user for options:
 ```
