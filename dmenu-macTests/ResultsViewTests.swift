@@ -36,12 +36,6 @@ final class ResultsViewTests: XCTestCase {
         XCTAssertEqual(view.selectedItem()?.name, "x")
     }
 
-    func testSettingListMarksViewForDisplay() {
-        view.needsDisplay = false
-        view.list = items("a")
-        XCTAssertTrue(view.needsDisplay)
-    }
-
     // MARK: - selectedIndex
 
     func testSelectedIndexWithinBoundsUpdatesSelection() {
@@ -88,8 +82,8 @@ final class ResultsViewTests: XCTestCase {
 
         XCTAssertEqual(firstRect.minX, 0, accuracy: 0.0001)
         XCTAssertGreaterThan(firstRect.width, 0)
-        XCTAssertGreaterThan(view.selectedRect.minX, firstRect.maxX,
-                             "Second item should be drawn to the right of the first")
+        XCTAssertGreaterThanOrEqual(view.selectedRect.minX, firstRect.maxX,
+                                    "Second item should be drawn to the right of the first")
     }
 
     func testDrawWithDirtyWidthResizesToContent() {

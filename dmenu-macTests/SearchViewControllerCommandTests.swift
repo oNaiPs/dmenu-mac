@@ -108,6 +108,16 @@ final class SearchViewControllerCommandTests: XCTestCase {
         XCTAssertEqual(resultsView.selectedIndex, 1)
     }
 
+    func testNavigationWithNoResultsDoesNotCrash() {
+        type("zzzzzzzzzz")
+
+        XCTAssertTrue(send(#selector(NSResponder.moveRight(_:))))
+        XCTAssertTrue(send(#selector(NSResponder.insertTab(_:))))
+        XCTAssertTrue(send(#selector(NSResponder.moveLeft(_:))))
+        XCTAssertTrue(send(#selector(NSResponder.insertBacktab(_:))))
+        XCTAssertEqual(resultsView.selectedIndex, 0)
+    }
+
     func testNavigationMarksWidthDirty() {
         resultsView.dirtyWidth = false
         send(#selector(NSResponder.moveRight(_:)))

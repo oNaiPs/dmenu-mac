@@ -53,11 +53,11 @@ class VerticalAlignedTextFieldCell: NSTextFieldCell {
                        event theEvent: NSEvent?) {
         let aRect = self.drawingRect(forBounds: aRect)
         editingOrSelecting = true
-        self.edit(withFrame: aRect,
-                  in: controlView,
-                  editor: textObj,
-                  delegate: anObject,
-                  event: theEvent)
+        super.edit(withFrame: aRect,
+                   in: controlView,
+                   editor: textObj,
+                   delegate: anObject,
+                   event: theEvent)
         editingOrSelecting = false
     }
 }
