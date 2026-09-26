@@ -42,7 +42,7 @@ Optionally, you can download it [here](https://github.com/oNaiPs/dmenu-mac/relea
 
 NOTE: the releases are not signed yet, use it at your own risk. I'll take care of that as soon as we can assess the number of people interested in the project.
 
-*Mac OS X 10.12 or greater required.
+*macOS 13.5 or greater required.
 
 ## Features
 
@@ -50,6 +50,18 @@ NOTE: the releases are not signed yet, use it at your own risk. I'll take care o
 - Configurable global hotkey
 - Multi-display support
 - Not dependant on spotlight indexing
+
+# Development
+
+```sh
+xcodebuild -skipPackagePluginValidation -skipMacroValidation \
+  -project dmenu-mac.xcodeproj -scheme dmenu-mac -configuration Debug test
+# single test: add -only-testing:dmenu-macTests/SearchServiceTests[/testName]
+
+swiftlint --strict   # CI fails on warnings
+```
+
+`-skipPackagePluginValidation` is required because SwiftLint runs as an Xcode build plugin.
 
 # Pull requests
 Any improvement/bugfix is welcome.
