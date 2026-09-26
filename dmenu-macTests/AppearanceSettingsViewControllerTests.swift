@@ -88,11 +88,14 @@ final class AppearanceSettingsViewControllerTests: XCTestCase {
     // MARK: - Memory management
 
     func testViewControllerCanBeDeallocated() {
-        var controller: AppearanceSettingsViewController? = AppearanceSettingsViewController()
-        weak var weakController = controller
-        _ = controller?.view
+        weak var weakController: AppearanceSettingsViewController?
 
-        controller = nil
+        // Nib loading autoreleases the controller; drain the pool before checking.
+        autoreleasepool {
+            let controller = AppearanceSettingsViewController()
+            weakController = controller
+            _ = controller.view
+        }
 
         XCTAssertNil(weakController)
     }
