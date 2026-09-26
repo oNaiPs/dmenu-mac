@@ -1,4 +1,5 @@
 import XCTest
+import Settings
 @testable import dmenu_mac
 
 final class GeneralSettingsViewControllerTests: XCTestCase {
