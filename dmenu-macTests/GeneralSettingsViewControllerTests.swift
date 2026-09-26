@@ -1,5 +1,6 @@
 import XCTest
 import Settings
+import KeyboardShortcuts
 @testable import dmenu_mac
 
 final class GeneralSettingsViewControllerTests: XCTestCase {
@@ -57,10 +58,10 @@ final class GeneralSettingsViewControllerTests: XCTestCase {
         _ = viewController.view
 
         // Access private property via reflection for testing
-        let mirror = Mirror(reflecting: viewController)
-        let recorderProperty = mirror.children.first { $0.label == "keyboardRecorder" }
+        let mirror = Mirror(reflecting: viewController!)
+        let recorder = mirror.children.first { $0.label == "keyboardRecorder" }?.value
 
-        XCTAssertNotNil(recorderProperty, "keyboardRecorder property should exist")
+        XCTAssertNotNil(recorder as? KeyboardShortcuts.RecorderCocoa, "keyboardRecorder should be set")
     }
 
     func testKeyboardRecorderIsAddedToCustomView() {
@@ -77,24 +78,28 @@ final class GeneralSettingsViewControllerTests: XCTestCase {
     // MARK: - Memory Management Tests
 
     func testViewControllerCanBeDeallocated() {
-        var controller: GeneralSettingsViewController? = GeneralSettingsViewController()
-        weak var weakController = controller
+        weak var weakController: GeneralSettingsViewController?
 
-        // Load view to ensure full initialization
-        _ = controller?.view
-
-        controller = nil
+        // Nib loading autoreleases the controller; drain the pool before checking.
+        autoreleasepool {
+            let controller = GeneralSettingsViewController()
+            weakController = controller
+            // Load view to ensure full initialization
+            _ = controller.view
+        }
 
         XCTAssertNil(weakController,
                     "ViewController should be deallocated when no strong references remain")
     }
 
     func testNoRetainCycleWithKeyboardRecorder() {
-        var controller: GeneralSettingsViewController? = GeneralSettingsViewController()
-        weak var weakController = controller
+        weak var weakController: GeneralSettingsViewController?
 
-        _ = controller?.view
-        controller = nil
+        autoreleasepool {
+            let controller = GeneralSettingsViewController()
+            weakController = controller
+            _ = controller.view
+        }
 
         // If there's a retain cycle with the recorder, controller won't be deallocated
         XCTAssertNil(weakController,
