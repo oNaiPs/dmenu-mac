@@ -36,9 +36,14 @@ class AppListProvider: ListProvider {
         let systemApplicationDir = NSSearchPathForDirectoriesInDomains(
             .applicationDirectory, .systemDomainMask, true)[0]
 
+        // Per-user apps, e.g. nix home-manager's "Home Manager Apps".
+        let userApplicationDir = NSSearchPathForDirectoriesInDomains(
+            .applicationDirectory, .userDomainMask, true)[0]
+
         // appName to dir recursivity key/valye dict
         appDirDict[applicationDir] = true
         appDirDict[systemApplicationDir] = true
+        appDirDict[userApplicationDir] = true
         appDirDict["/System/Library/CoreServices/"] = false
 
         initFileWatch(Array(appDirDict.keys))
@@ -66,8 +71,18 @@ class AppListProvider: ListProvider {
     }
 
     func getAppList(_ appDir: URL, recursive: Bool = true) -> [URL] {
+        var visited = Set<String>()
+        return getAppList(appDir, recursive: recursive, visited: &visited)
+    }
+
+    private func getAppList(_ appDir: URL, recursive: Bool, visited: inout Set<String>) -> [URL] {
         var list = [URL]()
         let fileManager = FileManager.default
+
+        // Guard against symlink loops.
+        guard visited.insert(appDir.resolvingSymlinksInPath().path).inserted else {
+            return list
+        }
 
         do {
             let subs = try fileManager.contentsOfDirectory(atPath: appDir.path)
@@ -77,14 +92,20 @@ class AppListProvider: ListProvider {
 
                 if dir.pathExtension == "app" {
                     list.append(dir)
-                } else if dir.hasDirectoryPath && recursive {
-                    list.append(contentsOf: self.getAppList(dir))
+                } else if recursive && isDirectory(dir) {
+                    list.append(contentsOf: getAppList(dir, recursive: true, visited: &visited))
                 }
             }
         } catch {
             NSLog("Error on getAppList: %@", error.localizedDescription)
         }
         return list
+    }
+
+    /// Follows symlinks, e.g. nix-darwin's "/Applications/Nix Apps" pointing into /nix/store.
+    private func isDirectory(_ url: URL) -> Bool {
+        var isDir: ObjCBool = false
+        return FileManager.default.fileExists(atPath: url.path, isDirectory: &isDir) && isDir.boolValue
     }
 
     func get() -> [ListItem] {
