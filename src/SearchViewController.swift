@@ -169,7 +169,9 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
             commandSelector == #selector(moveRight(_:)) ||
             commandSelector == #selector(insertTab(_:))
 
-        if movingLeft {
+        if (movingLeft || movingRight) && resultsText.list.isEmpty {
+            return true
+        } else if movingLeft {
             resultsText.selectedIndex = resultsText.selectedIndex == 0 ?
                 resultsText.list.count - 1 : resultsText.selectedIndex - 1
             resultsText.updateWidth()
