@@ -113,6 +113,28 @@ final class AppListProviderTests: XCTestCase {
         XCTAssertTrue(apps.count > 0, "Should find apps recursively")
     }
 
+    func testGetAppListFollowsSymlinkedDirectories() throws {
+        // Mimics nix-darwin: /Applications/Nix Apps -> /nix/store/.../Applications
+        let fileManager = FileManager.default
+        let tmp = fileManager.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? fileManager.removeItem(at: tmp) }
+
+        let store = tmp.appendingPathComponent("store/Applications")
+        let root = tmp.appendingPathComponent("root")
+        try fileManager.createDirectory(at: store.appendingPathComponent("Foo.app"),
+                                        withIntermediateDirectories: true)
+        try fileManager.createDirectory(at: root, withIntermediateDirectories: true)
+        try fileManager.createSymbolicLink(at: root.appendingPathComponent("Nix Apps"),
+                                           withDestinationURL: store)
+        // A loop must not recurse forever.
+        try fileManager.createSymbolicLink(at: store.appendingPathComponent("loop"),
+                                           withDestinationURL: root)
+
+        let apps = provider.getAppList(root, recursive: true)
+
+        XCTAssertEqual(apps.map { $0.lastPathComponent }, ["Foo.app"])
+    }
+
     // MARK: - doAction Tests
 
     func testDoActionWithValidURL() {
