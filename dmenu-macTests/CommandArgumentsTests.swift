@@ -39,4 +39,17 @@ final class CommandArgumentsTests: XCTestCase {
         XCTAssertTrue(DmenuMac.shouldExitOnClose(flag: true, parentPID: 1))
         XCTAssertFalse(DmenuMac.shouldExitOnClose(flag: false, parentPID: 4242))
     }
+
+    func testPromptPreservesSpaces() throws {
+        let args = try DmenuMac.parse(["-p", "Are you sure?"])
+        XCTAssertEqual(args.prompt, "Are you sure?")
+    }
+
+    func testPromptWithoutValueThrows() {
+        XCTAssertThrowsError(try DmenuMac.parse(["-p"]))
+    }
+
+    func testUnknownOptionThrows() {
+        XCTAssertThrowsError(try DmenuMac.parse(["--unknown"]))
+    }
 }

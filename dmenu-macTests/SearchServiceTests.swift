@@ -120,4 +120,34 @@ final class SearchServiceTests: XCTestCase {
         // Lenient threshold should return more results
         XCTAssertGreaterThanOrEqual(lenientResults.count, strictResults.count)
     }
+
+    // MARK: - Edge Cases
+
+    func testSearchWithEmptyProviderReturnsNoResults() {
+        let service = SearchService(provider: MockListProvider())
+        XCTAssertTrue(service.search(query: "").isEmpty)
+        XCTAssertTrue(service.search(query: "Safari").isEmpty)
+    }
+
+    func testExactMatchRanksFirst() {
+        let results = searchService.search(query: "Calendar")
+        XCTAssertEqual(results.first?.name, "Calendar")
+    }
+
+    func testSearchReflectsProviderChanges() {
+        XCTAssertEqual(searchService.search(query: "").count, 5)
+
+        mockProvider.mockItems.append(ListItem(name: "Terminal", data: nil))
+
+        XCTAssertEqual(searchService.search(query: "").count, 6)
+        XCTAssertEqual(searchService.search(query: "Terminal").first?.name, "Terminal")
+    }
+
+    func testSearchPreservesItemData() {
+        let url = URL(fileURLWithPath: "/Applications/Safari.app")
+        let service = SearchService(provider: MockListProvider(items: [
+            ListItem(name: "Safari", data: url)
+        ]))
+        XCTAssertEqual(service.search(query: "Safari").first?.data as? URL, url)
+    }
 }
