@@ -26,6 +26,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
     var listProvider: ListProvider?
     var searchService: SearchService?
     var promptValue = ""
+    var exitOnClose = false
     private let appearanceManager = AppearanceManager.shared
 
     deinit {
@@ -68,6 +69,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
             if options.prompt != nil {
                 promptValue = options.prompt!
             }
+            exitOnClose = DmenuMac.shouldExitOnClose(flag: options.exit)
         }
 
         clearFields()
@@ -200,7 +202,12 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
 
     func closeApp() {
         clearFields()
-        if promptValue == "" {
+        if exitOnClose {
+            // Queued after the provider's async action so the app launch happens first
+            DispatchQueue.main.async {
+                NSApplication.shared.terminate(nil)
+            }
+        } else if promptValue == "" {
             NSApplication.shared.hide(nil)
         }
     }
