@@ -19,13 +19,15 @@ import FileWatcher
 import Fuse
 
 /**
- * Provide a list of launcheable apps for the OS
+ * Provide a list of launcheable apps and preference panes for the OS
  */
 class AppListProvider: ListProvider {
 
     var appDirDict = [String: Bool]()
 
-    private var appList = [URL]()
+    static let launchableExtensions: Set<String> = ["app", "prefPane"]
+
+    private var appList = [ListItem]()
     private let appListQueue = DispatchQueue(label: "com.dmenu-mac.applist", attributes: .concurrent)
 
     init() {
@@ -47,6 +49,12 @@ class AppListProvider: ListProvider {
         appDirDict[userApplicationDir] = true
         appDirDict["/System/Library/CoreServices/"] = false
 
+        // System Settings panes, e.g. Displays or Network.
+        appDirDict["/System/Library/PreferencePanes"] = false
+        appDirDict["/Library/PreferencePanes"] = false
+        appDirDict[AppListProvider.realHomeDirectory()
+            .appendingPathComponent("Library/PreferencePanes").path] = false
+
         initFileWatch(Array(appDirDict.keys))
         updateAppList()
     }
@@ -67,11 +75,11 @@ class AppListProvider: ListProvider {
     }
 
     func updateAppList() {
-        var newAppList = [URL]()
+        var newAppList = [ListItem]()
         appDirDict.keys.forEach { path in
             let urlPath = URL(fileURLWithPath: path, isDirectory: true)
             let list = getAppList(urlPath, recursive: appDirDict[path]!)
-            newAppList.append(contentsOf: list)
+            newAppList.append(contentsOf: list.map { ListItem(name: AppListProvider.displayName(for: $0), data: $0) })
         }
         appListQueue.async(flags: .barrier) {
             self.appList = newAppList
@@ -98,7 +106,7 @@ class AppListProvider: ListProvider {
             for sub in subs {
                 let dir = appDir.appendingPathComponent(sub)
 
-                if dir.pathExtension == "app" {
+                if AppListProvider.launchableExtensions.contains(dir.pathExtension) {
                     list.append(dir)
                 } else if recursive && isDirectory(dir) {
                     list.append(contentsOf: getAppList(dir, recursive: true, visited: &visited))
@@ -116,10 +124,20 @@ class AppListProvider: ListProvider {
         return FileManager.default.fileExists(atPath: url.path, isDirectory: &isDir) && isDir.boolValue
     }
 
-    func get() -> [ListItem] {
-        return appListQueue.sync {
-            appList.map({ListItem(name: $0.deletingPathExtension().lastPathComponent, data: $0)})
+    /// Pane file names can be cryptic (UniversalAccessPref), so prefer the bundle name (Accessibility).
+    static func displayName(for url: URL) -> String {
+        if url.pathExtension == "prefPane",
+           let bundle = Bundle(url: url),
+           let name = (bundle.localizedInfoDictionary?["CFBundleName"] ?? bundle.infoDictionary?["CFBundleName"])
+            as? String,
+           !name.isEmpty {
+            return name
         }
+        return url.deletingPathExtension().lastPathComponent
+    }
+
+    func get() -> [ListItem] {
+        return appListQueue.sync { appList }
     }
 
     func doAction(item: ListItem) {
