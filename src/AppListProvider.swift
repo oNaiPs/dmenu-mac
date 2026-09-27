@@ -36,9 +36,10 @@ class AppListProvider: ListProvider {
         let systemApplicationDir = NSSearchPathForDirectoriesInDomains(
             .applicationDirectory, .systemDomainMask, true)[0]
 
-        // Per-user apps, e.g. nix home-manager's "Home Manager Apps".
-        let userApplicationDir = NSSearchPathForDirectoriesInDomains(
-            .applicationDirectory, .userDomainMask, true)[0]
+        // Per-user apps, e.g. nix home-manager's "Home Manager Apps" or "Chrome Apps.localized".
+        // The sandbox remaps the user domain to the app container, so build it from the real home.
+        let userApplicationDir = AppListProvider.realHomeDirectory()
+            .appendingPathComponent("Applications").path
 
         // appName to dir recursivity key/valye dict
         appDirDict[applicationDir] = true
@@ -48,6 +49,13 @@ class AppListProvider: ListProvider {
 
         initFileWatch(Array(appDirDict.keys))
         updateAppList()
+    }
+
+    static func realHomeDirectory() -> URL {
+        guard let dir = getpwuid(getuid())?.pointee.pw_dir else {
+            return FileManager.default.homeDirectoryForCurrentUser
+        }
+        return URL(fileURLWithPath: String(cString: dir), isDirectory: true)
     }
 
     func initFileWatch(_ dirs: [String]) {

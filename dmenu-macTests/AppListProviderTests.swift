@@ -82,6 +82,15 @@ final class AppListProviderTests: XCTestCase {
         waitForExpectations(timeout: 5.0)
     }
 
+    func testScansRealUserApplicationsDirectory() {
+        // The sandbox remaps the user domain to ~/Library/Containers/<id>/Data.
+        let dirs = Array(provider.appDirDict.keys)
+        let userDir = AppListProvider.realHomeDirectory().appendingPathComponent("Applications").path
+
+        XCTAssertEqual(provider.appDirDict[userDir], true)
+        XCTAssertFalse(dirs.contains(where: { $0.contains("/Library/Containers/") }))
+    }
+
     // MARK: - Recursive Directory Scanning Tests
 
     func testGetAppListFindsAppsInDirectory() {
