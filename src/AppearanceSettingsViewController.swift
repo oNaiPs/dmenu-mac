@@ -35,6 +35,7 @@ final class AppearanceSettingsViewController: NSViewController, SettingsPane {
     @IBOutlet weak var fontNameLabel: NSTextField!
     @IBOutlet weak var fontSizeLabel: NSTextField!
     @IBOutlet weak var fontSizeStepper: NSStepper!
+    @IBOutlet weak var windowPositionPopUp: NSPopUpButton!
 
     private let appearanceManager = AppearanceManager.shared
 
@@ -45,6 +46,7 @@ final class AppearanceSettingsViewController: NSViewController, SettingsPane {
         setupColorWells()
         setupOpacitySlider()
         setupFontControls()
+        setupPositionPopUp()
         loadSettings()
     }
 
@@ -78,6 +80,13 @@ final class AppearanceSettingsViewController: NSViewController, SettingsPane {
         fontSizeStepper.action = #selector(fontSizeChanged(_:))
     }
 
+    private func setupPositionPopUp() {
+        windowPositionPopUp.removeAllItems()
+        windowPositionPopUp.addItems(withTitles: WindowPosition.allCases.map(\.title))
+        windowPositionPopUp.target = self
+        windowPositionPopUp.action = #selector(positionChanged(_:))
+    }
+
     private func loadSettings() {
         searchTextColorWell.color = appearanceManager.searchTextColor
         resultsTextColorWell.color = appearanceManager.resultsTextColor
@@ -89,6 +98,9 @@ final class AppearanceSettingsViewController: NSViewController, SettingsPane {
 
         fontSizeStepper.doubleValue = Double(appearanceManager.fontSize)
         updateFontLabels()
+
+        windowPositionPopUp.selectItem(
+            at: WindowPosition.allCases.firstIndex(of: appearanceManager.windowPosition) ?? 0)
     }
 
     // MARK: - Actions
@@ -114,6 +126,13 @@ final class AppearanceSettingsViewController: NSViewController, SettingsPane {
     @objc private func fontSizeChanged(_ sender: NSStepper) {
         appearanceManager.fontSize = CGFloat(sender.doubleValue)
         updateFontLabels()
+        notifySettingsChanged()
+    }
+
+    @objc private func positionChanged(_ sender: NSPopUpButton) {
+        let positions = WindowPosition.allCases
+        guard positions.indices.contains(sender.indexOfSelectedItem) else { return }
+        appearanceManager.windowPosition = positions[sender.indexOfSelectedItem]
         notifySettingsChanged()
     }
 

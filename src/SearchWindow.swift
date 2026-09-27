@@ -30,16 +30,28 @@ class SearchWindow: NSWindow {
     /**
      * Updates search window position.
      */
-    func updatePosition() {
+    func updatePosition(_ position: WindowPosition = AppearanceManager.shared.windowPosition) {
         guard let screen = NSScreen.main else { return }
 
-        let frame = NSRect(
-            x: screen.frame.minX,
-            y: screen.frame.minY + screen.frame.height - self.frame.height,
-            width: screen.frame.width,
-            height: self.frame.height)
-
+        let frame = Self.frame(for: position, in: screen.frame, height: self.frame.height)
         setFrame(frame, display: false)
+    }
+
+    /**
+     * Full-width bar frame of the given height, pinned to `position` within `screenFrame`.
+     */
+    static func frame(for position: WindowPosition, in screenFrame: NSRect, height: CGFloat) -> NSRect {
+        let originY: CGFloat
+        switch position {
+        case .top:
+            originY = screenFrame.maxY - height
+        case .center:
+            originY = (screenFrame.midY - height / 2).rounded()
+        case .bottom:
+            originY = screenFrame.minY
+        }
+
+        return NSRect(x: screenFrame.minX, y: originY, width: screenFrame.width, height: height)
     }
 
     // The app has no main menu (LSUIElement), so handle Cmd-, here to open Settings.

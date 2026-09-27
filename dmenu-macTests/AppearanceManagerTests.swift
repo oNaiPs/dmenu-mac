@@ -10,7 +10,8 @@ struct AppearanceDefaultsSnapshot {
         UserDefaults.AppearanceKeys.windowBackgroundColor,
         UserDefaults.AppearanceKeys.windowOpacity,
         UserDefaults.AppearanceKeys.fontName,
-        UserDefaults.AppearanceKeys.fontSize
+        UserDefaults.AppearanceKeys.fontSize,
+        UserDefaults.AppearanceKeys.windowPosition
     ]
 
     private let saved: [String: Any]
@@ -112,6 +113,20 @@ final class AppearanceManagerTests: XCTestCase {
         XCTAssertEqual(manager.searchTextColor, NSColor.textColor)
     }
 
+    func testWindowPositionDefaultsToTop() {
+        XCTAssertEqual(manager.windowPosition, .top)
+    }
+
+    func testWindowPositionRoundTrip() {
+        manager.windowPosition = .bottom
+        XCTAssertEqual(AppearanceManager().windowPosition, .bottom)
+    }
+
+    func testUnknownWindowPositionFallsBackToDefault() {
+        UserDefaults.standard.set("sideways", forKey: UserDefaults.AppearanceKeys.windowPosition)
+        XCTAssertEqual(manager.windowPosition, .top)
+    }
+
     // MARK: - currentFont
 
     func testCurrentFontUsesSystemFontByDefault() {
@@ -147,6 +162,7 @@ final class AppearanceManagerTests: XCTestCase {
         manager.windowOpacity = 0.3
         manager.fontName = "Menlo-Regular"
         manager.fontSize = 30
+        manager.windowPosition = .bottom
 
         manager.resetToDefaults()
 
@@ -157,6 +173,7 @@ final class AppearanceManagerTests: XCTestCase {
         XCTAssertEqual(manager.windowOpacity, 0.6, accuracy: 0.0001)
         XCTAssertEqual(manager.fontName, "system")
         XCTAssertEqual(manager.fontSize, 13.0, accuracy: 0.0001)
+        XCTAssertEqual(manager.windowPosition, .top)
     }
 
     // MARK: - Keys and notifications

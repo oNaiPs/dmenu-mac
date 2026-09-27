@@ -25,6 +25,10 @@ If you are like me and have a shit-ton of files on your computer, and spotlight 
 
 dmenu-mac lives in the menu bar. From its icon you can open the launcher, open Settings, turn Launch at Login on or off, and quit. Opening the app again from Finder brings up the launcher.
 
+### Window position
+The bar sits at the top of the screen by default. Pick Top, Center or Bottom under Settings → Appearance → Window Position,
+or pass `-b`/`--bottom` to put it at the bottom for a single run, like dmenu.
+
 ### Commands
 If nothing matches, enter runs what you typed as a shell command in your login shell, from your home directory (e.g. `mpv test.mp4`). Shift-enter does the same even when there are matches.
 
@@ -62,6 +66,7 @@ NOTE: the releases are not signed yet, use it at your own risk. I'll take care o
 - Uses fuzzy search
 - Configurable global hotkey
 - Menu bar icon and optional Launch at Login
+- Top, center or bottom placement
 - Multi-display support
 - Not dependant on spotlight indexing
 - Opens System Settings panes (e.g. Displays, Network, Accessibility)

@@ -31,6 +31,11 @@ struct DmenuMac: ParsableArguments {
         discussion: "By default, Enter with no matches or Shift+Enter uses the typed text."))
     var noCustom = false
 
+    @Flag(name: .shortAndLong, help: ArgumentHelp(
+        "Show the bar at the bottom of the screen.",
+        discussion: "Overrides the window position set in Appearance settings."))
+    var bottom = false
+
     /// Opened via LaunchServices (Finder, Dock, login items, `open`) the parent is launchd;
     /// anything else (a shell, skhd, ...) is a one-shot invocation that should not linger.
     static func shouldExitOnClose(flag: Bool?, parentPID: pid_t = getppid()) -> Bool {

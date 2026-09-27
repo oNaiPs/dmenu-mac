@@ -35,6 +35,15 @@ final class CommandArgumentsTests: XCTestCase {
         XCTAssertTrue(try DmenuMac.parse(["--no-custom"]).noCustom)
     }
 
+    func testBottomFlagDefaultsToOff() throws {
+        XCTAssertFalse(try DmenuMac.parse([]).bottom)
+    }
+
+    func testBottomFlagParsesBothForms() throws {
+        XCTAssertTrue(try DmenuMac.parse(["-b"]).bottom)
+        XCTAssertTrue(try DmenuMac.parse(["--bottom"]).bottom)
+    }
+
     func testExitsWhenStartedFromShell() {
         XCTAssertTrue(DmenuMac.shouldExitOnClose(flag: nil, parentPID: 4242))
     }

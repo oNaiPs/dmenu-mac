@@ -28,6 +28,8 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
     var promptValue = ""
     var exitOnClose = false
     var allowCustomInput = true
+    /// Set from the command line; takes precedence over the Appearance setting.
+    var windowPositionOverride: WindowPosition?
     private let appearanceManager = AppearanceManager.shared
 
     deinit {
@@ -74,6 +76,9 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
             }
             exitOnClose = DmenuMac.shouldExitOnClose(flag: options.exit)
             allowCustomInput = !options.noCustom
+            if options.bottom {
+                windowPositionOverride = .bottom
+            }
         }
 
         clearFields()
@@ -87,6 +92,15 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
     @objc func appearanceSettingsChanged(sender: NSNotification) {
         updateColors()
         updateFonts()
+        updatePosition()
+    }
+
+    var windowPosition: WindowPosition {
+        windowPositionOverride ?? appearanceManager.windowPosition
+    }
+
+    func updatePosition() {
+        (view.window as? SearchWindow)?.updatePosition(windowPosition)
     }
 
     func updateColors() {
@@ -135,10 +149,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
         NSApplication.shared.activate(ignoringOtherApps: true)
         view.window?.orderFrontRegardless()
 
-        if let controller = view.window as? SearchWindow {
-            controller.updatePosition()
-        }
-
+        updatePosition()
         updateColors()
         updateFonts()
     }
