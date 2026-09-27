@@ -56,7 +56,9 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
         // Use dependency injection if provider already set, otherwise create default
         if listProvider == nil {
             let factory = ProviderFactory()
-            let stdinStr = ReadStdin.read()
+            // reading blocks until EOF, so never wait on the test host's stdin
+            let isTesting = ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+            let stdinStr = isTesting ? "" : ReadStdin.read()
             listProvider = factory.createProvider(stdinContent: stdinStr)
         }
 
