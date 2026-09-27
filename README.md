@@ -38,7 +38,7 @@ You can make dmenu-mac part of your scripting toolbox, use it to prompt the user
 echo "Yes\nNo" | dmenu-mac -p "Are you sure?"
 Yes
 ```
-As with the app list, if nothing matches (or with shift-enter), the typed text is printed instead.
+As with the app list, if nothing matches (or with shift-enter), the typed text is printed instead. Pass `--no-custom` to only accept items from the list.
 Pressing Esc prints nothing and exits with status 1, like dmenu.
 
 ## Installation

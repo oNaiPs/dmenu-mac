@@ -27,6 +27,14 @@ final class CommandArgumentsTests: XCTestCase {
         XCTAssertEqual(try DmenuMac.parse(["--no-exit"]).exit, false)
     }
 
+    func testCustomInputAllowedByDefault() throws {
+        XCTAssertFalse(try DmenuMac.parse([]).noCustom)
+    }
+
+    func testNoCustomFlagParses() throws {
+        XCTAssertTrue(try DmenuMac.parse(["--no-custom"]).noCustom)
+    }
+
     func testExitsWhenStartedFromShell() {
         XCTAssertTrue(DmenuMac.shouldExitOnClose(flag: nil, parentPID: 4242))
     }

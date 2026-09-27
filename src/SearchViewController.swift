@@ -27,6 +27,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
     var searchService: SearchService?
     var promptValue = ""
     var exitOnClose = false
+    var allowCustomInput = true
     private let appearanceManager = AppearanceManager.shared
 
     deinit {
@@ -70,6 +71,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
                 promptValue = options.prompt!
             }
             exitOnClose = DmenuMac.shouldExitOnClose(flag: options.exit)
+            allowCustomInput = !options.noCustom
         }
 
         clearFields()
@@ -193,12 +195,13 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
         return false
     }
 
-    /// Acts on the selected item, falling back to the typed text when nothing matches (like dmenu).
+    /// Acts on the selected item, falling back to the typed text when nothing matches.
     /// With preferTypedInput (Shift+Enter) the typed text wins even if there are matches.
+    /// With --no-custom only list items are accepted.
     func submit(preferTypedInput: Bool) {
-        if !preferTypedInput, let item = resultsText.selectedItem() {
+        if !(preferTypedInput && allowCustomInput), let item = resultsText.selectedItem() {
             listProvider?.doAction(item: item)
-        } else if let input = typedInput() {
+        } else if allowCustomInput, let input = typedInput() {
             listProvider?.doAction(input: input)
         } else {
             return
