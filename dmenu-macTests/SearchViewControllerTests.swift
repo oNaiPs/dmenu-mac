@@ -38,6 +38,19 @@ final class SearchViewControllerTests: XCTestCase {
         XCTAssertEqual(items?[0].name, "Test App")
     }
 
+    // MARK: - Window Position Tests
+
+    func testWindowPositionFollowsSettingWithoutOverride() {
+        viewController = SearchViewController()
+        XCTAssertEqual(viewController.windowPosition, AppearanceManager.shared.windowPosition)
+    }
+
+    func testWindowPositionOverrideWins() {
+        viewController = SearchViewController()
+        viewController.windowPositionOverride = .bottom
+        XCTAssertEqual(viewController.windowPosition, .bottom)
+    }
+
     // MARK: - Memory Management Tests
 
     func testViewControllerRemovesObserverOnDeinit() {

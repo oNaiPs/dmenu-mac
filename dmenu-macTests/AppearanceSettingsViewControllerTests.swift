@@ -42,6 +42,7 @@ final class AppearanceSettingsViewControllerTests: XCTestCase {
         XCTAssertNotNil(viewController.fontNameLabel)
         XCTAssertNotNil(viewController.fontSizeLabel)
         XCTAssertNotNil(viewController.fontSizeStepper)
+        XCTAssertNotNil(viewController.windowPositionPopUp)
     }
 
     func testControlRangesAreConfigured() {
@@ -65,6 +66,29 @@ final class AppearanceSettingsViewControllerTests: XCTestCase {
         XCTAssertEqual(viewController.opacityLabel.stringValue, "75%")
         XCTAssertEqual(viewController.fontSizeStepper.doubleValue, 18, accuracy: 0.0001)
         XCTAssertEqual(viewController.fontSizeLabel.stringValue, "18 pt")
+    }
+
+    // MARK: - Window position
+
+    func testPositionPopUpListsAllPositionsAndReflectsSetting() {
+        AppearanceManager.shared.windowPosition = .center
+        _ = viewController.view
+
+        let popUp = viewController.windowPositionPopUp!
+        XCTAssertEqual(popUp.itemTitles, ["Top", "Center", "Bottom"])
+        XCTAssertEqual(popUp.titleOfSelectedItem, "Center")
+    }
+
+    func testChoosingPositionStoresItAndNotifies() {
+        _ = viewController.view
+        let popUp = viewController.windowPositionPopUp!
+
+        let notified = expectation(forNotification: .appearanceSettingsChanged, object: nil)
+        popUp.selectItem(withTitle: "Bottom")
+        popUp.sendAction(popUp.action, to: popUp.target)
+        wait(for: [notified], timeout: 1.0)
+
+        XCTAssertEqual(AppearanceManager.shared.windowPosition, .bottom)
     }
 
     // MARK: - Reset

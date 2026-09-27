@@ -26,6 +26,22 @@ extension UserDefaults {
         static let windowOpacity = "appearance.windowOpacity"
         static let fontName = "appearance.fontName"
         static let fontSize = "appearance.fontSize"
+        static let windowPosition = "appearance.windowPosition"
+    }
+}
+
+// MARK: - Window Position
+enum WindowPosition: String, CaseIterable {
+    case top
+    case center
+    case bottom
+
+    var title: String {
+        switch self {
+        case .top: return "Top"
+        case .center: return "Center"
+        case .bottom: return "Bottom"
+        }
     }
 }
 
@@ -44,6 +60,7 @@ class AppearanceManager {
         static let windowOpacity: CGFloat = 0.6
         static let fontName = "system"
         static let fontSize: CGFloat = 13.0
+        static let windowPosition = WindowPosition.top
     }
 
     // MARK: - Color Properties
@@ -107,6 +124,15 @@ class AppearanceManager {
         }
     }
 
+    // MARK: - Layout Properties
+    var windowPosition: WindowPosition {
+        get {
+            defaults.string(forKey: UserDefaults.AppearanceKeys.windowPosition)
+                .flatMap(WindowPosition.init(rawValue:)) ?? Defaults.windowPosition
+        }
+        set { defaults.set(newValue.rawValue, forKey: UserDefaults.AppearanceKeys.windowPosition) }
+    }
+
     // MARK: - Helper Methods
     private func colorForKey(_ key: String) -> NSColor? {
         guard let data = defaults.data(forKey: key) else { return nil }
@@ -130,6 +156,7 @@ class AppearanceManager {
         windowOpacity = Defaults.windowOpacity
         fontName = Defaults.fontName
         fontSize = Defaults.fontSize
+        windowPosition = Defaults.windowPosition
     }
 }
 
