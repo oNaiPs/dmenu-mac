@@ -40,23 +40,36 @@ extension KeyboardShortcuts.Name {
 }
 
 @main
-class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMenuDelegate {
     @IBOutlet var controllerWindow: NSWindowController?
 
-    private var statusItem: NSStatusItem!
-    private var startAtLaunch: NSMenuItem!
+    private(set) var statusItem: NSStatusItem!
+    private(set) var startAtLaunch: NSMenuItem!
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
         if let button = statusItem.button {
-            button.title = "d"
+            button.image = NSImage(systemSymbolName: "text.magnifyingglass", accessibilityDescription: "dmenu-mac")
+            button.image?.isTemplate = true
         }
         setupMenus()
         setupKeyboardShortcut()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
+    }
+
+    // Opening the app again (Finder, Launchpad, Spotlight) shows the launcher, so it stays
+    // reachable even when the menu bar icon is hidden.
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        resumeApp()
+        return false
+    }
+
+    // The login item can also be changed in System Settings > General > Login Items.
+    func menuNeedsUpdate(_ menu: NSMenu) {
+        startAtLaunch.state = LaunchAtLogin.isEnabled ? .on : .off
     }
 
     private func setupKeyboardShortcut() {
@@ -67,15 +80,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
 
     func setupMenus() {
         let menu = NSMenu()
+        menu.delegate = self
 
         let open = NSMenuItem(title: "Open", action: #selector(resumeApp), keyEquivalent: "")
         menu.addItem(open)
 
-        let settings = NSMenuItem(title: "Settings", action: #selector(openSettings), keyEquivalent: "")
+        let settings = NSMenuItem(title: "Settings…", action: #selector(openSettings), keyEquivalent: ",")
         menu.addItem(settings)
 
         menu.addItem(NSMenuItem.separator())
-         startAtLaunch = NSMenuItem(title: "Launch at Login", action: #selector(toggleLaunchAtLogin), keyEquivalent: "")
+        startAtLaunch = NSMenuItem(title: "Launch at Login", action: #selector(toggleLaunchAtLogin), keyEquivalent: "")
         startAtLaunch.state = LaunchAtLogin.isEnabled ? .on : .off
         menu.addItem(startAtLaunch)
 
@@ -101,9 +115,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     }
 
     @objc func toggleLaunchAtLogin() {
-        let enabled = !LaunchAtLogin.isEnabled
-        LaunchAtLogin.isEnabled = enabled
-        startAtLaunch.state = enabled ? .on : .off
+        LaunchAtLogin.isEnabled.toggle()
+        startAtLaunch.state = LaunchAtLogin.isEnabled ? .on : .off
     }
 
     private lazy var settings: [SettingsPane] = [

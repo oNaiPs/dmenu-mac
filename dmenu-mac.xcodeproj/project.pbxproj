@@ -41,6 +41,7 @@
 		7F90D2D226FDE2400003EC7E /* dmenu-mac in Resources */ = {isa = PBXBuildFile; fileRef = 7F90D2D126FDE2400003EC7E /* dmenu-mac */; };
 		7FCEF3DD2EF89BAE00301202 /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF3DB2EF89BAE00301202 /* SearchService.swift */; };
 		7FCEF3DF2EF89BAE00301202 /* ProviderFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF3DA2EF89BAE00301202 /* ProviderFactory.swift */; };
+		7FA0D1E12F00000000000001 /* AppDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA0D1E02F00000000000001 /* AppDelegateTests.swift */; };
 		7FCEF3E42EF89BB900301202 /* AppListProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF3E02EF89BB900301202 /* AppListProviderTests.swift */; };
 		7FCEF3E52EF89BB900301202 /* MockListProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF3E12EF89BB900301202 /* MockListProvider.swift */; };
 		7FCEF3E62EF89BB900301202 /* SearchViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF3E32EF89BB900301202 /* SearchViewControllerTests.swift */; };
@@ -97,6 +98,7 @@
 		7F90D2D126FDE2400003EC7E /* dmenu-mac */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "dmenu-mac"; sourceTree = "<group>"; };
 		7FCEF3DA2EF89BAE00301202 /* ProviderFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProviderFactory.swift; path = src/ProviderFactory.swift; sourceTree = "<group>"; };
 		7FCEF3DB2EF89BAE00301202 /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchService.swift; path = src/SearchService.swift; sourceTree = "<group>"; };
+		7FA0D1E02F00000000000001 /* AppDelegateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegateTests.swift; path = "dmenu-macTests/AppDelegateTests.swift"; sourceTree = "<group>"; };
 		7FCEF3E02EF89BB900301202 /* AppListProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppListProviderTests.swift; path = "dmenu-macTests/AppListProviderTests.swift"; sourceTree = "<group>"; };
 		7FCEF3E12EF89BB900301202 /* MockListProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MockListProvider.swift; path = "dmenu-macTests/MockListProvider.swift"; sourceTree = "<group>"; };
 		7FCEF3E22EF89BB900301202 /* SearchServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchServiceTests.swift; path = "dmenu-macTests/SearchServiceTests.swift"; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 		50282B1E7AAE47DA8326948B /* dmenu-macTests */ = {
 			isa = PBXGroup;
 			children = (
+				7FA0D1E02F00000000000001 /* AppDelegateTests.swift */,
 				7FCEF3E02EF89BB900301202 /* AppListProviderTests.swift */,
 				7FCEF3E12EF89BB900301202 /* MockListProvider.swift */,
 				7FCEF3E22EF89BB900301202 /* SearchServiceTests.swift */,
@@ -395,6 +398,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E81C57FFE39431782C98B80 /* CommandArgumentsTests.swift in Sources */,
+				7FA0D1E12F00000000000001 /* AppDelegateTests.swift in Sources */,
 				7FCEF3E42EF89BB900301202 /* AppListProviderTests.swift in Sources */,
 				7FCEF3E52EF89BB900301202 /* MockListProvider.swift in Sources */,
 				7FCEF3E62EF89BB900301202 /* SearchViewControllerTests.swift in Sources */,
