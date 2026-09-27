@@ -111,6 +111,12 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
             .withAlphaComponent(appearanceManager.windowOpacity)
         searchText.textColor = appearanceManager.searchTextColor
 
+        // Update field editor if searchText is currently being edited
+        if let fieldEditor = searchText.window?.fieldEditor(false, for: searchText) as? NSTextView {
+            fieldEditor.textColor = appearanceManager.searchTextColor
+        }
+
+        updatePlaceholder()
         resultsText.needsDisplay = true
     }
 
@@ -122,27 +128,22 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
             fieldEditor.font = appearanceManager.currentFont
         }
 
-        // Update placeholder text font
-        let placeholderText: String
-        if let attributedPlaceholder = searchText.placeholderAttributedString {
-            placeholderText = attributedPlaceholder.string
-        } else if let plainPlaceholder = searchText.placeholderString {
-            placeholderText = plainPlaceholder
-        } else {
-            placeholderText = ""
-        }
-
-        if !placeholderText.isEmpty {
-            let attributes: [NSAttributedString.Key: Any] = [
-                .font: appearanceManager.currentFont
-            ]
-            searchText.placeholderAttributedString = NSAttributedString(
-                string: placeholderText,
-                attributes: attributes
-            )
-        }
-
+        updatePlaceholder()
         resultsText.needsDisplay = true
+    }
+
+    private func updatePlaceholder() {
+        let placeholderText = searchText.placeholderAttributedString?.string ??
+            searchText.placeholderString ?? ""
+        guard !placeholderText.isEmpty else { return }
+
+        searchText.placeholderAttributedString = NSAttributedString(
+            string: placeholderText,
+            attributes: [
+                .font: appearanceManager.currentFont,
+                .foregroundColor: appearanceManager.searchTextColor.withAlphaComponent(0.5)
+            ]
+        )
     }
 
     @objc func resumeApp() {
