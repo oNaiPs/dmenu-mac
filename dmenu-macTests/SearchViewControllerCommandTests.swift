@@ -64,7 +64,6 @@ final class SearchViewControllerCommandTests: XCTestCase {
     func testTypingFiltersResults() {
         type("Safari")
         XCTAssertEqual(resultsView.list.map { $0.name }, ["Safari"])
-        XCTAssertTrue(resultsView.dirtyWidth)
     }
 
     func testTypingWithoutMatchesClearsResults() {
@@ -118,10 +117,11 @@ final class SearchViewControllerCommandTests: XCTestCase {
         XCTAssertEqual(resultsView.selectedIndex, 0)
     }
 
-    func testNavigationMarksWidthDirty() {
-        resultsView.dirtyWidth = false
+    func testNavigationMovesSelectionHighlight() {
+        let firstRect = resultsView.selectedRect
         send(#selector(NSResponder.moveRight(_:)))
-        XCTAssertTrue(resultsView.dirtyWidth)
+        XCTAssertEqual(resultsView.selectedIndex, 1)
+        XCTAssertGreaterThan(resultsView.selectedRect.minX, firstRect.minX)
     }
 
     // MARK: - Enter / Escape
