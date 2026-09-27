@@ -36,14 +36,15 @@ final class AppListProviderTests: XCTestCase {
         }
     }
 
-    func testListItemsAreAppBundles() {
+    func testListItemsAreLaunchableBundles() {
         let items = provider.get()
         for item in items {
             guard let url = item.data as? URL else {
                 XCTFail("Item data should be a URL")
                 continue
             }
-            XCTAssertEqual(url.pathExtension, "app", "All items should be .app bundles")
+            XCTAssertTrue(AppListProvider.launchableExtensions.contains(url.pathExtension),
+                          "All items should be .app or .prefPane bundles")
         }
     }
 
@@ -142,6 +143,47 @@ final class AppListProviderTests: XCTestCase {
         let apps = provider.getAppList(root, recursive: true)
 
         XCTAssertEqual(apps.map { $0.lastPathComponent }, ["Foo.app"])
+    }
+
+    // MARK: - Preference Pane Tests
+
+    func testProviderIncludesSystemPreferencePanes() {
+        let panes = provider.get().filter { ($0.data as? URL)?.pathExtension == "prefPane" }
+        XCTAssertTrue(panes.contains(where: { ($0.data as? URL)?.lastPathComponent == "Displays.prefPane" }),
+                      "Should find Displays.prefPane in /System/Library/PreferencePanes")
+    }
+
+    func testGetAppListFindsPreferencePanes() throws {
+        let fileManager = FileManager.default
+        let tmp = fileManager.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? fileManager.removeItem(at: tmp) }
+        try fileManager.createDirectory(at: tmp.appendingPathComponent("Foo.prefPane"),
+                                        withIntermediateDirectories: true)
+
+        let apps = provider.getAppList(tmp, recursive: false)
+
+        XCTAssertEqual(apps.map { $0.lastPathComponent }, ["Foo.prefPane"])
+    }
+
+    func testDisplayNameUsesPreferencePaneBundleName() throws {
+        let fileManager = FileManager.default
+        let tmp = fileManager.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? fileManager.removeItem(at: tmp) }
+        let pane = tmp.appendingPathComponent("UniversalAccessPref.prefPane")
+        let contents = pane.appendingPathComponent("Contents")
+        try fileManager.createDirectory(at: contents, withIntermediateDirectories: true)
+        let plist: NSDictionary = ["CFBundleName": "Accessibility", "CFBundleIdentifier": "com.example.\(UUID())"]
+        try plist.write(to: contents.appendingPathComponent("Info.plist"))
+
+        XCTAssertEqual(AppListProvider.displayName(for: pane), "Accessibility")
+    }
+
+    func testDisplayNameFallsBackToFileName() {
+        let pane = URL(fileURLWithPath: "/nonexistent/Displays.prefPane")
+        XCTAssertEqual(AppListProvider.displayName(for: pane), "Displays")
+
+        let app = URL(fileURLWithPath: "/Applications/Safari.app")
+        XCTAssertEqual(AppListProvider.displayName(for: app), "Safari")
     }
 
     // MARK: - doAction Tests

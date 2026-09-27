@@ -61,6 +61,7 @@ NOTE: the releases are not signed yet, use it at your own risk. I'll take care o
 - Configurable global hotkey
 - Multi-display support
 - Not dependant on spotlight indexing
+- Opens System Settings panes (e.g. Displays, Network, Accessibility)
 
 # Development
 
