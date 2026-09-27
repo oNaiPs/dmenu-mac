@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ReadStdin : NSObject
 
 +(NSString *)read;
++(NSString *)readFromFileDescriptor:(int)fd;
 @end
 
 NS_ASSUME_NONNULL_END

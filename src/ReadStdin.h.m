@@ -16,25 +16,30 @@
 
 #import "ReadStdin.h"
 
-#import <poll.h>
+#import <unistd.h>
 
 @implementation ReadStdin
 
 +(NSString *)read {
-    char buf[BUFSIZ];
+    return [self readFromFileDescriptor:STDIN_FILENO];
+}
 
-    // prevent fgets from being blocked
-    int flags;
-    flags = fcntl(STDIN_FILENO, F_GETFL, 0);
-    flags |= O_NONBLOCK;
-    fcntl(STDIN_FILENO, F_SETFL, flags);
-
-    NSMutableString *str = [NSMutableString string];
-    while (fgets(buf, sizeof(BUFSIZ), stdin) != 0) {
-        [str appendString:[NSString stringWithUTF8String:buf]];
++(NSString *)readFromFileDescriptor:(int)fd {
+    // only a pipe or file carries a list; never wait on an interactive terminal
+    if (isatty(fd)) {
+        return @"";
     }
-    
-    return str;
+
+    // block until EOF so slow producers are not dropped, and decode once so
+    // multi-byte UTF-8 sequences are never split
+    NSFileHandle *handle = [[NSFileHandle alloc] initWithFileDescriptor:fd closeOnDealloc:NO];
+    NSData *data = [handle readDataToEndOfFileAndReturnError:nil];
+    if (data == nil) {
+        return @"";
+    }
+
+    NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    return str ?: @"";
 }
 
 @end
