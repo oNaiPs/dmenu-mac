@@ -26,6 +26,11 @@ struct DmenuMac: ParsableArguments {
         discussion: "Defaults to exiting when started from a shell, staying when opened as an app."))
     var exit: Bool?
 
+    @Flag(name: .customLong("no-custom"), help: ArgumentHelp(
+        "Only accept items from the list.",
+        discussion: "By default, Enter with no matches or Shift+Enter uses the typed text."))
+    var noCustom = false
+
     /// Opened via LaunchServices (Finder, Dock, login items, `open`) the parent is launchd;
     /// anything else (a shell, skhd, ...) is a one-shot invocation that should not linger.
     static func shouldExitOnClose(flag: Bool?, parentPID: pid_t = getppid()) -> Bool {

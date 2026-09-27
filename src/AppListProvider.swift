@@ -132,7 +132,7 @@ class AppListProvider: ListProvider {
         }
     }
 
-    /// Runs the typed text as a shell command, like dmenu_run.
+    /// Runs the typed text as a shell command.
     func doAction(input: String) {
         do {
             try AppListProvider.shellProcess(command: input).run()

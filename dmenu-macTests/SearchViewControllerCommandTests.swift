@@ -167,6 +167,27 @@ final class SearchViewControllerCommandTests: XCTestCase {
         XCTAssertEqual(mockProvider.inputActions, ["Safari"])
     }
 
+    func testNoCustomIgnoresTypedInputWithoutMatches() {
+        viewController.allowCustomInput = false
+        type("zzzzzzzzzz")
+
+        send(#selector(NSResponder.insertNewline(_:)))
+
+        XCTAssertTrue(mockProvider.inputActions.isEmpty)
+        XCTAssertEqual(mockProvider.actionCallCount, 0)
+        XCTAssertEqual(searchText.stringValue, "zzzzzzzzzz", "Menu stays open")
+    }
+
+    func testNoCustomShiftEnterActsOnSelectedItem() {
+        viewController.allowCustomInput = false
+        type("Safari")
+
+        viewController.submit(preferTypedInput: true)
+
+        XCTAssertTrue(mockProvider.inputActions.isEmpty)
+        XCTAssertEqual(mockProvider.lastActionedItem?.name, "Safari")
+    }
+
     func testSubmitIgnoresUntouchedPrompt() {
         viewController.submit(preferTypedInput: true)
         XCTAssertTrue(mockProvider.inputActions.isEmpty)
