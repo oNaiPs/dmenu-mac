@@ -36,6 +36,12 @@ class PipeListProvider: ListProvider {
         NSApplication.shared.terminate(self)
     }
 
+    /// Like dmenu, print the typed text so scripts can accept values not in the list.
+    func doAction(input: String) {
+        print(input)
+        NSApplication.shared.terminate(self)
+    }
+
     /// Like dmenu, exit non-zero so scripts can tell a cancel from a selection.
     func cancel() {
         exit(1)

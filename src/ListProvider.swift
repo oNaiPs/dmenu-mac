@@ -23,11 +23,15 @@ protocol ListProvider {
     // Performs action on a selected item
     func doAction(item: ListItem)
 
+    // Performs action on free text typed by the user, like dmenu's Shift+Enter
+    func doAction(input: String)
+
     // Called when the user dismisses the list without selecting anything
     func cancel()
 }
 
 extension ListProvider {
+    func doAction(input: String) {}
     func cancel() {}
 }
 

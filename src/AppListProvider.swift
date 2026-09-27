@@ -123,4 +123,39 @@ class AppListProvider: ListProvider {
             NSWorkspace.shared.open(app)
         }
     }
+
+    /// Runs the typed text as a shell command, like dmenu_run.
+    func doAction(input: String) {
+        do {
+            try AppListProvider.shellProcess(command: input).run()
+        } catch {
+            NSLog("Cannot run command %@: %@", input, error.localizedDescription)
+        }
+    }
+
+    /// Uses a login shell so PATH includes Homebrew/nix; apps launched from Finder only get /usr/bin:/bin.
+    static func shellProcess(command: String,
+                             environment: [String: String] = ProcessInfo.processInfo.environment) -> Process {
+        var environment = environment
+        // Under the app sandbox HOME points at the container, so use the real home instead.
+        let home = realHomeDirectory() ?? environment["HOME"] ?? NSHomeDirectory()
+        environment["HOME"] = home
+
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: environment["SHELL"] ?? "/bin/zsh")
+        process.arguments = ["-l", "-c", command]
+        process.environment = environment
+        process.currentDirectoryURL = URL(fileURLWithPath: home, isDirectory: true)
+        process.standardInput = FileHandle.nullDevice
+        process.standardOutput = FileHandle.nullDevice
+        process.standardError = FileHandle.nullDevice
+        return process
+    }
+
+    private static func realHomeDirectory() -> String? {
+        guard let passwd = getpwuid(getuid()), let dir = passwd.pointee.pw_dir else {
+            return nil
+        }
+        return String(cString: dir)
+    }
 }

@@ -181,12 +181,8 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
             resultsText.updateWidth()
             return true
         } else if commandSelector == #selector(insertNewline(_:)) {
-            // open current selected app
-            if let item = resultsText.selectedItem() {
-                listProvider?.doAction(item: item)
-                closeApp()
-            }
-
+            let shiftPressed = NSApp.currentEvent?.modifierFlags.contains(.shift) ?? false
+            submit(preferTypedInput: shiftPressed)
             return true
         } else if commandSelector == #selector(cancelOperation(_:)) {
             listProvider?.cancel()
@@ -195,6 +191,28 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
         }
 
         return false
+    }
+
+    /// Acts on the selected item, falling back to the typed text when nothing matches (like dmenu).
+    /// With preferTypedInput (Shift+Enter) the typed text wins even if there are matches.
+    func submit(preferTypedInput: Bool) {
+        if !preferTypedInput, let item = resultsText.selectedItem() {
+            listProvider?.doAction(item: item)
+        } else if let input = typedInput() {
+            listProvider?.doAction(input: input)
+        } else {
+            return
+        }
+        closeApp()
+    }
+
+    private func typedInput() -> String? {
+        let text = searchText.stringValue
+        // The prompt is shown as the field's text until the user types something.
+        if text.trimmingCharacters(in: .whitespaces).isEmpty || (!promptValue.isEmpty && text == promptValue) {
+            return nil
+        }
+        return text
     }
 
     func clearFields() {

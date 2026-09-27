@@ -142,9 +142,41 @@ final class SearchViewControllerCommandTests: XCTestCase {
         XCTAssertEqual(resultsView.list.count, 3)
     }
 
-    func testInsertNewlineWithNoResultsDoesNothing() {
-        type("zzzzzzzzzz")
+    func testInsertNewlineWithNoResultsActsOnTypedInput() {
+        type("mpv test.mp4")
+        XCTAssertTrue(resultsView.list.isEmpty)
+
         XCTAssertTrue(send(#selector(NSResponder.insertNewline(_:))))
+
+        XCTAssertEqual(mockProvider.actionCallCount, 0)
+        XCTAssertEqual(mockProvider.inputActions, ["mpv test.mp4"])
+        XCTAssertEqual(searchText.stringValue, "prompt")
+    }
+
+    func testInsertNewlinePrefersSelectedItemOverTypedInput() {
+        type("Safari")
+        send(#selector(NSResponder.insertNewline(_:)))
+        XCTAssertEqual(mockProvider.lastActionedItem?.name, "Safari")
+        XCTAssertTrue(mockProvider.inputActions.isEmpty)
+    }
+
+    func testSubmitPreferringTypedInputIgnoresMatches() {
+        type("Safari")
+        viewController.submit(preferTypedInput: true)
+        XCTAssertEqual(mockProvider.actionCallCount, 0)
+        XCTAssertEqual(mockProvider.inputActions, ["Safari"])
+    }
+
+    func testSubmitIgnoresUntouchedPrompt() {
+        viewController.submit(preferTypedInput: true)
+        XCTAssertTrue(mockProvider.inputActions.isEmpty)
+    }
+
+    func testSubmitIgnoresBlankInput() {
+        type("   ")
+        resultsView.clear()
+        viewController.submit(preferTypedInput: false)
+        XCTAssertTrue(mockProvider.inputActions.isEmpty)
         XCTAssertEqual(mockProvider.actionCallCount, 0)
     }
 
