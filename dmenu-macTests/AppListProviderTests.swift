@@ -171,4 +171,32 @@ final class AppListProviderTests: XCTestCase {
         // This should log an error but not crash
         provider.doAction(item: testItem)
     }
+
+    // MARK: - Typed Command Tests
+
+    func testShellProcessRunsCommandInUserLoginShell() {
+        let process = AppListProvider.shellProcess(command: "mpv test.mp4",
+                                                   environment: ["SHELL": "/bin/bash"])
+        XCTAssertEqual(process.executableURL?.path, "/bin/bash")
+        XCTAssertEqual(process.arguments, ["-l", "-c", "mpv test.mp4"])
+    }
+
+    func testShellProcessDefaultsToZsh() {
+        let process = AppListProvider.shellProcess(command: "true", environment: [:])
+        XCTAssertEqual(process.executableURL?.path, "/bin/zsh")
+    }
+
+    func testShellProcessStartsInRealHomeDirectory() {
+        let process = AppListProvider.shellProcess(
+            command: "true", environment: ["HOME": "/Users/me/Library/Containers/app/Data"])
+        let home = process.environment?["HOME"]
+        XCTAssertNotNil(home)
+        XCTAssertFalse(home!.contains("/Library/Containers/"))
+        XCTAssertEqual(process.currentDirectoryURL?.path, home)
+    }
+
+    func testShellProcessKeepsOtherEnvironment() {
+        let process = AppListProvider.shellProcess(command: "true", environment: ["FOO": "bar"])
+        XCTAssertEqual(process.environment?["FOO"], "bar")
+    }
 }

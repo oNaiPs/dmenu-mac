@@ -19,4 +19,10 @@ class MockListProvider: ListProvider {
         actionCallCount += 1
         lastActionedItem = item
     }
+
+    var inputActions: [String] = []
+
+    func doAction(input: String) {
+        inputActions.append(input)
+    }
 }

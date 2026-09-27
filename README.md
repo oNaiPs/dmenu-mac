@@ -23,6 +23,9 @@ If you are like me and have a shit-ton of files on your computer, and spotlight 
 2. Optionally, you can change the binding by clicking the ... on the right of the menu.
 3. Type the application you want to open, hit enter to run the one selected.
 
+### Commands
+If nothing matches, enter runs what you typed as a shell command in your login shell, from your home directory (e.g. `mpv test.mp4`). Shift-enter does the same even when there are matches.
+
 ### Running from a shell
 When opened as an app (Finder, Dock, login items), dmenu-mac stays in the background waiting for its hotkey.
 When started from a shell or a hotkey daemon like [skhd](https://github.com/koekeishiya/skhd), it exits after
@@ -35,6 +38,7 @@ You can make dmenu-mac part of your scripting toolbox, use it to prompt the user
 echo "Yes\nNo" | dmenu-mac -p "Are you sure?"
 Yes
 ```
+As with the app list, if nothing matches (or with shift-enter), the typed text is printed instead.
 Pressing Esc prints nothing and exits with status 1, like dmenu.
 
 ## Installation
