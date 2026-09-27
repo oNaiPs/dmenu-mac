@@ -22,13 +22,34 @@ class InputField: NSTextField {
 
         if let fieldEditor = self.window?.fieldEditor(true, for: self) as? NSTextView {
             fieldEditor.selectedTextAttributes = [
-                // Make selection transparent
-                NSAttributedString.Key.backgroundColor: NSColor.clear
+                NSAttributedString.Key.backgroundColor: AppearanceManager.shared.selectionHighlightColor
             ]
             // Make blinking cursos transparent
             fieldEditor.insertionPointColor = NSColor.clear
         }
 
         return responderStatus
+    }
+
+    // The app has no Edit menu, so standard editing shortcuts must be routed manually.
+    override func performKeyEquivalent(with event: NSEvent) -> Bool {
+        let modifiers = event.modifierFlags.intersection(.deviceIndependentFlagsMask)
+        let action: Selector?
+
+        switch (modifiers, event.charactersIgnoringModifiers) {
+        case (.command, "v"): action = #selector(NSText.paste(_:))
+        case (.command, "c"): action = #selector(NSText.copy(_:))
+        case (.command, "x"): action = #selector(NSText.cut(_:))
+        case (.command, "a"): action = #selector(NSText.selectAll(_:))
+        case (.command, "z"): action = Selector(("undo:"))
+        case ([.command, .shift], "z"), ([.command, .shift], "Z"): action = Selector(("redo:"))
+        default: action = nil
+        }
+
+        if let action = action, currentEditor() != nil,
+           NSApp.sendAction(action, to: nil, from: self) {
+            return true
+        }
+        return super.performKeyEquivalent(with: event)
     }
 }
