@@ -33,13 +33,11 @@ extension UserDefaults {
 // MARK: - Window Position
 enum WindowPosition: String, CaseIterable {
     case top
-    case center
     case bottom
 
     var title: String {
         switch self {
         case .top: return "Top"
-        case .center: return "Center"
         case .bottom: return "Bottom"
         }
     }

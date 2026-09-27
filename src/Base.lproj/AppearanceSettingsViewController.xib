@@ -43,7 +43,7 @@
                     </popUpButtonCell>
                 </popUpButton>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lbl1">
-                    <rect key="frame" x="18" y="300" width="186" height="16"/>
+                    <rect key="frame" x="18" y="260" width="186" height="16"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Search Text Color:" id="lbl1Cell">
                         <font key="font" usesAppearanceFont="YES"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -51,11 +51,11 @@
                     </textFieldCell>
                 </textField>
                 <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="searchColorWell">
-                    <rect key="frame" x="210" y="295" width="50" height="25"/>
+                    <rect key="frame" x="210" y="255" width="50" height="25"/>
                     <color key="color" name="labelColor" catalog="System" colorSpace="catalog"/>
                 </colorWell>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lbl2">
-                    <rect key="frame" x="18" y="270" width="186" height="16"/>
+                    <rect key="frame" x="18" y="230" width="186" height="16"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Results Text Color:" id="lbl2Cell">
                         <font key="font" usesAppearanceFont="YES"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -63,11 +63,11 @@
                     </textFieldCell>
                 </textField>
                 <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="resultsColorWell">
-                    <rect key="frame" x="210" y="265" width="50" height="25"/>
+                    <rect key="frame" x="210" y="225" width="50" height="25"/>
                     <color key="color" name="labelColor" catalog="System" colorSpace="catalog"/>
                 </colorWell>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lbl3">
-                    <rect key="frame" x="18" y="240" width="186" height="16"/>
+                    <rect key="frame" x="18" y="200" width="186" height="16"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Selection Highlight:" id="lbl3Cell">
                         <font key="font" usesAppearanceFont="YES"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -75,11 +75,11 @@
                     </textFieldCell>
                 </textField>
                 <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="selectionColorWell">
-                    <rect key="frame" x="210" y="235" width="50" height="25"/>
+                    <rect key="frame" x="210" y="195" width="50" height="25"/>
                     <color key="color" name="selectedTextBackgroundColor" catalog="System" colorSpace="catalog"/>
                 </colorWell>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lbl4">
-                    <rect key="frame" x="18" y="210" width="186" height="16"/>
+                    <rect key="frame" x="18" y="170" width="186" height="16"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Window Background:" id="lbl4Cell">
                         <font key="font" usesAppearanceFont="YES"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -87,11 +87,11 @@
                     </textFieldCell>
                 </textField>
                 <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="windowColorWell">
-                    <rect key="frame" x="210" y="205" width="50" height="25"/>
+                    <rect key="frame" x="210" y="165" width="50" height="25"/>
                     <color key="color" name="windowBackgroundColor" catalog="System" colorSpace="catalog"/>
                 </colorWell>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lbl5">
-                    <rect key="frame" x="18" y="170" width="186" height="16"/>
+                    <rect key="frame" x="18" y="130" width="186" height="16"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Window Opacity:" id="lbl5Cell">
                         <font key="font" usesAppearanceFont="YES"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -99,11 +99,11 @@
                     </textFieldCell>
                 </textField>
                 <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="opacitySlider">
-                    <rect key="frame" x="208" y="165" width="200" height="25"/>
+                    <rect key="frame" x="208" y="125" width="200" height="25"/>
                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="60" tickMarkPosition="above" sliderType="linear" id="opacitySliderCell"/>
                 </slider>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="opacityLbl">
-                    <rect key="frame" x="420" y="170" width="50" height="16"/>
+                    <rect key="frame" x="420" y="130" width="50" height="16"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="60%" id="opacityLblCell">
                         <font key="font" usesAppearanceFont="YES"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -111,7 +111,7 @@
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lbl6">
-                    <rect key="frame" x="18" y="130" width="186" height="16"/>
+                    <rect key="frame" x="18" y="90" width="186" height="16"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Font:" id="lbl6Cell">
                         <font key="font" usesAppearanceFont="YES"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -119,7 +119,7 @@
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fontNameLbl">
-                    <rect key="frame" x="210" y="130" width="200" height="16"/>
+                    <rect key="frame" x="210" y="90" width="200" height="16"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="System" id="fontNameLblCell">
                         <font key="font" usesAppearanceFont="YES"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -127,7 +127,7 @@
                     </textFieldCell>
                 </textField>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fontBtn">
-                    <rect key="frame" x="420" y="125" width="90" height="25"/>
+                    <rect key="frame" x="420" y="85" width="90" height="25"/>
                     <buttonCell key="cell" type="push" title="Choose..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="fontBtnCell">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -137,7 +137,7 @@
                     </connections>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lbl7">
-                    <rect key="frame" x="18" y="100" width="186" height="16"/>
+                    <rect key="frame" x="18" y="60" width="186" height="16"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Font Size:" id="lbl7Cell">
                         <font key="font" usesAppearanceFont="YES"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -145,11 +145,11 @@
                     </textFieldCell>
                 </textField>
                 <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fontSizeStepper">
-                    <rect key="frame" x="210" y="95" width="19" height="27"/>
+                    <rect key="frame" x="210" y="55" width="19" height="27"/>
                     <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" doubleValue="13" id="fontSizeStepperCell"/>
                 </stepper>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fontSizeLbl">
-                    <rect key="frame" x="235" y="100" width="50" height="16"/>
+                    <rect key="frame" x="235" y="60" width="50" height="16"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="13 pt" id="fontSizeLblCell">
                         <font key="font" usesAppearanceFont="YES"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -157,7 +157,7 @@
                     </textFieldCell>
                 </textField>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="resetBtn">
-                    <rect key="frame" x="20" y="60" width="150" height="25"/>
+                    <rect key="frame" x="20" y="20" width="150" height="25"/>
                     <buttonCell key="cell" type="push" title="Reset to Defaults" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="resetBtnCell">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>

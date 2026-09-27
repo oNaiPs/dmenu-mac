@@ -45,8 +45,6 @@ class SearchWindow: NSWindow {
         switch position {
         case .top:
             originY = screenFrame.maxY - height
-        case .center:
-            originY = (screenFrame.midY - height / 2).rounded()
         case .bottom:
             originY = screenFrame.minY
         }

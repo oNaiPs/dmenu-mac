@@ -71,12 +71,12 @@ final class AppearanceSettingsViewControllerTests: XCTestCase {
     // MARK: - Window position
 
     func testPositionPopUpListsAllPositionsAndReflectsSetting() {
-        AppearanceManager.shared.windowPosition = .center
+        AppearanceManager.shared.windowPosition = .bottom
         _ = viewController.view
 
         let popUp = viewController.windowPositionPopUp!
-        XCTAssertEqual(popUp.itemTitles, ["Top", "Center", "Bottom"])
-        XCTAssertEqual(popUp.titleOfSelectedItem, "Center")
+        XCTAssertEqual(popUp.itemTitles, ["Top", "Bottom"])
+        XCTAssertEqual(popUp.titleOfSelectedItem, "Bottom")
     }
 
     func testChoosingPositionStoresItAndNotifies() {
