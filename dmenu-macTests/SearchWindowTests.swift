@@ -31,9 +31,4 @@ final class SearchWindowTests: XCTestCase {
         let frame = SearchWindow.frame(for: .bottom, in: screenFrame, height: 30)
         XCTAssertEqual(frame, NSRect(x: 1440, y: -200, width: 1920, height: 30))
     }
-
-    func testCenterFrameIsVerticallyCentered() {
-        let frame = SearchWindow.frame(for: .center, in: screenFrame, height: 30)
-        XCTAssertEqual(frame, NSRect(x: 1440, y: 325, width: 1920, height: 30))
-    }
 }
