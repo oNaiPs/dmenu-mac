@@ -20,8 +20,10 @@ If you are like me and have a shit-ton of files on your computer, and spotlight 
 
 ## How to use
 1. Open the app, use cmd-Space to bring it to front.
-2. Optionally, you can change the binding by clicking the ... on the right of the menu.
+2. Optionally, change the binding in Settings (cmd-, or the menu bar icon > Settings…).
 3. Type the application you want to open, hit enter to run the one selected.
+
+dmenu-mac lives in the menu bar. From its icon you can open the launcher, open Settings, turn Launch at Login on or off, and quit. Opening the app again from Finder brings up the launcher.
 
 ### Commands
 If nothing matches, enter runs what you typed as a shell command in your login shell, from your home directory (e.g. `mpv test.mp4`). Shift-enter does the same even when there are matches.
@@ -59,6 +61,7 @@ NOTE: the releases are not signed yet, use it at your own risk. I'll take care o
 
 - Uses fuzzy search
 - Configurable global hotkey
+- Menu bar icon and optional Launch at Login
 - Multi-display support
 - Not dependant on spotlight indexing
 

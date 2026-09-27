@@ -42,6 +42,15 @@ class SearchWindow: NSWindow {
         setFrame(frame, display: false)
     }
 
+    // The app has no main menu (LSUIElement), so handle Cmd-, here to open Settings.
+    override func performKeyEquivalent(with event: NSEvent) -> Bool {
+        if event.modifierFlags.intersection(.deviceIndependentFlagsMask) == .command,
+           event.charactersIgnoringModifiers == "," {
+            return NSApp.sendAction(#selector(AppDelegate.openSettings), to: nil, from: self)
+        }
+        return super.performKeyEquivalent(with: event)
+    }
+
     override var canBecomeKey: Bool {
         return true
     }
