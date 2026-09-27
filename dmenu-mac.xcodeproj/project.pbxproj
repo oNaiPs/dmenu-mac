@@ -50,6 +50,7 @@
 		7FDA366E241FDA5E00B51212 /* Fuse in Frameworks */ = {isa = PBXBuildFile; productRef = 7FDA366D241FDA5E00B51212 /* Fuse */; };
 		B587A216B6D840909FF34BE0 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A741D70BEA39425CA2842ABC /* XCTest.framework */; };
 		CAA73A0945C642C6A1A7CD3D /* NotificationNameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9315B77060242E2BEE75F2C /* NotificationNameTests.swift */; };
+		A1B2C3D4E5F6A7B8C9D0E1F2 /* SearchWindowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A7B8C9D0E1F3 /* SearchWindowTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,6 +106,7 @@
 		7FF33D15E7A14B9FB84318F3 /* dmenu-macTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "dmenu-macTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A741D70BEA39425CA2842ABC /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = System/Library/Frameworks/XCTest.framework; sourceTree = SDKROOT; };
 		B9315B77060242E2BEE75F2C /* NotificationNameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NotificationNameTests.swift; path = "dmenu-macTests/NotificationNameTests.swift"; sourceTree = "<group>"; };
+		A1B2C3D4E5F6A7B8C9D0E1F3 /* SearchWindowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchWindowTests.swift; path = "dmenu-macTests/SearchWindowTests.swift"; sourceTree = "<group>"; };
 		BAFA97BFB86D4BBEA3CA3C69 /* CommandArgumentsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CommandArgumentsTests.swift; path = "dmenu-macTests/CommandArgumentsTests.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -150,6 +152,7 @@
 				6F684904FF57E59AD2732ADF /* ResultsViewTests.swift */,
 				1EC484740A8AF74BCD6728BD /* SearchViewControllerCommandTests.swift */,
 				E2D26D3B3F7F04738396CC8D /* GeneralSettingsViewControllerTests.swift */,
+				A1B2C3D4E5F6A7B8C9D0E1F3 /* SearchWindowTests.swift */,
 			);
 			name = "dmenu-macTests";
 			sourceTree = "<group>";
@@ -401,6 +404,7 @@
 				1CB5DF53A0FE7510D11FD27A /* ResultsViewTests.swift in Sources */,
 				4BA3124480DF4562AD5C7866 /* SearchViewControllerCommandTests.swift in Sources */,
 				CBC3E3E0E4C9001528BCCC36 /* GeneralSettingsViewControllerTests.swift in Sources */,
+				A1B2C3D4E5F6A7B8C9D0E1F2 /* SearchWindowTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

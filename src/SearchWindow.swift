@@ -21,6 +21,8 @@ class SearchWindow: NSWindow {
     override func awakeFromNib() {
         self.hasShadow = false
         self.collectionBehavior = NSWindow.CollectionBehavior.canJoinAllSpaces
+        // Stay above the Dock, which otherwise covers the bar when placed on the side.
+        self.level = .statusBar
         updatePosition()
     }
 
