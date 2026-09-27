@@ -35,6 +35,7 @@ You can make dmenu-mac part of your scripting toolbox, use it to prompt the user
 echo "Yes\nNo" | dmenu-mac -p "Are you sure?"
 Yes
 ```
+Pressing Esc prints nothing and exits with status 1, like dmenu.
 
 ## Installation
 

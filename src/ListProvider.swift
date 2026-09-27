@@ -22,6 +22,13 @@ protocol ListProvider {
 
     // Performs action on a selected item
     func doAction(item: ListItem)
+
+    // Called when the user dismisses the list without selecting anything
+    func cancel()
+}
+
+extension ListProvider {
+    func cancel() {}
 }
 
 struct ListItem {
