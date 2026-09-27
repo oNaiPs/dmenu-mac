@@ -35,4 +35,9 @@ class PipeListProvider: ListProvider {
         print(item.name)
         NSApplication.shared.terminate(self)
     }
+
+    /// Like dmenu, exit non-zero so scripts can tell a cancel from a selection.
+    func cancel() {
+        exit(1)
+    }
 }

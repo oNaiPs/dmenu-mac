@@ -189,6 +189,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
 
             return true
         } else if commandSelector == #selector(cancelOperation(_:)) {
+            listProvider?.cancel()
             closeApp()
             return true
         }
