@@ -9,4 +9,11 @@ final class SearchWindowTests: XCTestCase {
 
         XCTAssertGreaterThan(window.level.rawValue, NSWindow.Level.dock.rawValue)
     }
+
+    func testWindowIsBelowMenuBar() {
+        let window = SearchWindow()
+        window.awakeFromNib()
+
+        XCTAssertLessThan(window.level.rawValue, NSWindow.Level.mainMenu.rawValue)
+    }
 }
