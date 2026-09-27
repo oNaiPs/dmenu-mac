@@ -120,8 +120,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMenuDele
     }
 
     private lazy var settings: [SettingsPane] = [
-        GeneralSettingsViewController(),
-        AppearanceSettingsViewController()
+        GeneralSettingsView.pane(),
+        AppearanceSettingsView.pane()
     ]
 
     private lazy var settingsWindowController: SettingsWindowController = {
