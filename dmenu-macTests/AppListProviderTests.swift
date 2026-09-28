@@ -83,13 +83,11 @@ final class AppListProviderTests: XCTestCase {
         waitForExpectations(timeout: 5.0)
     }
 
-    func testScansRealUserApplicationsDirectory() {
-        // The sandbox remaps the user domain to ~/Library/Containers/<id>/Data.
-        let dirs = Array(provider.appDirDict.keys)
-        let userDir = AppListProvider.realHomeDirectory().appendingPathComponent("Applications").path
+    func testScansUserApplicationsDirectory() {
+        let userDir = FileManager.default.homeDirectoryForCurrentUser
+            .appendingPathComponent("Applications").path
 
         XCTAssertEqual(provider.appDirDict[userDir], true)
-        XCTAssertFalse(dirs.contains(where: { $0.contains("/Library/Containers/") }))
     }
 
     // MARK: - Recursive Directory Scanning Tests
@@ -228,13 +226,10 @@ final class AppListProviderTests: XCTestCase {
         XCTAssertEqual(process.executableURL?.path, "/bin/zsh")
     }
 
-    func testShellProcessStartsInRealHomeDirectory() {
-        let process = AppListProvider.shellProcess(
-            command: "true", environment: ["HOME": "/Users/me/Library/Containers/app/Data"])
-        let home = process.environment?["HOME"]
-        XCTAssertNotNil(home)
-        XCTAssertFalse(home!.contains("/Library/Containers/"))
-        XCTAssertEqual(process.currentDirectoryURL?.path, home)
+    func testShellProcessStartsInHomeDirectory() {
+        let process = AppListProvider.shellProcess(command: "true", environment: ["HOME": "/Users/me"])
+        XCTAssertEqual(process.environment?["HOME"], "/Users/me")
+        XCTAssertEqual(process.currentDirectoryURL?.path, "/Users/me")
     }
 
     func testShellProcessKeepsOtherEnvironment() {

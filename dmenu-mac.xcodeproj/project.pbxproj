@@ -94,7 +94,6 @@
 		7F5D0E291CACCDD400268983 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = src/Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7F6511F629A619DE007D3EB3 /* GeneralSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GeneralSettingsViewController.swift; path = src/GeneralSettingsViewController.swift; sourceTree = "<group>"; };
 		7F6511FA29A61A4E007D3EB3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = src/Base.lproj/GeneralSettingsViewController.xib; sourceTree = "<group>"; };
-		7F7982A5241FF0FD0079AFD2 /* dmenu-mac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "dmenu-mac.entitlements"; sourceTree = "<group>"; };
 		7F90D2D126FDE2400003EC7E /* dmenu-mac */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "dmenu-mac"; sourceTree = "<group>"; };
 		7FCEF3DA2EF89BAE00301202 /* ProviderFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProviderFactory.swift; path = src/ProviderFactory.swift; sourceTree = "<group>"; };
 		7FCEF3DB2EF89BAE00301202 /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchService.swift; path = src/SearchService.swift; sourceTree = "<group>"; };
@@ -171,7 +170,6 @@
 				7F3278E91C71C9CE00AFB227 /* Assets.xcassets */,
 				7F3278FA1C71CA0200AFB227 /* Base.lproj */,
 				7F3279111C71E02300AFB227 /* BridgingHeader.h */,
-				7F7982A5241FF0FD0079AFD2 /* dmenu-mac.entitlements */,
 				7F3278EC1C71C9CE00AFB227 /* Info.plist */,
 				7F90D2D026FDE2240003EC7E /* scripts */,
 			);
@@ -630,7 +628,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = "dmenu-mac.entitlements";
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -656,7 +653,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = "dmenu-mac.entitlements";
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
