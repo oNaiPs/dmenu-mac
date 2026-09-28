@@ -101,13 +101,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMenuDele
         statusItem.menu = menu
     }
 
+    /// Reused on every hotkey press; a new controller would re-read stdin and rescan the app folders.
+    var searchViewController: SearchViewController? {
+        NSApp.windows.lazy.compactMap { $0.contentViewController as? SearchViewController }.first
+    }
+
     @objc func resumeApp() {
-        let storyboard = NSStoryboard(name: NSStoryboard.Name("Main"), bundle: Bundle.main)
-        // swiftlint:disable force_cast
-        let mainPageController = storyboard.instantiateController(
-            withIdentifier: "SearchViewController") as! SearchViewController
-        // swiftlint:enable force_cast
-        mainPageController.resumeApp()
+        searchViewController?.resumeApp()
     }
 
     @objc func openSettings() {

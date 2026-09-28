@@ -67,6 +67,7 @@ NOTE: the releases are not signed yet, use it at your own risk. I'll take care o
 
 - Uses fuzzy search
 - Configurable global hotkey
+- Doesn't steal focus: the app you were in stays frontmost and gets the keyboard back instantly
 - Menu bar icon and optional Launch at Login
 - Top or bottom placement
 - Multi-display support

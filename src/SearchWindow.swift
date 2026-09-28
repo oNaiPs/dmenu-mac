@@ -16,10 +16,18 @@
 
 import Cocoa
 
-class SearchWindow: NSWindow {
+/// Takes keyboard input without activating the app, so the previous app stays frontmost.
+class SearchWindow: NSPanel {
+
+    override init(contentRect: NSRect, styleMask style: NSWindow.StyleMask,
+                  backing backingStoreType: NSWindow.BackingStoreType, defer flag: Bool) {
+        super.init(contentRect: contentRect, styleMask: style.union(.nonactivatingPanel),
+                   backing: backingStoreType, defer: flag)
+    }
 
     override func awakeFromNib() {
         self.hasShadow = false
+        self.hidesOnDeactivate = false
         self.collectionBehavior = NSWindow.CollectionBehavior.canJoinAllSpaces
         // Stay above the Dock, which otherwise covers the bar when placed on the side,
         // but below the menu bar so it isn't hidden.
@@ -61,11 +69,17 @@ class SearchWindow: NSWindow {
         return super.performKeyEquivalent(with: event)
     }
 
+    // Replaces hidesOnDeactivate, since the app never activates.
+    override func resignKey() {
+        super.resignKey()
+        orderOut(nil)
+    }
+
     override var canBecomeKey: Bool {
         return true
     }
 
     override var canBecomeMain: Bool {
-        return true
+        return false
     }
 }

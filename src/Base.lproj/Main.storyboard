@@ -24,7 +24,7 @@
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController storyboardIdentifier="SearchWindowController" id="B8D-0N-5wS" sceneMemberID="viewController">
-                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" hidesOnDeactivate="YES" releasedWhenClosed="NO" animationBehavior="default" id="IQv-IB-iLA" customClass="SearchWindow" customModule="dmenu_mac" customModuleProvider="target">
+                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" hidesOnDeactivate="NO" releasedWhenClosed="NO" animationBehavior="default" id="IQv-IB-iLA" customClass="SearchWindow" customModule="dmenu_mac" customModuleProvider="target">
                         <rect key="contentRect" x="196" y="0.0" width="485" height="25"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
                         <connections>
