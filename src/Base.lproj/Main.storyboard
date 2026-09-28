@@ -69,9 +69,6 @@
                                         <view id="5lG-jR-0ih" customClass="ResultsView" customModule="dmenu_mac" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="-3674" width="418" height="31"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                            <connections>
-                                                <outlet property="scrollView" destination="QVh-If-BUC" id="PXN-Pz-YRx"/>
-                                            </connections>
                                         </view>
                                     </subviews>
                                     <color key="backgroundColor" red="0.11764705882352941" green="0.11764705882352941" blue="0.11764705882352941" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>

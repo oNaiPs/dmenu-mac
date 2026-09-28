@@ -129,7 +129,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
         }
 
         updatePlaceholder()
-        resultsText.needsDisplay = true
+        resultsText.invalidateLayout()
     }
 
     private func updatePlaceholder() {
@@ -173,8 +173,6 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
         } else {
             self.resultsText.clear()
         }
-
-        self.resultsText.updateWidth()
     }
 
     func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
@@ -190,11 +188,9 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
         } else if movingLeft {
             resultsText.selectedIndex = resultsText.selectedIndex == 0 ?
                 resultsText.list.count - 1 : resultsText.selectedIndex - 1
-            resultsText.updateWidth()
             return true
         } else if movingRight {
             resultsText.selectedIndex = (resultsText.selectedIndex + 1) % resultsText.list.count
-            resultsText.updateWidth()
             return true
         } else if commandSelector == #selector(insertNewline(_:)) {
             let shiftPressed = NSApp.currentEvent?.modifierFlags.contains(.shift) ?? false
