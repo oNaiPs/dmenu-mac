@@ -1,80 +1,122 @@
-
 # dmenu-mac
 
 [![ci](https://github.com/oNaiPs/dmenu-mac/workflows/Build/badge.svg)](https://github.com/oNaiPs/dmenu-mac)
 
+A keyboard-only application launcher for macOS, inspired by [dmenu](https://tools.suckless.org/dmenu/).
 
-
-dmenu inspired application launcher.
+Press a hotkey, type a few letters, hit Enter. No Spotlight indexing, no mouse, no waiting.
 
 ![dmenu-mac demo](./demo.gif)
 
-## Who is it for
-Anyone that needs a quick and intuitive keyboard-only application launcher that does not rely on spotlight indexing.
-
-## Why
-If you are like me and have a shit-ton of files on your computer, and spotlight keeps your CPU running like crazy.
-
-1. [Disable spotlight](https://www.google.com/search?q=disable+spotlight+completely) completely and its global shortcut (recommended but not necessary)
-3. Download and run dmenu-mac
-
-## How to use
-1. Open the app, use cmd-Space to bring it to front.
-2. Optionally, change the binding in Settings (cmd-, or the menu bar icon > Settings…).
-3. Type the application you want to open, hit enter to run the one selected.
-
-dmenu-mac lives in the menu bar. From its icon you can open the launcher, open Settings, turn Launch at Login on or off, and quit. Opening the app again from Finder brings up the launcher.
-
-### Window position
-The bar sits at the top of the screen by default. Pick Top or Bottom under Settings → Appearance → Window Position,
-or pass `-b`/`--bottom` to put it at the bottom for a single run, like dmenu.
-
-### Commands
-If nothing matches, enter runs what you typed as a shell command in your login shell, from your home directory (e.g. `mpv test.mp4`). Shift-enter does the same even when there are matches.
-
-To launch terminal programs like `nvim` or `ranger`, turn on "List programs from $PATH" in Settings > General and pick your terminal (Terminal, iTerm2, Ghostty, Alacritty, kitty, WezTerm, or a custom command where `{cmd}` is replaced by the command). Programs from your login shell's `$PATH` (Homebrew, nix, `~/.local/bin`, ...) then show up next to apps and open in that terminal, and so do typed commands like `nvim notes.md`. The first time Terminal or iTerm2 is used, macOS asks to allow dmenu-mac to control it.
-
-### Running from a shell
-When opened as an app (Finder, Dock, login items), dmenu-mac stays in the background waiting for its hotkey.
-When started from a shell or a hotkey daemon like [skhd](https://github.com/koekeishiya/skhd), it exits after
-you pick an app or press Esc, so it can be bound to a key without piling up processes.
-Use `--exit` or `--no-exit` to force either behaviour.
-
-### Pipes
-You can make dmenu-mac part of your scripting toolbox, use it to prompt the user for options:
-```
-echo "Yes\nNo" | dmenu-mac -p "Are you sure?"
-Yes
-```
-As with the app list, if nothing matches (or with shift-enter), the typed text is printed instead. Pass `--no-custom` to only accept items from the list.
-Pressing Esc prints nothing and exits with status 1, like dmenu.
-
 ## Installation
 
-dmenu-mac can be installed with [brew](https://brew.sh/) running:
+Requires macOS 13.5 or later.
 
-```
+With [Homebrew](https://brew.sh/):
+
+```sh
 brew install dmenu-mac
 ```
 
-Optionally, download the latest `dmenu-mac.zip` from the [releases page](https://github.com/oNaiPs/dmenu-mac/releases), unzip it and move `dmenu-mac.app` to `/Applications`.
+Or download the latest `dmenu-mac.zip` from the [releases page](https://github.com/oNaiPs/dmenu-mac/releases), unzip it, and move `dmenu-mac.app` to `/Applications`. Releases are signed and notarized by Apple.
 
-To use `dmenu-mac` from scripts, put `dmenu-mac.app/Contents/Resources/dmenu-mac` on your `PATH` (brew does this for you).
+To call `dmenu-mac` from scripts, put `dmenu-mac.app/Contents/Resources/dmenu-mac` on your `PATH`. Homebrew does this for you.
 
-*macOS 13.5 or greater required.
+## Quick start
 
-## Features
+1. Open dmenu-mac. It lives in the menu bar and waits for its hotkey.
+2. Press **⌘ Space** anywhere to bring up the launcher.
+3. Start typing. Matching is fuzzy and case-insensitive, so `safri` still finds Safari.
+4. Press **Enter** to open the highlighted result, or **Esc** to dismiss.
 
-- Uses fuzzy search
-- Configurable global hotkey
-- Doesn't steal focus: the app you were in stays frontmost and gets the keyboard back instantly
-- Menu bar icon and optional Launch at Login
-- Top or bottom placement
-- Multi-display support
-- Not dependant on spotlight indexing
-- Opens System Settings panes (e.g. Displays, Network, Accessibility)
+Tip: dmenu-mac is best paired with Spotlight's shortcut turned off (System Settings → Keyboard → Keyboard Shortcuts → Spotlight), or pick a different hotkey in dmenu-mac's settings.
 
-# Development
+### Keys
+
+| Key | Action |
+| --- | --- |
+| **⌘ Space** | Show the launcher (configurable) |
+| **Tab** / **→** | Move to the next result |
+| **Shift Tab** / **←** | Move to the previous result |
+| **Enter** | Open the selected result, or run what you typed when nothing matches |
+| **Shift Enter** | Run what you typed even if there are matches |
+| **Esc** | Hide the launcher |
+| **⌘ ,** | Open Settings |
+
+The launcher does not steal focus: the app you were in stays in front and gets the keyboard back as soon as the bar closes.
+
+## What it finds
+
+- Apps in `/Applications`, `/System/Applications`, and `~/Applications`, including symlinked folders such as the ones nix-darwin and home-manager create.
+- Bundled utilities like Keychain Access, Archive Utility, and Directory Utility.
+- System Settings panes, so `disp` opens Displays and `net` opens Network.
+- Optionally, command-line programs from your `$PATH` (see below).
+
+The list refreshes on its own when apps are installed or removed.
+
+## Running commands
+
+If nothing matches what you typed, Enter runs the text as a shell command in your login shell, from your home directory. `mpv ~/Movies/clip.mp4` plays a video without opening a terminal. Shift Enter does the same even when something matches.
+
+### Terminal programs
+
+To launch `nvim`, `htop`, `ranger`, and friends in a terminal window:
+
+1. Open Settings → General and turn on **List programs from $PATH**.
+2. Pick your terminal: Terminal, iTerm2, Ghostty, Alacritty, kitty, WezTerm, or a custom command where `{cmd}` is replaced by the program to run.
+
+Programs from your login shell's `$PATH` (Homebrew, nix, `~/.local/bin`, ...) then show up alongside apps, and typed commands like `nvim notes.md` open in that terminal too. The first time Terminal or iTerm2 is used, macOS asks to let dmenu-mac control it.
+
+## Settings
+
+Open Settings with **⌘ ,** while the launcher is up, or from the menu bar icon.
+
+- **General**: the global hotkey, and the terminal setup described above.
+- **Appearance**: bar position (top or bottom of the screen), opacity, colors for the text, selection, and background, and the font and its size. **Reset to Defaults** undoes it all.
+
+The menu bar icon also lets you show the launcher, turn **Launch at Login** on or off, and quit.
+
+## Command line
+
+The `dmenu-mac` command takes a few flags, which makes it usable from scripts and hotkey daemons:
+
+```sh
+dmenu-mac --help
+```
+
+| Flag | Effect |
+| --- | --- |
+| `-p`, `--prompt <text>` | Show a prompt instead of the search field |
+| `-b`, `--bottom` | Show the bar at the bottom of the screen for this run |
+| `--no-custom` | Only accept items from the list; typed text that matches nothing is ignored |
+| `--exit` / `--no-exit` | Quit after a selection, or stay in the background |
+
+### Menus for scripts
+
+Pipe a list of choices in and the selection is printed to stdout, just like dmenu:
+
+```sh
+choice=$(printf 'Yes\nNo' | dmenu-mac -p "Are you sure?")
+```
+
+When nothing matches (or with Shift Enter) the typed text is printed instead, unless you pass `--no-custom`. Pressing Esc prints nothing and exits with status 1.
+
+### Binding to a key with another tool
+
+When started from a shell or a hotkey daemon such as [skhd](https://github.com/koekeishiya/skhd), dmenu-mac exits as soon as you pick something or press Esc, so it can be bound to a key without leaving processes behind:
+
+```
+# ~/.config/skhd/skhdrc
+alt - space : dmenu-mac
+```
+
+When opened as an app (Finder, Dock, Launch at Login) it stays running and waits for its hotkey. Use `--exit` or `--no-exit` to force either behaviour.
+
+## Why not Spotlight?
+
+Spotlight has to index everything on disk, and on machines with a lot of files that keeps the CPU busy and the results slow. dmenu-mac only looks at your application folders, so it starts instantly, needs no index, and keeps working with Spotlight disabled entirely.
+
+## Development
 
 ```sh
 xcodebuild -skipPackagePluginValidation -skipMacroValidation \
@@ -88,9 +130,12 @@ swiftlint --strict   # CI fails on warnings
 
 Releases are cut with `scripts/release.sh`, see [RELEASING.md](RELEASING.md).
 
-# Pull requests
-Any improvement/bugfix is welcome.
+Bug reports and pull requests are welcome.
 
-# Authors
+## License
+
+GPL-3.0. See [LICENSE](./LICENSE).
+
+## Authors
 
 [@onaips](https://twitter.com/onaips)
