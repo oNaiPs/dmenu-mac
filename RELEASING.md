@@ -41,7 +41,9 @@ Signing and notarization need these secrets in the `release` [environment](https
 
 ## Homebrew
 
-After the release is published, update the cask:
+Nothing to do after a release: Homebrew's [autobump](https://github.com/Homebrew/homebrew-cask/blob/main/.github/workflows/autobump.yml) runs every three hours, notices the new GitHub release through the cask's `livecheck`, and opens the pull request that updates the cask.
+
+To bump it by hand instead, clone the tap once with `brew tap homebrew/cask --force`, then:
 
 ```sh
 brew bump-cask-pr dmenu-mac --version 0.8.0
