@@ -6,15 +6,18 @@ on:
       - main
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   lint:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
 
     - name: GitHub Action for SwiftLint with --strict
-      uses: norio-nomura/action-swiftlint@3.2.1
+      uses: norio-nomura/action-swiftlint@9f4dcd7fd46b4e75d7935cf2f4df406d5cae3684 # 3.2.1
       with:
         args: --strict
 
@@ -22,7 +25,7 @@ jobs:
     runs-on: macos-15
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
 
     - name: Run Xcode tests
       run: xcodebuild
@@ -37,7 +40,7 @@ jobs:
     runs-on: macos-15
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
 
     - name: Build
       run: xcodebuild
@@ -56,7 +59,7 @@ jobs:
     - name: Compress
       run: zip -r dmenu-mac.zip dmenu-mac.app
 
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v7
       with:
         name: dmenu-mac.zip
         path: dmenu-mac.zip

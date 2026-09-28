@@ -23,11 +23,11 @@ To exercise the whole pipeline without publishing anything, run the workflow by 
 gh workflow run release.yml --ref my-branch
 ```
 
-It builds, signs and notarizes exactly like a tag does, but uploads `dmenu-mac.zip` as a workflow artifact instead of creating a release. Pull requests that touch the release files (the workflow, `scripts/`, the entitlements, `Info.plist`) get the same dry run automatically.
+It builds, signs and notarizes exactly like a tag does, but uploads `dmenu-mac.zip` as a workflow artifact instead of creating a release. Only `main` can use the signing secrets, so run it from `main` to test the signed path. Pull requests that touch the release files (the workflow, `scripts/`, the entitlements, `Info.plist`) get the same dry run automatically, without secrets, which exercises the ad-hoc path.
 
 ## Signing secrets
 
-Signing and notarization need these repository secrets. Without them the workflow still publishes an ad-hoc signed build, but as a pre-release, since Gatekeeper and Homebrew reject it.
+Signing and notarization need these secrets in the `release` [environment](https://github.com/oNaiPs/dmenu-mac/settings/environments), which only version tags and `main` are allowed to use. Set them with `gh secret set NAME --env release`. Without them the workflow still publishes an ad-hoc signed build, but as a pre-release, since Gatekeeper and Homebrew reject it.
 
 | Secret | Value |
 | --- | --- |
