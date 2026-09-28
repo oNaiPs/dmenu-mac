@@ -20,9 +20,32 @@ import SwiftUI
 import KeyboardShortcuts
 
 struct GeneralSettingsView: View {
+    @StateObject private var commands = CommandSettingsModel()
+
     var body: some View {
         Form {
             KeyboardShortcuts.Recorder("Global shortcut", name: .activateSearch)
+
+            Section {
+                Toggle("List programs from $PATH", isOn: $commands.enabled)
+
+                Picker("Terminal", selection: $commands.terminal) {
+                    ForEach(Terminal.allCases, id: \.self) { terminal in
+                        Text(terminal.displayName).tag(terminal)
+                    }
+                }
+                .disabled(!commands.terminalPickerEnabled)
+
+                TextField("Custom command", text: $commands.customTemplate,
+                          prompt: Text(CommandSettings.defaultCustomTemplate))
+                    .disabled(!commands.customTemplateEnabled)
+            } header: {
+                Text("Command-line programs")
+            } footer: {
+                Text("Programs open in the terminal. In a custom command, {cmd} is replaced by the command.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
         }
         .formStyle(.grouped)
         .scrollDisabled(true)

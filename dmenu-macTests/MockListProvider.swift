@@ -5,6 +5,7 @@ import Foundation
 class MockListProvider: ListProvider {
     var mockItems: [ListItem] = []
     var actionCallCount = 0
+    var cancelCallCount = 0
     var lastActionedItem: ListItem?
 
     init(items: [ListItem] = []) {
@@ -24,5 +25,9 @@ class MockListProvider: ListProvider {
 
     func doAction(input: String) {
         inputActions.append(input)
+    }
+
+    func cancel() {
+        cancelCallCount += 1
     }
 }

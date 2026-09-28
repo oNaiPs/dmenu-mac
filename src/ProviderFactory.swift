@@ -24,13 +24,15 @@ class ProviderFactory {
     /**
      * Creates appropriate provider based on stdin content
      * - Parameter stdinContent: Content from stdin
-     * - Returns: PipeListProvider if stdin has content, otherwise AppListProvider
+     * - Returns: PipeListProvider if stdin has content, otherwise apps and $PATH programs
      */
     func createProvider(stdinContent: String) -> ListProvider {
         if stdinContent.count > 0 {
             return PipeListProvider(str: stdinContent)
         } else {
-            return AppListProvider()
+            let apps = AppListProvider()
+            let commands = CommandListProvider(inputFallback: apps)
+            return CompositeListProvider(providers: [apps, commands], inputProvider: commands)
         }
     }
 }
