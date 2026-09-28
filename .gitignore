@@ -3,3 +3,5 @@ xcuserdata/
 /*.xcarchive
 /*.zip
 build
+.claude/
+CLAUDE.local.md
