@@ -55,6 +55,15 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
             object: nil
         )
 
+        // The window hides itself when it loses key status (see SearchWindow.resignKey),
+        // so reset the field here or the old query shows up the next time it opens.
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(windowDidResignKey(_:)),
+            name: NSWindow.didResignKeyNotification,
+            object: nil
+        )
+
         // Use dependency injection if provider already set, otherwise create default
         if listProvider == nil {
             let factory = ProviderFactory()
@@ -153,6 +162,11 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
 
         view.window?.makeKeyAndOrderFront(nil)
         view.window?.makeFirstResponder(searchText)
+    }
+
+    @objc func windowDidResignKey(_ notification: Notification) {
+        guard let window = notification.object as? NSWindow, window === view.window else { return }
+        clearFields()
     }
 
     func controlTextDidChange(_ obj: Notification) {
