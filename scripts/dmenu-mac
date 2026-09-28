@@ -1,6 +1,3 @@
-#!/usr/bin/env bash
-#
-function realpath() { python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$0"; }
-CONTENTS="$(dirname "$(dirname "$(realpath "$0")")")"
-DMENU_MAC="$CONTENTS/MacOS/dmenu-mac"
-"$DMENU_MAC" "$@"
+#!/bin/sh
+contents="$(dirname "$(dirname "$(readlink -f "$0")")")"
+exec "$contents/MacOS/dmenu-mac" "$@"
