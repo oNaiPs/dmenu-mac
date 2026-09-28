@@ -32,6 +32,8 @@ or pass `-b`/`--bottom` to put it at the bottom for a single run, like dmenu.
 ### Commands
 If nothing matches, enter runs what you typed as a shell command in your login shell, from your home directory (e.g. `mpv test.mp4`). Shift-enter does the same even when there are matches.
 
+To launch terminal programs like `nvim` or `ranger`, turn on "List programs from $PATH" in Settings > General and pick your terminal (Terminal, iTerm2, Ghostty, Alacritty, kitty, WezTerm, or a custom command where `{cmd}` is replaced by the command). Programs from your login shell's `$PATH` (Homebrew, nix, `~/.local/bin`, ...) then show up next to apps and open in that terminal, and so do typed commands like `nvim notes.md`. The first time Terminal or iTerm2 is used, macOS asks to allow dmenu-mac to control it.
+
 ### Running from a shell
 When opened as an app (Finder, Dock, login items), dmenu-mac stays in the background waiting for its hotkey.
 When started from a shell or a hotkey daemon like [skhd](https://github.com/koekeishiya/skhd), it exits after
