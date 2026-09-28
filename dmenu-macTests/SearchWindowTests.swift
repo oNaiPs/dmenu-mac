@@ -17,6 +17,29 @@ final class SearchWindowTests: XCTestCase {
         XCTAssertLessThan(window.level.rawValue, NSWindow.Level.mainMenu.rawValue)
     }
 
+    // MARK: - Focus
+
+    func testWindowDoesNotActivateApp() {
+        let window = SearchWindow()
+        window.awakeFromNib()
+
+        XCTAssertTrue(window.styleMask.contains(.nonactivatingPanel))
+        XCTAssertTrue(window.canBecomeKey)
+        XCTAssertFalse(window.canBecomeMain)
+        XCTAssertFalse(window.hidesOnDeactivate)
+    }
+
+    func testWindowHidesWhenResigningKey() {
+        let window = SearchWindow()
+        window.awakeFromNib()
+        window.orderFront(nil)
+        XCTAssertTrue(window.isVisible)
+
+        window.resignKey()
+
+        XCTAssertFalse(window.isVisible)
+    }
+
     // MARK: - Position
 
     // Offset origin, like a secondary display.

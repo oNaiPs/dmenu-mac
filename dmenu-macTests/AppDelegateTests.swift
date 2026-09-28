@@ -34,6 +34,21 @@ final class AppDelegateTests: XCTestCase {
         XCTAssertEqual(appDelegate.startAtLaunch.state, expected)
     }
 
+    func testResumeAppReusesStoryboardLauncher() throws {
+        let controller = try XCTUnwrap(appDelegate.searchViewController)
+        let window = try XCTUnwrap(controller.view.window)
+        window.orderOut(nil)
+
+        appDelegate.resumeApp()
+
+        XCTAssertTrue(window.isVisible)
+        XCTAssertTrue(window.styleMask.contains(.nonactivatingPanel))
+        XCTAssertTrue(appDelegate.searchViewController === controller)
+        let launchers = NSApp.windows.filter { $0.contentViewController is SearchViewController }
+        XCTAssertEqual(launchers.count, 1)
+        window.orderOut(nil)
+    }
+
     func testCommandCommaInSearchWindowOpensSettings() throws {
         let window = SearchWindow()
         let event = try XCTUnwrap(NSEvent.keyEvent(

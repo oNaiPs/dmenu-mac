@@ -146,12 +146,12 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
     }
 
     @objc func resumeApp() {
-        NSApplication.shared.activate(ignoringOtherApps: true)
-        view.window?.orderFrontRegardless()
-
         updatePosition()
         updateColors()
         updateFonts()
+
+        view.window?.makeKeyAndOrderFront(nil)
+        view.window?.makeFirstResponder(searchText)
     }
 
     func controlTextDidChange(_ obj: Notification) {
@@ -245,7 +245,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
                 NSApplication.shared.terminate(nil)
             }
         } else if promptValue == "" {
-            NSApplication.shared.hide(nil)
+            view.window?.orderOut(nil)
         }
     }
 }
