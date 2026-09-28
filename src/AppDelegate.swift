@@ -111,7 +111,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMenuDele
     }
 
     @objc func openSettings() {
+        // show() only activates the app, which macOS 14+ may refuse for a background app.
         settingsWindowController.show()
+        guard let window = settingsWindowController.window else { return }
+        window.makeKeyAndOrderFront(nil)
+        window.orderFrontRegardless()
     }
 
     @objc func toggleLaunchAtLogin() {
@@ -132,9 +136,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMenuDele
             hidesToolbarForSingleItem: false
         )
 
-        // Configure window appearance
         if let window = controller.window {
             window.styleMask.remove(.resizable)
+            window.collectionBehavior = [.moveToActiveSpace, .fullScreenAuxiliary]
             window.standardWindowButton(.miniaturizeButton)?.isHidden = true
             window.standardWindowButton(.zoomButton)?.isHidden = true
         }
