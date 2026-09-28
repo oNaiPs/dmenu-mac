@@ -57,9 +57,9 @@ dmenu-mac can be installed with [brew](https://brew.sh/) running:
 brew install dmenu-mac
 ```
 
-Optionally, you can download it [here](https://github.com/oNaiPs/dmenu-mac/releases).
+Optionally, download the latest `dmenu-mac.zip` from the [releases page](https://github.com/oNaiPs/dmenu-mac/releases), unzip it and move `dmenu-mac.app` to `/Applications`.
 
-NOTE: the releases are not signed yet, use it at your own risk. I'll take care of that as soon as we can assess the number of people interested in the project.
+To use `dmenu-mac` from scripts, put `dmenu-mac.app/Contents/Resources/dmenu-mac` on your `PATH` (brew does this for you).
 
 *macOS 13.5 or greater required.
 
@@ -85,6 +85,8 @@ swiftlint --strict   # CI fails on warnings
 ```
 
 `-skipPackagePluginValidation` is required because SwiftLint runs as an Xcode build plugin.
+
+Releases are cut with `scripts/release.sh`, see [RELEASING.md](RELEASING.md).
 
 # Pull requests
 Any improvement/bugfix is welcome.

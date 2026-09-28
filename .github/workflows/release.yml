@@ -1,0 +1,174 @@
+name: Release
+
+# Runs when scripts/release.sh pushes a version tag (e.g. 0.8.0). Builds the app,
+# signs it with a Developer ID certificate, notarizes it with Apple, staples the
+# ticket and publishes the zip as a GitHub release.
+#
+# Signing and notarization need these repository secrets (see RELEASING.md):
+#   MACOS_CERTIFICATE_P12        base64 of the "Developer ID Application" .p12 export
+#   MACOS_CERTIFICATE_PASSWORD   password of that .p12
+#   APPLE_TEAM_ID                10-character team id
+#   APP_STORE_CONNECT_KEY_ID     App Store Connect API key id
+#   APP_STORE_CONNECT_ISSUER_ID  App Store Connect API issuer id
+#   APP_STORE_CONNECT_API_KEY    base64 of the API key .p8 file
+# Without them the workflow still runs, but publishes an ad-hoc signed build
+# marked as a pre-release, which Gatekeeper (and Homebrew) will reject.
+
+on:
+  push:
+    tags:
+      - "[0-9]+.[0-9]+.[0-9]+"
+  # Dry run: builds, signs and notarizes exactly like a tag does, but uploads the
+  # zip as a workflow artifact instead of publishing a release.
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - .github/workflows/release.yml
+      - scripts/**
+      - src/dmenu-mac.entitlements
+      - src/Info.plist
+      - mac-application-archive.plist
+
+permissions:
+  contents: write
+
+env:
+  XCODEBUILD_FLAGS: -skipPackagePluginValidation -skipMacroValidation -project dmenu-mac.xcodeproj -scheme dmenu-mac
+
+jobs:
+  release:
+    runs-on: macos-15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read the project version
+        run: |
+          project_version="$(sed -n 's/.*MARKETING_VERSION = \(.*\);/\1/p' dmenu-mac.xcodeproj/project.pbxproj | head -1)"
+          if [[ "$GITHUB_REF_TYPE" == "tag" && "$project_version" != "$GITHUB_REF_NAME" ]]; then
+            echo "::error::Tag is $GITHUB_REF_NAME but MARKETING_VERSION is $project_version. Use scripts/release.sh."
+            exit 1
+          fi
+          echo "VERSION=$project_version" >> "$GITHUB_ENV"
+
+      - name: Run tests
+        run: xcodebuild $XCODEBUILD_FLAGS -configuration Debug test
+
+      - name: Decide whether signing secrets are available
+        id: signing
+        env:
+          P12: ${{ secrets.MACOS_CERTIFICATE_P12 }}
+          API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+        run: |
+          if [[ -n "$P12" && -n "$API_KEY" ]]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Signing secrets are not configured; publishing an ad-hoc signed pre-release."
+          fi
+
+      - name: Import Developer ID certificate
+        if: steps.signing.outputs.enabled == 'true'
+        env:
+          P12: ${{ secrets.MACOS_CERTIFICATE_P12 }}
+          P12_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+        run: |
+          keychain="$RUNNER_TEMP/release.keychain-db"
+          keychain_password="$(uuidgen)"
+          echo "$P12" | base64 --decode > "$RUNNER_TEMP/certificate.p12"
+          security create-keychain -p "$keychain_password" "$keychain"
+          security set-keychain-settings -lut 21600 "$keychain"
+          security unlock-keychain -p "$keychain_password" "$keychain"
+          security import "$RUNNER_TEMP/certificate.p12" -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k "$keychain"
+          security set-key-partition-list -S apple-tool:,apple: -s -k "$keychain_password" "$keychain" > /dev/null
+          security list-keychains -d user -s "$keychain" login.keychain-db
+          rm "$RUNNER_TEMP/certificate.p12"
+          security find-identity -v -p codesigning "$keychain"
+
+      # The archive keeps the project's ad-hoc signing (overriding CODE_SIGN_IDENTITY
+      # breaks the automatically signed Swift package targets). The developer-id
+      # export re-signs the app with the certificate and adds the secure timestamp.
+      - name: Archive
+        run: |
+          xcodebuild $XCODEBUILD_FLAGS -configuration Release \
+            -archivePath dmenu-mac.xcarchive archive
+
+      - name: Export (Developer ID)
+        if: steps.signing.outputs.enabled == 'true'
+        env:
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          plutil -replace teamID -string "$APPLE_TEAM_ID" scripts/developer-id-export.plist
+          xcodebuild -exportArchive -archivePath dmenu-mac.xcarchive \
+            -exportOptionsPlist scripts/developer-id-export.plist -exportPath .
+
+      - name: Export (ad-hoc)
+        if: steps.signing.outputs.enabled != 'true'
+        run: |
+          xcodebuild -exportArchive -archivePath dmenu-mac.xcarchive \
+            -exportOptionsPlist mac-application-archive.plist -exportPath .
+
+      - name: Notarize and staple
+        if: steps.signing.outputs.enabled == 'true'
+        env:
+          KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+        run: |
+          echo "$API_KEY" | base64 --decode > "$RUNNER_TEMP/AuthKey.p8"
+          ditto -c -k --keepParent dmenu-mac.app notarize.zip
+          xcrun notarytool submit notarize.zip \
+            --key "$RUNNER_TEMP/AuthKey.p8" --key-id "$KEY_ID" --issuer "$ISSUER_ID" \
+            --wait --timeout 30m
+          rm notarize.zip "$RUNNER_TEMP/AuthKey.p8"
+          xcrun stapler staple dmenu-mac.app
+          spctl --assess --type execute --verbose=2 dmenu-mac.app
+
+      - name: Package
+        run: |
+          codesign --verify --deep --strict --verbose=2 dmenu-mac.app
+          ditto -c -k --keepParent dmenu-mac.app dmenu-mac.zip
+          shasum -a 256 dmenu-mac.zip | tee dmenu-mac.zip.sha256
+
+      - name: Publish GitHub release
+        if: github.ref_type == 'tag'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SIGNED: ${{ steps.signing.outputs.enabled }}
+        run: |
+          args=(--title "dmenu-mac $VERSION" --generate-notes)
+          if [[ "$SIGNED" != "true" ]]; then
+            args+=(--prerelease)
+          fi
+          gh release create "$VERSION" dmenu-mac.zip dmenu-mac.zip.sha256 "${args[@]}"
+
+      - name: Upload dry-run build
+        if: github.ref_type != 'tag'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dmenu-mac-${{ env.VERSION }}-dry-run
+          path: |
+            dmenu-mac.zip
+            dmenu-mac.zip.sha256
+
+      - name: Summary
+        env:
+          SIGNED: ${{ steps.signing.outputs.enabled }}
+        run: |
+          {
+            echo "## dmenu-mac $VERSION"
+            echo
+            if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then
+              echo "Published as a GitHub release."
+            else
+              echo "Dry run: uploaded as a workflow artifact, no release created."
+            fi
+            echo
+            echo "Signed and notarized: **$SIGNED**"
+            echo
+            echo '```'
+            cat dmenu-mac.zip.sha256
+            echo '```'
+            echo
+            echo "Next: \`brew bump-cask-pr dmenu-mac --version $VERSION\`"
+          } >> "$GITHUB_STEP_SUMMARY"
