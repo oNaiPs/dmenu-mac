@@ -31,8 +31,14 @@ current="$(sed -n 's/.*MARKETING_VERSION = \(.*\);/\1/p' "$pbxproj" | head -1)"
 [[ -n "$current" ]] || die "MARKETING_VERSION not found in $pbxproj"
 [[ "$current" != "$version" ]] || die "project is already at $version"
 
+grep -q "^## $version\$" CHANGELOG.md \
+  || die "CHANGELOG.md has no \"## $version\" section; write the release notes first"
+
 echo "Release $current -> $version"
 echo
+echo "== CHANGELOG.md"
+awk -v v="$version" '/^## / { on = ($2 == v); next } on { print }' CHANGELOG.md
+echo "== commits"
 git log --oneline "$current..HEAD" 2>/dev/null || git log --oneline -10
 echo
 if [[ "$assume_yes" != "-y" ]]; then

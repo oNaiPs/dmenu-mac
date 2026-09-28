@@ -55,6 +55,27 @@ jobs:
           fi
           echo "VERSION=$project_version" >> "$GITHUB_ENV"
 
+      # The release body is the "## <version>" section of CHANGELOG.md followed
+      # by the pull request list GitHub generates.
+      - name: Collect release notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          awk -v v="$VERSION" '/^## / { on = ($2 == v); next } on { print }' CHANGELOG.md > release-notes.md
+          if [[ ! -s release-notes.md ]]; then
+            if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then
+              echo "::error::CHANGELOG.md has no \"## $VERSION\" section."
+              exit 1
+            fi
+            echo "::warning::CHANGELOG.md has no \"## $VERSION\" section; a real release would fail here."
+          fi
+          if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then
+            printf '\n' >> release-notes.md
+            gh api "repos/$GITHUB_REPOSITORY/releases/generate-notes" \
+              -f tag_name="$VERSION" -f target_commitish="$GITHUB_SHA" --jq .body >> release-notes.md
+          fi
+          cat release-notes.md
+
       - name: Run tests
         run: xcodebuild $XCODEBUILD_FLAGS -configuration Debug test
 
@@ -140,7 +161,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           SIGNED: ${{ steps.signing.outputs.enabled }}
         run: |
-          args=(--title "dmenu-mac $VERSION" --generate-notes)
+          args=(--title "dmenu-mac $VERSION" --notes-file release-notes.md)
           if [[ "$SIGNED" != "true" ]]; then
             args+=(--prerelease)
           fi
