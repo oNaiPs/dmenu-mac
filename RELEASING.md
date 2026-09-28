@@ -1,19 +1,20 @@
 # Releasing
 
-Releases are cut from `main` with:
+1. Add a `## 0.8.0` section to [CHANGELOG.md](CHANGELOG.md) describing what changed for users, and merge it.
+2. From `main`, run:
 
 ```sh
 scripts/release.sh 0.8.0
 ```
 
-The script bumps `MARKETING_VERSION`/`CURRENT_PROJECT_VERSION` in the Xcode project, commits `Release 0.8.0`, tags `0.8.0` and pushes. The tag triggers the [Release workflow](.github/workflows/release.yml), which:
+The script refuses to run without the changelog section, bumps `MARKETING_VERSION`/`CURRENT_PROJECT_VERSION` in the Xcode project, commits `Release 0.8.0`, tags `0.8.0` and pushes. The tag triggers the [Release workflow](.github/workflows/release.yml), which:
 
 1. checks that the tag matches the project version,
 2. runs the tests,
 3. archives the app with the hardened runtime,
 4. signs it with a Developer ID certificate,
 5. notarizes it with Apple and staples the ticket,
-6. publishes `dmenu-mac.zip` (plus its sha256) as a GitHub release with generated notes.
+6. publishes `dmenu-mac.zip` (plus its sha256) as a GitHub release whose body is the changelog section followed by the list of pull requests since the previous tag.
 
 ## Dry run
 
