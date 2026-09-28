@@ -39,9 +39,8 @@ class AppListProvider: ListProvider {
             .applicationDirectory, .systemDomainMask, true)[0]
 
         // Per-user apps, e.g. nix home-manager's "Home Manager Apps" or "Chrome Apps.localized".
-        // The sandbox remaps the user domain to the app container, so build it from the real home.
-        let userApplicationDir = AppListProvider.realHomeDirectory()
-            .appendingPathComponent("Applications").path
+        let userApplicationDir = NSSearchPathForDirectoriesInDomains(
+            .applicationDirectory, .userDomainMask, true)[0]
 
         // appName to dir recursivity key/valye dict
         appDirDict[applicationDir] = true
@@ -52,18 +51,11 @@ class AppListProvider: ListProvider {
         // System Settings panes, e.g. Displays or Network.
         appDirDict["/System/Library/PreferencePanes"] = false
         appDirDict["/Library/PreferencePanes"] = false
-        appDirDict[AppListProvider.realHomeDirectory()
-            .appendingPathComponent("Library/PreferencePanes").path] = false
+        appDirDict[NSSearchPathForDirectoriesInDomains(
+            .preferencePanesDirectory, .userDomainMask, true)[0]] = false
 
         initFileWatch(Array(appDirDict.keys))
         updateAppList()
-    }
-
-    static func realHomeDirectory() -> URL {
-        guard let dir = getpwuid(getuid())?.pointee.pw_dir else {
-            return FileManager.default.homeDirectoryForCurrentUser
-        }
-        return URL(fileURLWithPath: String(cString: dir), isDirectory: true)
     }
 
     func initFileWatch(_ dirs: [String]) {
@@ -162,10 +154,7 @@ class AppListProvider: ListProvider {
     /// Uses a login shell so PATH includes Homebrew/nix; apps launched from Finder only get /usr/bin:/bin.
     static func shellProcess(command: String,
                              environment: [String: String] = ProcessInfo.processInfo.environment) -> Process {
-        var environment = environment
-        // Under the app sandbox HOME points at the container, so use the real home instead.
-        let home = realHomeDirectory() ?? environment["HOME"] ?? NSHomeDirectory()
-        environment["HOME"] = home
+        let home = environment["HOME"] ?? NSHomeDirectory()
 
         let process = Process()
         process.executableURL = URL(fileURLWithPath: environment["SHELL"] ?? "/bin/zsh")
@@ -176,12 +165,5 @@ class AppListProvider: ListProvider {
         process.standardOutput = FileHandle.nullDevice
         process.standardError = FileHandle.nullDevice
         return process
-    }
-
-    private static func realHomeDirectory() -> String? {
-        guard let passwd = getpwuid(getuid()), let dir = passwd.pointee.pw_dir else {
-            return nil
-        }
-        return String(cString: dir)
     }
 }
