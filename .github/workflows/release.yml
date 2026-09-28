@@ -4,7 +4,8 @@ name: Release
 # signs it with a Developer ID certificate, notarizes it with Apple, staples the
 # ticket and publishes the zip as a GitHub release.
 #
-# Signing and notarization need these repository secrets (see RELEASING.md):
+# Signing and notarization need these secrets in the "release" environment, which
+# only version tags and main can use (see RELEASING.md):
 #   MACOS_CERTIFICATE_P12        base64 of the "Developer ID Application" .p12 export
 #   MACOS_CERTIFICATE_PASSWORD   password of that .p12
 #   APPLE_TEAM_ID                10-character team id
@@ -38,9 +39,12 @@ env:
 jobs:
   release:
     runs-on: macos-15
+    # Pull requests are not allowed into the environment, so they run without
+    # secrets and take the ad-hoc path.
+    environment: ${{ github.event_name != 'pull_request' && 'release' || '' }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Read the project version
         run: |
@@ -144,7 +148,7 @@ jobs:
 
       - name: Upload dry-run build
         if: github.ref_type != 'tag'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dmenu-mac-${{ env.VERSION }}-dry-run
           path: |
