@@ -27,6 +27,24 @@ class AppListProvider: ListProvider {
 
     static let launchableExtensions: Set<String> = ["app", "prefPane"]
 
+    /// Empty legacy bundles in /System/Library/PreferencePanes that System Settings no longer maps to a
+    /// pane (checked on macOS 26.1 by opening each one). Opening them shows the last pane or General.
+    static let deadPreferencePanes: Set<String> = [
+        "Battery.prefPane",
+        "ClassKitPreferencePane.prefPane",
+        "EnergySaver.prefPane",
+        "EnergySaverPref.prefPane",
+        "Expose.prefPane",
+        "Extensions.prefPane",
+        "Passwords.prefPane",
+        "Wallet.prefPane"
+    ]
+
+    /// Apps listed on their own because their directory is otherwise full of background agents.
+    static let standaloneApps = [
+        URL(fileURLWithPath: "/System/Library/CoreServices/Finder.app")
+    ]
+
     private var appList = [ListItem]()
     private let appListQueue = DispatchQueue(label: "com.dmenu-mac.applist", attributes: .concurrent)
 
@@ -46,7 +64,10 @@ class AppListProvider: ListProvider {
         appDirDict[applicationDir] = true
         appDirDict[systemApplicationDir] = true
         appDirDict[userApplicationDir] = true
-        appDirDict["/System/Library/CoreServices/"] = false
+
+        // Keychain Access, Archive Utility, Directory Utility... The rest of CoreServices is
+        // ~120 agents (loginwindow, Dock, SystemUIServer) that do nothing useful when opened.
+        appDirDict["/System/Library/CoreServices/Applications"] = true
 
         // System Settings panes, e.g. Displays or Network.
         appDirDict["/System/Library/PreferencePanes"] = false
@@ -67,12 +88,12 @@ class AppListProvider: ListProvider {
     }
 
     func updateAppList() {
-        var newAppList = [ListItem]()
+        var urls = AppListProvider.standaloneApps.filter { FileManager.default.fileExists(atPath: $0.path) }
         appDirDict.keys.forEach { path in
             let urlPath = URL(fileURLWithPath: path, isDirectory: true)
-            let list = getAppList(urlPath, recursive: appDirDict[path]!)
-            newAppList.append(contentsOf: list.map { ListItem(name: AppListProvider.displayName(for: $0), data: $0) })
+            urls.append(contentsOf: getAppList(urlPath, recursive: appDirDict[path]!))
         }
+        let newAppList = urls.map { ListItem(name: AppListProvider.displayName(for: $0), data: $0) }
         appListQueue.async(flags: .barrier) {
             self.appList = newAppList
         }
@@ -99,7 +120,9 @@ class AppListProvider: ListProvider {
                 let dir = appDir.appendingPathComponent(sub)
 
                 if AppListProvider.launchableExtensions.contains(dir.pathExtension) {
-                    list.append(dir)
+                    if AppListProvider.isLaunchable(dir) {
+                        list.append(dir)
+                    }
                 } else if recursive && isDirectory(dir) {
                     list.append(contentsOf: getAppList(dir, recursive: true, visited: &visited))
                 }
@@ -114,6 +137,10 @@ class AppListProvider: ListProvider {
     private func isDirectory(_ url: URL) -> Bool {
         var isDir: ObjCBool = false
         return FileManager.default.fileExists(atPath: url.path, isDirectory: &isDir) && isDir.boolValue
+    }
+
+    static func isLaunchable(_ url: URL) -> Bool {
+        return !AppListProvider.deadPreferencePanes.contains(url.lastPathComponent)
     }
 
     /// Pane file names can be cryptic (UniversalAccessPref), so prefer the bundle name (Accessibility).

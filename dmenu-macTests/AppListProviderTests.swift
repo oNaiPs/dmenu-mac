@@ -163,6 +163,40 @@ final class AppListProviderTests: XCTestCase {
         XCTAssertEqual(apps.map { $0.lastPathComponent }, ["Foo.prefPane"])
     }
 
+    func testGetAppListSkipsDeadPreferencePanes() throws {
+        let fileManager = FileManager.default
+        let tmp = fileManager.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? fileManager.removeItem(at: tmp) }
+        for name in ["Passwords.prefPane", "Displays.prefPane"] {
+            try fileManager.createDirectory(at: tmp.appendingPathComponent(name), withIntermediateDirectories: true)
+        }
+
+        let apps = provider.getAppList(tmp, recursive: false)
+
+        XCTAssertEqual(apps.map { $0.lastPathComponent }, ["Displays.prefPane"])
+    }
+
+    func testProviderExcludesDeadPreferencePanes() {
+        let names = provider.get().compactMap { ($0.data as? URL)?.lastPathComponent }
+        XCTAssertFalse(names.contains("Passwords.prefPane"),
+                       "Passwords moved to its own app; the stub pane just opens System Settings > General")
+    }
+
+    // MARK: - CoreServices Tests
+
+    func testProviderIncludesFinderAndCoreServicesApplications() {
+        let names = provider.get().compactMap { ($0.data as? URL)?.lastPathComponent }
+        XCTAssertTrue(names.contains("Finder.app"))
+        XCTAssertTrue(names.contains("Keychain Access.app"),
+                      "Should scan /System/Library/CoreServices/Applications")
+    }
+
+    func testProviderExcludesCoreServicesAgents() {
+        let names = provider.get().compactMap { ($0.data as? URL)?.lastPathComponent }
+        XCTAssertFalse(names.contains("loginwindow.app"))
+        XCTAssertFalse(names.contains("SystemUIServer.app"))
+    }
+
     func testDisplayNameUsesPreferencePaneBundleName() throws {
         let fileManager = FileManager.default
         let tmp = fileManager.temporaryDirectory.appendingPathComponent(UUID().uuidString)
