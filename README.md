@@ -18,9 +18,9 @@ With [Homebrew](https://brew.sh/):
 brew install dmenu-mac
 ```
 
-Or download the latest build from the [releases page](https://github.com/oNaiPs/dmenu-mac/releases) and drag `dmenu-mac.app` to `/Applications`.
+Or download the latest `dmenu-mac.zip` from the [releases page](https://github.com/oNaiPs/dmenu-mac/releases), unzip it, and move `dmenu-mac.app` to `/Applications`. Releases are signed and notarized by Apple.
 
-Releases are not signed yet, so macOS may refuse to open the app the first time. Right-click `dmenu-mac.app`, choose **Open**, and confirm. You only need to do this once.
+To call `dmenu-mac` from scripts, put `dmenu-mac.app/Contents/Resources/dmenu-mac` on your `PATH`. Homebrew does this for you.
 
 ## Quick start
 
@@ -78,10 +78,10 @@ The menu bar icon also lets you show the launcher, turn **Launch at Login** on o
 
 ## Command line
 
-The binary inside the app bundle takes a few flags, which makes dmenu-mac usable from scripts and hotkey daemons:
+The `dmenu-mac` command takes a few flags, which makes it usable from scripts and hotkey daemons:
 
 ```sh
-/Applications/dmenu-mac.app/Contents/MacOS/dmenu-mac --help
+dmenu-mac --help
 ```
 
 | Flag | Effect |
@@ -107,7 +107,7 @@ When started from a shell or a hotkey daemon such as [skhd](https://github.com/k
 
 ```
 # ~/.config/skhd/skhdrc
-alt - space : /Applications/dmenu-mac.app/Contents/MacOS/dmenu-mac
+alt - space : dmenu-mac
 ```
 
 When opened as an app (Finder, Dock, Launch at Login) it stays running and waits for its hotkey. Use `--exit` or `--no-exit` to force either behaviour.
@@ -127,6 +127,8 @@ swiftlint --strict   # CI fails on warnings
 ```
 
 `-skipPackagePluginValidation` is required because SwiftLint runs as an Xcode build plugin.
+
+Releases are cut with `scripts/release.sh`, see [RELEASING.md](RELEASING.md).
 
 Bug reports and pull requests are welcome.
 
