@@ -48,3 +48,7 @@ To bump it by hand instead, clone the tap once with `brew tap homebrew/cask --fo
 ```sh
 brew bump-cask-pr dmenu-mac --version 0.8.0
 ```
+
+## Nix
+
+The [nixpkgs package](https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/dm/dmenu-mac/package.nix) installs the signed release zip and has an `updateScript`, so the [r-ryantm](https://github.com/nix-community/nixpkgs-update) bot opens the version bump pull request on its own, usually within a few days. To bump it by hand, run `nix-update dmenu-mac` in a nixpkgs checkout and open the pull request.
