@@ -18,9 +18,17 @@ With [Homebrew](https://brew.sh/):
 brew install dmenu-mac
 ```
 
+With [Nix](https://nixos.org/), from nixpkgs-unstable (stable channels get it from 26.11):
+
+```sh
+nix profile install nixpkgs#dmenu-mac
+```
+
+With nix-darwin or home-manager, add `pkgs.dmenu-mac` to `environment.systemPackages` or `home.packages`. They link the app into `/Applications/Nix Apps` or `~/Applications/Home Manager Apps`. The package installs the same signed release, so it can lag a few days behind a new version.
+
 Or download the latest `dmenu-mac.zip` from the [releases page](https://github.com/oNaiPs/dmenu-mac/releases), unzip it, and move `dmenu-mac.app` to `/Applications`. Releases are signed and notarized by Apple.
 
-To call `dmenu-mac` from scripts, put `dmenu-mac.app/Contents/Resources/dmenu-mac` on your `PATH`. Homebrew does this for you.
+To call `dmenu-mac` from scripts, put `dmenu-mac.app/Contents/Resources/dmenu-mac` on your `PATH`. Homebrew and Nix do this for you.
 
 ## Quick start
 

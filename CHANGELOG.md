@@ -15,6 +15,7 @@ Search shortcuts, aliases, usage-based ranking, and a short setup on first launc
 - ⌘ Enter reveals the selected item in Finder, ⌥ Enter copies its path, and ⌃ Enter opens a new instance of the app.
 - Pick the screen the bar appears on in Settings → Appearance: the one with the active window, the one with the mouse pointer, or the primary screen. `-m`/`--monitor <n>` picks a screen for a single run.
 - **Show icons** in Settings → Appearance shows app and System Settings icons next to results. Off by default.
+- Available in nixpkgs: `nix profile install nixpkgs#dmenu-mac`, or `pkgs.dmenu-mac` in nix-darwin and home-manager.
 
 ### Changed
 
