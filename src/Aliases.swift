@@ -125,18 +125,20 @@ final class AliasSearchService: SearchService {
     private let settings: AliasSettings
     private let fuse: Fuse
 
-    init(provider: ListProvider, settings: AliasSettings = .shared, threshold: Double = 0.4) {
+    init(provider: ListProvider, settings: AliasSettings = .shared, threshold: Double = 0.4,
+         usage: UsageStore? = nil) {
         self.provider = provider
         self.settings = settings
         self.fuse = Fuse(threshold: threshold)
-        super.init(provider: provider, threshold: threshold)
+        super.init(provider: provider, threshold: threshold, usage: usage)
     }
 
     /// Aliases only make sense for the app list, not for choices piped in on stdin.
-    static func make(provider: ListProvider, settings: AliasSettings = .shared) -> SearchService {
+    static func make(provider: ListProvider, settings: AliasSettings = .shared,
+                     usage: UsageStore? = nil) -> SearchService {
         provider is PipeListProvider
-            ? SearchService(provider: provider)
-            : AliasSearchService(provider: provider, settings: settings)
+            ? SearchService(provider: provider, usage: usage)
+            : AliasSearchService(provider: provider, settings: settings, usage: usage)
     }
 
     override func search(query: String) -> [ListItem] {

@@ -167,6 +167,27 @@ final class SearchViewControllerCommandTests: XCTestCase {
         XCTAssertEqual(mockProvider.inputActions, ["Safari"])
     }
 
+    func testPlainEnterUsesOpenAction() {
+        send(#selector(NSResponder.insertNewline(_:)))
+        XCTAssertEqual(mockProvider.lastAction, .open)
+    }
+
+    func testAlternateActionGoesToSelectedItem() {
+        type("Safari")
+        viewController.submit(preferTypedInput: false, action: .reveal)
+        XCTAssertEqual(mockProvider.lastAction, .reveal)
+        XCTAssertEqual(mockProvider.lastActionedItem?.name, "Safari")
+        XCTAssertEqual(searchText.stringValue, "prompt")
+    }
+
+    func testAlternateActionIgnoresTypedInputWithoutMatches() {
+        type("mpv test.mp4")
+        viewController.submit(preferTypedInput: false, action: .copyPath)
+        XCTAssertTrue(mockProvider.inputActions.isEmpty)
+        XCTAssertEqual(mockProvider.actionCallCount, 0)
+        XCTAssertEqual(searchText.stringValue, "mpv test.mp4", "Menu stays open")
+    }
+
     func testNoCustomIgnoresTypedInputWithoutMatches() {
         viewController.allowCustomInput = false
         type("zzzzzzzzzz")
