@@ -21,6 +21,13 @@ class MockListProvider: ListProvider {
         lastActionedItem = item
     }
 
+    var lastAction: ItemAction?
+
+    func doAction(item: ListItem, action: ItemAction) {
+        lastAction = action
+        doAction(item: item)
+    }
+
     var inputActions: [String] = []
 
     func doAction(input: String) {

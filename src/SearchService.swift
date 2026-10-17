@@ -25,11 +25,22 @@ class SearchService {
     private let provider: ListProvider
     private let threshold: Double
     private let fuse: Fuse
+    private let usage: UsageStore?
 
-    init(provider: ListProvider, threshold: Double = 0.4) {
+    /// Most a usage history can lower a fuzzy score (0 is a perfect match), so a much
+    /// better match still beats a frequently used one.
+    static let maxUsageBoost = 0.15
+
+    init(provider: ListProvider, threshold: Double = 0.4, usage: UsageStore? = nil) {
         self.provider = provider
         self.threshold = threshold
         self.fuse = Fuse(threshold: threshold)
+        self.usage = usage
+    }
+
+    /// Remembers a selection so it ranks higher next time.
+    func recordSelection(_ item: ListItem) {
+        usage?.record(item)
     }
 
     /**
@@ -39,10 +50,14 @@ class SearchService {
      */
     func search(query: String) -> [ListItem] {
         let items = provider.get()
+        usage?.reload()
 
-        // Empty query returns all items sorted alphabetically
+        // Empty query returns most used items first, then the rest alphabetically
         if query.isEmpty {
-            return items.sorted { $0.name < $1.name }
+            return items
+                .map { Ranked(item: $0, score: 0, usage: usage?.score(for: $0) ?? 0) }
+                .sorted(by: SearchService.ranks)
+                .map { $0.item }
         }
 
         // Shortcuts such as "g <query>". Only found when the QueryListProvider is the outermost provider,
@@ -51,18 +66,40 @@ class SearchService {
 
         // Perform fuzzy search
         let pattern = fuse.createPattern(from: query)
-        var scoredItems: [(item: ListItem, score: Double)] = []
+        var scoredItems: [Ranked] = []
 
         for item in items {
             if let result = fuse.search(pattern, in: item.name) {
-                scoredItems.append((item, result.score))
+                let itemUsage = usage?.score(for: item) ?? 0
+                scoredItems.append(Ranked(item: item,
+                                          score: result.score - SearchService.usageBoost(itemUsage),
+                                          usage: itemUsage))
             }
         }
 
         // Sort by score (lower is better) and return items
         let matches = scoredItems
-            .sorted { $0.score < $1.score }
+            .sorted(by: SearchService.ranks)
             .map { $0.item }
         return queryItems.afterMatches ? matches + queryItems.items : queryItems.items + matches
+    }
+
+    /// Grows with usage but flattens out: 1 use ≈ 0.04, 7 uses ≈ 0.12, capped at maxUsageBoost.
+    static func usageBoost(_ usage: Double) -> Double {
+        guard usage > 0 else { return 0 }
+        return min(maxUsageBoost, 0.04 * log2(1 + usage))
+    }
+
+    private struct Ranked {
+        let item: ListItem
+        /// Fuzzy score minus the usage boost; lower is better.
+        let score: Double
+        let usage: Double
+    }
+
+    private static func ranks(_ lhs: Ranked, _ rhs: Ranked) -> Bool {
+        if lhs.score != rhs.score { return lhs.score < rhs.score }
+        if lhs.usage != rhs.usage { return lhs.usage > rhs.usage }
+        return lhs.item.name < rhs.item.name
     }
 }

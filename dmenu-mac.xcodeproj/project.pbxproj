@@ -30,19 +30,24 @@
 		7F3278F01C71C9CE00AFB227 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278E81C71C9CE00AFB227 /* AppDelegate.swift */; };
 		7F3278F11C71C9CE00AFB227 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7F3278E91C71C9CE00AFB227 /* Assets.xcassets */; };
 		7F3278F51C71C9CE00AFB227 /* SearchWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278ED1C71C9CE00AFB227 /* SearchWindow.swift */; };
+		5C2E7A9B1D3F4E6A8B0C1D21 /* ScreenSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2E7A9B1D3F4E6A8B0C1D22 /* ScreenSelection.swift */; };
 		7F3278F71C71C9CE00AFB227 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278EF1C71C9CE00AFB227 /* SearchViewController.swift */; };
 		7F3279001C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278FF1C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift */; };
 		7F32790E1C71DF3E00AFB227 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F32790D1C71DF3E00AFB227 /* Carbon.framework */; };
+		1C0A1C0A2F20000000000001 /* ItemIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0A1C0A2F20000000000101 /* ItemIcons.swift */; };
 		7F5D0E261CACCD0100268983 /* ResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5D0E241CACCD0100268983 /* ResultsView.swift */; };
 		7F5D0E2C1CACCDD400268983 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F5D0E281CACCDD400268983 /* Main.storyboard */; };
 		7F6511F729A619DE007D3EB3 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6511F629A619DE007D3EB3 /* GeneralSettingsView.swift */; };
 		7F6511FE29A61C32007D3EB3 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 7F6511FD29A61C32007D3EB3 /* KeyboardShortcuts */; };
 		7F90D2D226FDE2400003EC7E /* dmenu-mac in Resources */ = {isa = PBXBuildFile; fileRef = 7F90D2D126FDE2400003EC7E /* dmenu-mac */; };
 		7FCEF3DD2EF89BAE00301202 /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF3DB2EF89BAE00301202 /* SearchService.swift */; };
+		7F5A6E0F2F20000000000001 /* UsageStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5A6E0F2F20000000000002 /* UsageStore.swift */; };
 		7F16C0DE2F10000000000000 /* CommandSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F16C0DE2F10000000000100 /* CommandSettings.swift */; };
 		7F16C0DE2F10000000000001 /* TerminalLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F16C0DE2F10000000000101 /* TerminalLauncher.swift */; };
 		7F16C0DE2F10000000000002 /* CommandListProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F16C0DE2F10000000000102 /* CommandListProvider.swift */; };
 		7F16C0DE2F10000000000003 /* CompositeListProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F16C0DE2F10000000000103 /* CompositeListProvider.swift */; };
+		7FA11C0E2F20000000000001 /* ItemAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA11C0E2F20000000000101 /* ItemAction.swift */; };
+		7FA11C0E2F20000000000002 /* ItemActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA11C0E2F20000000000102 /* ItemActionTests.swift */; };
 		7F16C0DE2F10000000000008 /* CommandSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F16C0DE2F10000000000108 /* CommandSettingsModel.swift */; };
 		7F16C0DE2F10000000000004 /* CommandSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F16C0DE2F10000000000104 /* CommandSettingsTests.swift */; };
 		7F16C0DE2F10000000000005 /* TerminalLauncherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F16C0DE2F10000000000105 /* TerminalLauncherTests.swift */; };
@@ -59,6 +64,7 @@
 		7FCEF3E52EF89BB900301202 /* MockListProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF3E12EF89BB900301202 /* MockListProvider.swift */; };
 		7FCEF3E62EF89BB900301202 /* SearchViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF3E32EF89BB900301202 /* SearchViewControllerTests.swift */; };
 		7FCEF3E72EF89BB900301202 /* SearchServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF3E22EF89BB900301202 /* SearchServiceTests.swift */; };
+		7F5A6E0F2F20000000000003 /* UsageStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5A6E0F2F20000000000004 /* UsageStoreTests.swift */; };
 		7FCEF4112EFBE70300301202 /* AppearanceSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF40F2EFBE70300301202 /* AppearanceSettings.swift */; };
 		7FCEF4212EFBE72000301202 /* AppearanceSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF4202EFBE72000301202 /* AppearanceSettingsModel.swift */; };
 		7FCEF4122EFBE70300301202 /* AppearanceSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF4102EFBE70300301202 /* AppearanceSettingsView.swift */; };
@@ -66,6 +72,7 @@
 		B587A216B6D840909FF34BE0 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A741D70BEA39425CA2842ABC /* XCTest.framework */; };
 		CAA73A0945C642C6A1A7CD3D /* NotificationNameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9315B77060242E2BEE75F2C /* NotificationNameTests.swift */; };
 		A1B2C3D4E5F6A7B8C9D0E1F2 /* SearchWindowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A7B8C9D0E1F3 /* SearchWindowTests.swift */; };
+		5C2E7A9B1D3F4E6A8B0C1D23 /* ScreenPickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2E7A9B1D3F4E6A8B0C1D24 /* ScreenPickerTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,20 +106,25 @@
 		7F3278E91C71C9CE00AFB227 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = src/Assets.xcassets; sourceTree = "<group>"; };
 		7F3278EC1C71C9CE00AFB227 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = src/Info.plist; sourceTree = "<group>"; };
 		7F3278ED1C71C9CE00AFB227 /* SearchWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchWindow.swift; path = src/SearchWindow.swift; sourceTree = "<group>"; };
+		5C2E7A9B1D3F4E6A8B0C1D22 /* ScreenSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScreenSelection.swift; path = src/ScreenSelection.swift; sourceTree = "<group>"; };
 		7F3278EF1C71C9CE00AFB227 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchViewController.swift; path = src/SearchViewController.swift; sourceTree = "<group>"; };
 		7F3278FF1C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VerticalAlignedTextFieldCell.swift; path = src/VerticalAlignedTextFieldCell.swift; sourceTree = "<group>"; };
 		7F32790D1C71DF3E00AFB227 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		7F3279111C71E02300AFB227 /* BridgingHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BridgingHeader.h; path = src/BridgingHeader.h; sourceTree = "<group>"; };
+		1C0A1C0A2F20000000000101 /* ItemIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ItemIcons.swift; path = src/ItemIcons.swift; sourceTree = "<group>"; };
 		7F5D0E241CACCD0100268983 /* ResultsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResultsView.swift; path = src/ResultsView.swift; sourceTree = "<group>"; };
 		7F5D0E291CACCDD400268983 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = src/Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7F6511F629A619DE007D3EB3 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GeneralSettingsView.swift; path = src/GeneralSettingsView.swift; sourceTree = "<group>"; };
 		7F90D2D126FDE2400003EC7E /* dmenu-mac */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "dmenu-mac"; sourceTree = "<group>"; };
 		7FCEF3DA2EF89BAE00301202 /* ProviderFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProviderFactory.swift; path = src/ProviderFactory.swift; sourceTree = "<group>"; };
 		7FCEF3DB2EF89BAE00301202 /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchService.swift; path = src/SearchService.swift; sourceTree = "<group>"; };
+		7F5A6E0F2F20000000000002 /* UsageStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UsageStore.swift; path = src/UsageStore.swift; sourceTree = "<group>"; };
 		7F16C0DE2F10000000000100 /* CommandSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CommandSettings.swift; path = src/CommandSettings.swift; sourceTree = "<group>"; };
 		7F16C0DE2F10000000000101 /* TerminalLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TerminalLauncher.swift; path = src/TerminalLauncher.swift; sourceTree = "<group>"; };
 		7F16C0DE2F10000000000102 /* CommandListProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CommandListProvider.swift; path = src/CommandListProvider.swift; sourceTree = "<group>"; };
 		7F16C0DE2F10000000000103 /* CompositeListProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CompositeListProvider.swift; path = src/CompositeListProvider.swift; sourceTree = "<group>"; };
+		7FA11C0E2F20000000000101 /* ItemAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ItemAction.swift; path = src/ItemAction.swift; sourceTree = "<group>"; };
+		7FA11C0E2F20000000000102 /* ItemActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ItemActionTests.swift; path = "dmenu-macTests/ItemActionTests.swift"; sourceTree = "<group>"; };
 		7F16C0DE2F10000000000108 /* CommandSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CommandSettingsModel.swift; path = src/CommandSettingsModel.swift; sourceTree = "<group>"; };
 		7F16C0DE2F10000000000104 /* CommandSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CommandSettingsTests.swift; path = "dmenu-macTests/CommandSettingsTests.swift"; sourceTree = "<group>"; };
 		7F16C0DE2F10000000000105 /* TerminalLauncherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TerminalLauncherTests.swift; path = "dmenu-macTests/TerminalLauncherTests.swift"; sourceTree = "<group>"; };
@@ -127,6 +139,7 @@
 		7FCEF3E02EF89BB900301202 /* AppListProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppListProviderTests.swift; path = "dmenu-macTests/AppListProviderTests.swift"; sourceTree = "<group>"; };
 		7FCEF3E12EF89BB900301202 /* MockListProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MockListProvider.swift; path = "dmenu-macTests/MockListProvider.swift"; sourceTree = "<group>"; };
 		7FCEF3E22EF89BB900301202 /* SearchServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchServiceTests.swift; path = "dmenu-macTests/SearchServiceTests.swift"; sourceTree = "<group>"; };
+		7F5A6E0F2F20000000000004 /* UsageStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UsageStoreTests.swift; path = "dmenu-macTests/UsageStoreTests.swift"; sourceTree = "<group>"; };
 		7FCEF3E32EF89BB900301202 /* SearchViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchViewControllerTests.swift; path = "dmenu-macTests/SearchViewControllerTests.swift"; sourceTree = "<group>"; };
 		7FCEF40F2EFBE70300301202 /* AppearanceSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppearanceSettings.swift; path = src/AppearanceSettings.swift; sourceTree = "<group>"; };
 		7FCEF4202EFBE72000301202 /* AppearanceSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppearanceSettingsModel.swift; path = src/AppearanceSettingsModel.swift; sourceTree = "<group>"; };
@@ -136,6 +149,7 @@
 		A741D70BEA39425CA2842ABC /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = System/Library/Frameworks/XCTest.framework; sourceTree = SDKROOT; };
 		B9315B77060242E2BEE75F2C /* NotificationNameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NotificationNameTests.swift; path = "dmenu-macTests/NotificationNameTests.swift"; sourceTree = "<group>"; };
 		A1B2C3D4E5F6A7B8C9D0E1F3 /* SearchWindowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchWindowTests.swift; path = "dmenu-macTests/SearchWindowTests.swift"; sourceTree = "<group>"; };
+		5C2E7A9B1D3F4E6A8B0C1D24 /* ScreenPickerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScreenPickerTests.swift; path = "dmenu-macTests/ScreenPickerTests.swift"; sourceTree = "<group>"; };
 		BAFA97BFB86D4BBEA3CA3C69 /* CommandArgumentsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CommandArgumentsTests.swift; path = "dmenu-macTests/CommandArgumentsTests.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -172,10 +186,12 @@
 				7FCEF3E02EF89BB900301202 /* AppListProviderTests.swift */,
 				7FCEF3E12EF89BB900301202 /* MockListProvider.swift */,
 				7FCEF3E22EF89BB900301202 /* SearchServiceTests.swift */,
+				7F5A6E0F2F20000000000004 /* UsageStoreTests.swift */,
 				7F16C0DE2F10000000000104 /* CommandSettingsTests.swift */,
 				7F16C0DE2F10000000000105 /* TerminalLauncherTests.swift */,
 				7F16C0DE2F10000000000106 /* CommandListProviderTests.swift */,
 				7F16C0DE2F10000000000107 /* CompositeListProviderTests.swift */,
+				7FA11C0E2F20000000000102 /* ItemActionTests.swift */,
 				7F16C0DE2F10000000000109 /* CommandSettingsModelTests.swift */,
 				5EA2C0DE2F10000000000103 /* SearchShortcutsTests.swift */,
 				7FCEF3E32EF89BB900301202 /* SearchViewControllerTests.swift */,
@@ -190,6 +206,7 @@
 				1EC484740A8AF74BCD6728BD /* SearchViewControllerCommandTests.swift */,
 				E2D26D3B3F7F04738396CC8D /* SettingsPanesTests.swift */,
 				A1B2C3D4E5F6A7B8C9D0E1F3 /* SearchWindowTests.swift */,
+				5C2E7A9B1D3F4E6A8B0C1D24 /* ScreenPickerTests.swift */,
 			);
 			name = "dmenu-macTests";
 			sourceTree = "<group>";
@@ -233,10 +250,12 @@
 				7FCEF4202EFBE72000301202 /* AppearanceSettingsModel.swift */,
 				7FCEF3DA2EF89BAE00301202 /* ProviderFactory.swift */,
 				7FCEF3DB2EF89BAE00301202 /* SearchService.swift */,
+				7F5A6E0F2F20000000000002 /* UsageStore.swift */,
 				7F16C0DE2F10000000000100 /* CommandSettings.swift */,
 				7F16C0DE2F10000000000101 /* TerminalLauncher.swift */,
 				7F16C0DE2F10000000000102 /* CommandListProvider.swift */,
 				7F16C0DE2F10000000000103 /* CompositeListProvider.swift */,
+				7FA11C0E2F20000000000101 /* ItemAction.swift */,
 				7F16C0DE2F10000000000108 /* CommandSettingsModel.swift */,
 				5EA2C0DE2F10000000000102 /* SearchShortcutsSettingsView.swift */,
 				5EA2C0DE2F10000000000101 /* SearchShortcutProvider.swift */,
@@ -251,9 +270,11 @@
 				7F2CCA31268FEDF600C14B29 /* PipeListProvider.swift */,
 				7F2CCA3D268FFDB500C14B29 /* ReadStdin.h */,
 				7F2CCA3E268FFDB500C14B29 /* ReadStdin.h.m */,
+				1C0A1C0A2F20000000000101 /* ItemIcons.swift */,
 				7F5D0E241CACCD0100268983 /* ResultsView.swift */,
 				7F3278EF1C71C9CE00AFB227 /* SearchViewController.swift */,
 				7F3278ED1C71C9CE00AFB227 /* SearchWindow.swift */,
+				5C2E7A9B1D3F4E6A8B0C1D22 /* ScreenSelection.swift */,
 				7F3278FF1C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift */,
 			);
 			name = src;
@@ -410,6 +431,7 @@
 			files = (
 				7F3279001C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift in Sources */,
 				7F2CCA30268FE38C00C14B29 /* AppListProvider.swift in Sources */,
+				1C0A1C0A2F20000000000001 /* ItemIcons.swift in Sources */,
 				7F5D0E261CACCD0100268983 /* ResultsView.swift in Sources */,
 				7FCEF4112EFBE70300301202 /* AppearanceSettings.swift in Sources */,
 				7FCEF4122EFBE70300301202 /* AppearanceSettingsView.swift in Sources */,
@@ -420,10 +442,12 @@
 				7F2CCA2E268FE37900C14B29 /* ListProvider.swift in Sources */,
 				7F6511F729A619DE007D3EB3 /* GeneralSettingsView.swift in Sources */,
 				7FCEF3DD2EF89BAE00301202 /* SearchService.swift in Sources */,
+				7F5A6E0F2F20000000000001 /* UsageStore.swift in Sources */,
 				7F16C0DE2F10000000000000 /* CommandSettings.swift in Sources */,
 				7F16C0DE2F10000000000001 /* TerminalLauncher.swift in Sources */,
 				7F16C0DE2F10000000000002 /* CommandListProvider.swift in Sources */,
 				7F16C0DE2F10000000000003 /* CompositeListProvider.swift in Sources */,
+				7FA11C0E2F20000000000001 /* ItemAction.swift in Sources */,
 				7F16C0DE2F10000000000008 /* CommandSettingsModel.swift in Sources */,
 				5EA2C0DE2F10000000000002 /* SearchShortcutsSettingsView.swift in Sources */,
 				5EA2C0DE2F10000000000001 /* SearchShortcutProvider.swift in Sources */,
@@ -433,6 +457,7 @@
 				7F2CCA3F268FFDB500C14B29 /* ReadStdin.h.m in Sources */,
 				7F2CCA23268B195F00C14B29 /* Notification+Name.swift in Sources */,
 				7F3278F51C71C9CE00AFB227 /* SearchWindow.swift in Sources */,
+				5C2E7A9B1D3F4E6A8B0C1D21 /* ScreenSelection.swift in Sources */,
 				7F255694269D01FF002324AC /* InputField.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -447,10 +472,12 @@
 				7FCEF3E52EF89BB900301202 /* MockListProvider.swift in Sources */,
 				7FCEF3E62EF89BB900301202 /* SearchViewControllerTests.swift in Sources */,
 				7FCEF3E72EF89BB900301202 /* SearchServiceTests.swift in Sources */,
+				7F5A6E0F2F20000000000003 /* UsageStoreTests.swift in Sources */,
 				7F16C0DE2F10000000000004 /* CommandSettingsTests.swift in Sources */,
 				7F16C0DE2F10000000000005 /* TerminalLauncherTests.swift in Sources */,
 				7F16C0DE2F10000000000006 /* CommandListProviderTests.swift in Sources */,
 				7F16C0DE2F10000000000007 /* CompositeListProviderTests.swift in Sources */,
+				7FA11C0E2F20000000000002 /* ItemActionTests.swift in Sources */,
 				7F16C0DE2F10000000000009 /* CommandSettingsModelTests.swift in Sources */,
 				5EA2C0DE2F10000000000003 /* SearchShortcutsTests.swift in Sources */,
 				42312E27230649C0A82474D4 /* PipeListProviderTests.swift in Sources */,
@@ -463,6 +490,7 @@
 				4BA3124480DF4562AD5C7866 /* SearchViewControllerCommandTests.swift in Sources */,
 				CBC3E3E0E4C9001528BCCC36 /* SettingsPanesTests.swift in Sources */,
 				A1B2C3D4E5F6A7B8C9D0E1F2 /* SearchWindowTests.swift in Sources */,
+				5C2E7A9B1D3F4E6A8B0C1D23 /* ScreenPickerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

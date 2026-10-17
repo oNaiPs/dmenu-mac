@@ -20,9 +20,12 @@ import Foundation
  * Merge several providers into one list, routing each action back to the provider that owns the item
  */
 class CompositeListProvider: ListProvider {
-    private struct Tagged {
+    private struct Tagged: UsageIdentifiable, FileURLRepresentable {
         let providerIndex: Int
         let data: Any?
+
+        var usageKey: String? { (data as? UsageIdentifiable)?.usageKey }
+        var fileURL: URL? { (data as? FileURLRepresentable)?.fileURL }
     }
 
     let providers: [ListProvider]
@@ -45,11 +48,15 @@ class CompositeListProvider: ListProvider {
     }
 
     func doAction(item: ListItem) {
+        doAction(item: item, action: .open)
+    }
+
+    func doAction(item: ListItem, action: ItemAction) {
         guard let tagged = item.data as? Tagged, providers.indices.contains(tagged.providerIndex) else {
             NSLog("Cannot do action on item \(item.name)")
             return
         }
-        providers[tagged.providerIndex].doAction(item: ListItem(name: item.name, data: tagged.data))
+        providers[tagged.providerIndex].doAction(item: ListItem(name: item.name, data: tagged.data), action: action)
     }
 
     func cancel() {

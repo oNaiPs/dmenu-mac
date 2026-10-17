@@ -92,6 +92,16 @@ class SearchShortcutProvider: ListProvider, QueryListProvider {
         }
     }
 
+    /// Shortcuts have no file to reveal or copy, so they ignore the modifier; everything else
+    /// is forwarded with it so ⌘/⌥/⌃ Enter still reach the wrapped providers.
+    func doAction(item: ListItem, action: ItemAction) {
+        if item.data is SearchShortcutMatch {
+            doAction(item: item)
+        } else {
+            wrapped.doAction(item: item, action: action)
+        }
+    }
+
     func doAction(input: String) {
         wrapped.doAction(input: input)
     }

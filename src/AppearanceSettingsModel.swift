@@ -43,6 +43,11 @@ final class AppearanceSettingsModel: NSObject, ObservableObject {
         set { update { manager.windowPosition = newValue } }
     }
 
+    var screenSelection: ScreenSelection {
+        get { manager.screenSelection }
+        set { update { manager.screenSelection = newValue } }
+    }
+
     var windowOpacity: Double {
         get { Double(manager.windowOpacity) }
         set { update { manager.windowOpacity = CGFloat(newValue) } }
@@ -50,6 +55,17 @@ final class AppearanceSettingsModel: NSObject, ObservableObject {
 
     var opacityText: String {
         "\(Int((windowOpacity * 100).rounded()))%"
+    }
+
+    var showIcons: Bool {
+        get { manager.showIcons }
+        set {
+            update {
+                // Toggling doubles as a manual refresh of icons cached earlier.
+                IconCache.shared.removeAll()
+                manager.showIcons = newValue
+            }
+        }
     }
 
     // MARK: - Colors
