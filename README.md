@@ -40,6 +40,9 @@ Tip: dmenu-mac is best paired with Spotlight's shortcut turned off (System Setti
 | **Shift Tab** / **←** | Move to the previous result |
 | **Enter** | Open the selected result, or run what you typed when nothing matches |
 | **Shift Enter** | Run what you typed even if there are matches |
+| **⌘ Enter** | Reveal the selected app, pane, or program in Finder |
+| **⌥ Enter** | Copy the selected item's path to the clipboard |
+| **⌃ Enter** | Open a new instance of the selected app |
 | **Esc** | Hide the launcher |
 | **⌘ ,** | Open Settings |
 

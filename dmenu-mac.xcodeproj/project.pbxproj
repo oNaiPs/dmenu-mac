@@ -44,6 +44,8 @@
 		7F16C0DE2F10000000000001 /* TerminalLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F16C0DE2F10000000000101 /* TerminalLauncher.swift */; };
 		7F16C0DE2F10000000000002 /* CommandListProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F16C0DE2F10000000000102 /* CommandListProvider.swift */; };
 		7F16C0DE2F10000000000003 /* CompositeListProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F16C0DE2F10000000000103 /* CompositeListProvider.swift */; };
+		7FA11C0E2F20000000000001 /* ItemAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA11C0E2F20000000000101 /* ItemAction.swift */; };
+		7FA11C0E2F20000000000002 /* ItemActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA11C0E2F20000000000102 /* ItemActionTests.swift */; };
 		7F16C0DE2F10000000000008 /* CommandSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F16C0DE2F10000000000108 /* CommandSettingsModel.swift */; };
 		7F16C0DE2F10000000000004 /* CommandSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F16C0DE2F10000000000104 /* CommandSettingsTests.swift */; };
 		7F16C0DE2F10000000000005 /* TerminalLauncherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F16C0DE2F10000000000105 /* TerminalLauncherTests.swift */; };
@@ -112,6 +114,8 @@
 		7F16C0DE2F10000000000101 /* TerminalLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TerminalLauncher.swift; path = src/TerminalLauncher.swift; sourceTree = "<group>"; };
 		7F16C0DE2F10000000000102 /* CommandListProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CommandListProvider.swift; path = src/CommandListProvider.swift; sourceTree = "<group>"; };
 		7F16C0DE2F10000000000103 /* CompositeListProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CompositeListProvider.swift; path = src/CompositeListProvider.swift; sourceTree = "<group>"; };
+		7FA11C0E2F20000000000101 /* ItemAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ItemAction.swift; path = src/ItemAction.swift; sourceTree = "<group>"; };
+		7FA11C0E2F20000000000102 /* ItemActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ItemActionTests.swift; path = "dmenu-macTests/ItemActionTests.swift"; sourceTree = "<group>"; };
 		7F16C0DE2F10000000000108 /* CommandSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CommandSettingsModel.swift; path = src/CommandSettingsModel.swift; sourceTree = "<group>"; };
 		7F16C0DE2F10000000000104 /* CommandSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CommandSettingsTests.swift; path = "dmenu-macTests/CommandSettingsTests.swift"; sourceTree = "<group>"; };
 		7F16C0DE2F10000000000105 /* TerminalLauncherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TerminalLauncherTests.swift; path = "dmenu-macTests/TerminalLauncherTests.swift"; sourceTree = "<group>"; };
@@ -172,6 +176,7 @@
 				7F16C0DE2F10000000000105 /* TerminalLauncherTests.swift */,
 				7F16C0DE2F10000000000106 /* CommandListProviderTests.swift */,
 				7F16C0DE2F10000000000107 /* CompositeListProviderTests.swift */,
+				7FA11C0E2F20000000000102 /* ItemActionTests.swift */,
 				7F16C0DE2F10000000000109 /* CommandSettingsModelTests.swift */,
 				7FCEF3E32EF89BB900301202 /* SearchViewControllerTests.swift */,
 				BAFA97BFB86D4BBEA3CA3C69 /* CommandArgumentsTests.swift */,
@@ -233,6 +238,7 @@
 				7F16C0DE2F10000000000101 /* TerminalLauncher.swift */,
 				7F16C0DE2F10000000000102 /* CommandListProvider.swift */,
 				7F16C0DE2F10000000000103 /* CompositeListProvider.swift */,
+				7FA11C0E2F20000000000101 /* ItemAction.swift */,
 				7F16C0DE2F10000000000108 /* CommandSettingsModel.swift */,
 				7F3278E81C71C9CE00AFB227 /* AppDelegate.swift */,
 				7F2CCA2F268FE38C00C14B29 /* AppListProvider.swift */,
@@ -418,6 +424,7 @@
 				7F16C0DE2F10000000000001 /* TerminalLauncher.swift in Sources */,
 				7F16C0DE2F10000000000002 /* CommandListProvider.swift in Sources */,
 				7F16C0DE2F10000000000003 /* CompositeListProvider.swift in Sources */,
+				7FA11C0E2F20000000000001 /* ItemAction.swift in Sources */,
 				7F16C0DE2F10000000000008 /* CommandSettingsModel.swift in Sources */,
 				7FCEF3DF2EF89BAE00301202 /* ProviderFactory.swift in Sources */,
 				7F2CCA32268FEDF600C14B29 /* PipeListProvider.swift in Sources */,
@@ -443,6 +450,7 @@
 				7F16C0DE2F10000000000005 /* TerminalLauncherTests.swift in Sources */,
 				7F16C0DE2F10000000000006 /* CommandListProviderTests.swift in Sources */,
 				7F16C0DE2F10000000000007 /* CompositeListProviderTests.swift in Sources */,
+				7FA11C0E2F20000000000002 /* ItemActionTests.swift in Sources */,
 				7F16C0DE2F10000000000009 /* CommandSettingsModelTests.swift in Sources */,
 				42312E27230649C0A82474D4 /* PipeListProviderTests.swift in Sources */,
 				A1B2C3D4E5F60718293A4B5C /* ReadStdinTests.swift in Sources */,
