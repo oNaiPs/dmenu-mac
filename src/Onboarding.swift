@@ -55,6 +55,14 @@ final class OnboardingSettings {
         set { defaults.set(newValue, forKey: Self.completedKey) }
     }
 
+    /// Records that the wizard opened but isn't done, so quitting mid-way doesn't make the next
+    /// launch look like an upgrade (by then the hotkey key exists) and it opens again.
+    func markStarted() {
+        if !completed {
+            completed = false
+        }
+    }
+
     /// Keys only an earlier run of dmenu-mac writes. KeyboardShortcuts stores the default
     /// hotkey on first use, so every install since it was adopted has that one.
     static let priorInstallKeys = ["KeyboardShortcuts_activateSearchGlobalShortcut", kLegacyKc]

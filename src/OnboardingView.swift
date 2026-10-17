@@ -298,6 +298,7 @@ extension AppDelegate {
                 exitOnClose: controller.exitOnClose,
                 readsFromPipe: controller.listProvider is PipeListProvider)
             if show {
+                settings.markStarted()
                 OnboardingWindowController.shared.show()
             }
         }

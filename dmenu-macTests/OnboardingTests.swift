@@ -140,6 +140,27 @@ final class OnboardingTests: XCTestCase {
         }
     }
 
+    func testQuittingMidWayShowsItAgainNextLaunch() {
+        // First launch of a new install: nothing stored, so the wizard opens.
+        settings.markCompletedIfUpgrading()
+        settings.markStarted()
+        // The hotkey setup writes its key; then the user quits with the wizard open.
+        defaults.set("x", forKey: "KeyboardShortcuts_activateSearchGlobalShortcut")
+
+        let nextLaunch = OnboardingSettings(defaults: defaults)
+        nextLaunch.markCompletedIfUpgrading()
+
+        XCTAssertFalse(nextLaunch.completed)
+        XCTAssertTrue(OnboardingGate.shouldShow(completed: nextLaunch.completed, launchedAsApp: true,
+                                                exitOnClose: false, readsFromPipe: false, isTesting: false))
+    }
+
+    func testMarkStartedKeepsCompletion() {
+        settings.completed = true
+        settings.markStarted()
+        XCTAssertTrue(settings.completed)
+    }
+
     func testUpgradeCheckLeavesAnExplicitAnswerAlone() {
         settings.completed = false
         defaults.set(true, forKey: UserDefaults.CommandKeys.enabled)
