@@ -54,6 +54,10 @@ The launcher does not steal focus: the app you were in stays in front and gets t
 
 The list refreshes on its own when apps are installed or removed.
 
+## Aliases
+
+Give anything in the list a short keyword in Settings → Aliases, such as `ff` for Firefox or `term` for Ghostty. Typing the alias exactly (in any case) puts its target first, ahead of the usual fuzzy matches, and partial typing like `ter` still lists it. Aliases don't apply to menus piped in on stdin.
+
 ## Running commands
 
 If nothing matches what you typed, Enter runs the text as a shell command in your login shell, from your home directory. `mpv ~/Movies/clip.mp4` plays a video without opening a terminal. Shift Enter does the same even when something matches.
@@ -73,6 +77,7 @@ Open Settings with **⌘ ,** while the launcher is up, or from the menu bar icon
 
 - **General**: the global hotkey, **Launch at login**, and the terminal setup described above.
 - **Appearance**: bar position (top or bottom of the screen), opacity, colors for the text, selection, and background, and the font and its size. **Reset to Defaults** undoes it all.
+- **Aliases**: short keywords for items in the list (see above).
 
 The menu bar icon also lets you show the launcher and quit.
 

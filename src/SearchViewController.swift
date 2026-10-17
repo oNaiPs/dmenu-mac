@@ -75,7 +75,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
 
         // Create search service
         if let provider = listProvider {
-            searchService = SearchService(provider: provider)
+            searchService = AliasSearchService.make(provider: provider)
         }
 
         if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {

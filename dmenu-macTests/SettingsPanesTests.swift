@@ -59,6 +59,22 @@ final class SettingsPanesTests: XCTestCase {
         XCTAssertGreaterThan(appearance.height, general.height)
     }
 
+    // MARK: - Aliases
+
+    func testAliasesPaneMetadata() {
+        let pane = AliasSettingsView.pane()
+
+        XCTAssertEqual(pane.paneIdentifier, .aliases)
+        XCTAssertEqual(pane.paneTitle, "Aliases")
+        XCTAssertNotNil(pane.toolbarItemIcon)
+    }
+
+    func testAliasesPaneHasUsableFittingSize() {
+        let size = AliasSettingsView.pane().view.fittingSize
+        XCTAssertEqual(size.width, SettingsLayout.paneWidth, accuracy: 0.5)
+        XCTAssertGreaterThan(size.height, 40)
+    }
+
     // MARK: - Memory management
 
     func testPanesCanBeDeallocated() {
