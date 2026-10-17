@@ -94,10 +94,12 @@ final class SearchShortcutsTests: XCTestCase {
 
     func testDefaultKeywords() {
         let keywords = settings.shortcuts.map(\.keyword)
-        for keyword in ["g", "ddg", "gh", "yt", "w", "c", "claude", "gpt", "chatgpt", "p", "cc", "cx"] {
+        for keyword in ["g", "ddg", "ghs", "yt", "w", "c", "gpt", "chatgpt", "p", "cc", "cx"] {
             XCTAssertTrue(keywords.contains(keyword), "missing default \(keyword)")
         }
         XCTAssertEqual(Set(keywords).count, keywords.count, "default keywords are unique")
+        XCTAssertFalse(keywords.contains("gh"), "gh is the GitHub CLI")
+        XCTAssertFalse(keywords.contains("claude"), "claude is the Claude Code CLI")
         for shortcut in settings.shortcuts {
             XCTAssertTrue(shortcut.template.contains(SearchShortcut.placeholder))
             if shortcut.kind == .url {
@@ -121,6 +123,18 @@ final class SearchShortcutsTests: XCTestCase {
         XCTAssertEqual(settings.shortcuts, [])
     }
 
+    func testInvalidEntriesAreSkippedNotTheWholeList() {
+        let json = """
+            [{"keyword": "mdn", "name": "MDN", "template": "https://mdn.io/{query}", "kind": "url"},
+             {"keyword": "x", "name": "X", "template": "x {query}", "kind": "spaceship"},
+             {"keyword": "y"}]
+            """
+        defaults.set(Data(json.utf8), forKey: UserDefaults.SearchShortcutKeys.shortcuts)
+        XCTAssertEqual(settings.shortcuts.map(\.keyword), ["mdn"])
+        XCTAssertNotNil(defaults.data(forKey: UserDefaults.SearchShortcutKeys.shortcuts),
+                        "reading must not write back over the stored list")
+    }
+
     func testCorruptDataFallsBackToDefaults() {
         defaults.set(Data("nope".utf8), forKey: UserDefaults.SearchShortcutKeys.shortcuts)
         XCTAssertEqual(settings.shortcuts, SearchShortcut.defaults)
@@ -140,12 +154,13 @@ final class SearchShortcutsTests: XCTestCase {
     func testProviderOffersShortcutAndForwardsEverythingElse() {
         let inner = MockListProvider(items: [ListItem(name: "Safari", data: nil)])
         var opened = [URL]()
-        let provider = SearchShortcutProvider(wrapping: inner, settings: settings) { opened.append($0) }
+        let provider = SearchShortcutProvider(wrapping: inner, settings: settings, openURL: { opened.append($0) })
 
         XCTAssertEqual(provider.get().map(\.name), ["Safari"])
-        XCTAssertTrue(provider.items(for: "safari").isEmpty)
+        XCTAssertTrue(provider.items(for: "safari").items.isEmpty)
 
-        let items = provider.items(for: "g swift actors")
+        let items = provider.items(for: "g swift actors").items
+        XCTAssertFalse(provider.items(for: "g swift actors").afterMatches)
         XCTAssertEqual(items.map(\.name), ["Search Google for 'swift actors'"])
 
         provider.doAction(item: items[0])
@@ -161,11 +176,23 @@ final class SearchShortcutsTests: XCTestCase {
 
     func testSearchServicePutsShortcutFirst() {
         let inner = MockListProvider(items: [ListItem(name: "Google Chrome", data: nil)])
-        let provider = SearchShortcutProvider(wrapping: inner, settings: settings) { _ in }
+        let provider = SearchShortcutProvider(wrapping: inner, settings: settings, openURL: { _ in })
         let service = SearchService(provider: provider)
 
         XCTAssertEqual(service.search(query: "g chrome").first?.name, "Search Google for 'chrome'")
         XCTAssertEqual(service.search(query: "chrome").map(\.name), ["Google Chrome"])
+    }
+
+    func testShortcutGoesLastWhenKeywordIsAListedCommand() {
+        settings.shortcuts = [SearchShortcut(keyword: "w", name: "Wikipedia",
+                                             template: "https://w.org/?q={query}", kind: .url)]
+        let inner = MockListProvider(items: [ListItem(name: "w", data: nil)])
+        let provider = SearchShortcutProvider(wrapping: inner, settings: settings,
+                                              isCommand: { $0 == "w" }, openURL: { _ in })
+        let service = SearchService(provider: provider)
+
+        XCTAssertEqual(service.search(query: "w swift").last?.name, "Search Wikipedia for 'swift'")
+        XCTAssertTrue(provider.items(for: "w swift").afterMatches)
     }
 
     // MARK: - Settings
@@ -192,7 +219,7 @@ final class SearchShortcutsTests: XCTestCase {
     }
 
     func testShortcutsPane() {
-        let pane = SearchShortcutsSettingsView.pane()
+        let pane = SearchShortcutsSettingsView.pane(settings: settings)
         XCTAssertEqual(pane.paneIdentifier, .shortcuts)
         XCTAssertEqual(pane.paneTitle, "Shortcuts")
         XCTAssertNotNil(pane.toolbarItemIcon)
@@ -202,7 +229,7 @@ final class SearchShortcutsTests: XCTestCase {
     }
 
     func testShortcutListScrollsWhenItOverflows() {
-        let pane = SearchShortcutsSettingsView.pane()
+        let pane = SearchShortcutsSettingsView.pane(settings: settings)
         let window = NSWindow(contentViewController: pane)
         window.layoutIfNeeded()
         pane.view.layoutSubtreeIfNeeded()

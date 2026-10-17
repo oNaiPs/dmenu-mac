@@ -86,6 +86,15 @@ final class CommandListProviderTests: XCTestCase {
                        ["nvim", "ranger"])
     }
 
+    func testHasCommandOnlyWhenListingIsEnabled() {
+        let provider = makeProvider()
+        load(provider)
+        XCTAssertFalse(provider.hasCommand("nvim"), "listing is off")
+        settings.enabled = true
+        XCTAssertTrue(provider.hasCommand("nvim"))
+        XCTAssertFalse(provider.hasCommand("nv"))
+    }
+
     // MARK: - $PATH discovery
 
     // Uses /bin/sh with explicit scripts so tests never run the developer's rc files.

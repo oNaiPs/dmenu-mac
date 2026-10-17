@@ -16,9 +16,15 @@
 
 import Cocoa
 
-/// A provider with items that depend on what was typed. SearchService puts them above the fuzzy matches.
+/// Items that depend on what was typed, and whether they go before or after the fuzzy matches.
+struct QueryItems {
+    var items: [ListItem] = []
+    var afterMatches = false
+}
+
+/// A provider with items that depend on what was typed, merged into the results by SearchService.
 protocol QueryListProvider {
-    func items(for query: String) -> [ListItem]
+    func items(for query: String) -> QueryItems
 }
 
 /// A shortcut picked from the results, with the query typed after its keyword.
@@ -35,9 +41,13 @@ class SearchShortcutProvider: ListProvider, QueryListProvider {
     private let settings: SearchShortcutSettings
     private let launcher: TerminalLauncher
     private let openURL: (URL) -> Void
+    private let isCommand: (String) -> Bool
 
+    /// - Parameter isCommand: whether a word is a listed $PATH program; such input is likely a command,
+    ///   e.g. `gh pr list`, so the shortcut goes after the regular matches.
     init(wrapping wrapped: ListProvider,
          settings: SearchShortcutSettings = .shared,
+         isCommand: @escaping (String) -> Bool = { _ in false },
          launcher: TerminalLauncher = TerminalLauncher(),
          openURL: @escaping (URL) -> Void = { url in
             DispatchQueue.main.async { NSWorkspace.shared.open(url) }
@@ -46,13 +56,17 @@ class SearchShortcutProvider: ListProvider, QueryListProvider {
         self.settings = settings
         self.launcher = launcher
         self.openURL = openURL
+        self.isCommand = isCommand
     }
 
-    func items(for query: String) -> [ListItem] {
-        return settings.matches(for: query).map { match in
+    func items(for query: String) -> QueryItems {
+        let matches = settings.matches(for: query)
+        guard let keyword = SearchShortcut.parse(query)?.keyword, !matches.isEmpty else { return QueryItems() }
+        let items = matches.map { match in
             ListItem(name: match.shortcut.title(for: match.query),
                      data: SearchShortcutMatch(shortcut: match.shortcut, query: match.query))
         }
+        return QueryItems(items: items, afterMatches: isCommand(keyword))
     }
 
     func get() -> [ListItem] {

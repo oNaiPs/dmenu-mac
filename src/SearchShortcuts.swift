@@ -83,20 +83,19 @@ struct SearchShortcut: Codable, Equatable {
         return !keyword.isEmpty && keyword.rangeOfCharacter(from: .whitespacesAndNewlines) == nil
     }
 
+    /// Keywords avoid names of common command-line programs (`gh`, `claude`), so typed commands still run.
     static let defaults: [SearchShortcut] = [
         SearchShortcut(keyword: "g", name: "Google",
                        template: "https://www.google.com/search?q={query}", kind: .url),
         SearchShortcut(keyword: "ddg", name: "DuckDuckGo",
                        template: "https://duckduckgo.com/?q={query}", kind: .url),
-        SearchShortcut(keyword: "gh", name: "GitHub",
+        SearchShortcut(keyword: "ghs", name: "GitHub",
                        template: "https://github.com/search?q={query}", kind: .url),
         SearchShortcut(keyword: "yt", name: "YouTube",
                        template: "https://www.youtube.com/results?search_query={query}", kind: .url),
         SearchShortcut(keyword: "w", name: "Wikipedia",
                        template: "https://en.wikipedia.org/w/index.php?search={query}", kind: .url),
         SearchShortcut(keyword: "c", name: "Claude",
-                       template: "https://claude.ai/new?q={query}", kind: .url),
-        SearchShortcut(keyword: "claude", name: "Claude",
                        template: "https://claude.ai/new?q={query}", kind: .url),
         SearchShortcut(keyword: "gpt", name: "ChatGPT",
                        template: "https://chatgpt.com/?q={query}", kind: .url),
@@ -119,7 +118,15 @@ extension UserDefaults {
 
 /// Persists the shortcut list in UserDefaults; the defaults apply until the user edits it.
 class SearchShortcutSettings {
-    static let shared = SearchShortcutSettings()
+    /// Under XCTest this uses a scratch suite, so tests never read or change the user's shortcuts.
+    static let shared: SearchShortcutSettings = {
+        guard ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil else {
+            return SearchShortcutSettings()
+        }
+        let suiteName = "dmenu-mac.tests.searchShortcuts"
+        UserDefaults().removePersistentDomain(forName: suiteName)
+        return SearchShortcutSettings(defaults: UserDefaults(suiteName: suiteName)!)
+    }()
 
     private let defaults: UserDefaults
 
@@ -130,10 +137,11 @@ class SearchShortcutSettings {
     var shortcuts: [SearchShortcut] {
         get {
             guard let data = defaults.data(forKey: UserDefaults.SearchShortcutKeys.shortcuts),
-                  let stored = try? JSONDecoder().decode([SearchShortcut].self, from: data) else {
+                  let stored = try? JSONDecoder().decode([LenientShortcut].self, from: data) else {
                 return SearchShortcut.defaults
             }
-            return stored
+            // Entries that no longer decode, e.g. an unknown kind, are skipped rather than losing the list.
+            return stored.compactMap(\.shortcut)
         }
         set {
             guard let data = try? JSONEncoder().encode(newValue) else { return }
@@ -152,5 +160,14 @@ class SearchShortcutSettings {
         return shortcuts
             .filter { $0.keyword.lowercased() == keyword }
             .map { ($0, parsed.query) }
+    }
+}
+
+/// Decodes one stored shortcut, yielding nil instead of failing the whole list.
+private struct LenientShortcut: Decodable {
+    let shortcut: SearchShortcut?
+
+    init(from decoder: Decoder) throws {
+        shortcut = try? SearchShortcut(from: decoder)
     }
 }

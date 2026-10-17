@@ -45,8 +45,9 @@ class SearchService {
             return items.sorted { $0.name < $1.name }
         }
 
-        // Shortcuts such as "g <query>" go first
-        let queryItems = (provider as? QueryListProvider)?.items(for: query) ?? []
+        // Shortcuts such as "g <query>". Only found when the QueryListProvider is the outermost provider,
+        // i.e. not wrapped by another provider such as CompositeListProvider.
+        let queryItems = (provider as? QueryListProvider)?.items(for: query) ?? QueryItems()
 
         // Perform fuzzy search
         let pattern = fuse.createPattern(from: query)
@@ -59,8 +60,9 @@ class SearchService {
         }
 
         // Sort by score (lower is better) and return items
-        return queryItems + scoredItems
+        let matches = scoredItems
             .sorted { $0.score < $1.score }
             .map { $0.item }
+        return queryItems.afterMatches ? matches + queryItems.items : queryItems.items + matches
     }
 }

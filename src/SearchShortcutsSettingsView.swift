@@ -59,7 +59,7 @@ private struct EditingShortcut: Identifiable {
 }
 
 struct SearchShortcutsSettingsView: View {
-    @StateObject private var model = SearchShortcutsSettingsModel()
+    @StateObject private var model: SearchShortcutsSettingsModel
     @State private var selection: Int?
     @State private var editing: EditingShortcut?
 
@@ -123,6 +123,10 @@ struct SearchShortcutsSettingsView: View {
     }
 
     static let listHeight: CGFloat = 260
+
+    init(settings: SearchShortcutSettings = .shared) {
+        _model = StateObject(wrappedValue: SearchShortcutsSettingsModel(settings: settings))
+    }
 
     private func row(_ shortcut: SearchShortcut) -> some View {
         HStack(alignment: .firstTextBaseline) {
@@ -195,14 +199,14 @@ private struct SearchShortcutEditor: View {
 }
 
 extension SearchShortcutsSettingsView {
-    static func pane() -> SettingsPane {
+    static func pane(settings: SearchShortcutSettings = .shared) -> SettingsPane {
         Settings.PaneHostingController(pane: Settings.Pane(
             identifier: .shortcuts,
             title: "Shortcuts",
             toolbarIcon: NSImage(systemSymbolName: "magnifyingglass",
                                  accessibilityDescription: "Search shortcuts settings")!
         ) {
-            SearchShortcutsSettingsView()
+            SearchShortcutsSettingsView(settings: settings)
         })
     }
 }

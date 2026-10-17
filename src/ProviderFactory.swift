@@ -33,7 +33,7 @@ class ProviderFactory {
             let apps = AppListProvider()
             let commands = CommandListProvider(inputFallback: apps)
             let composite = CompositeListProvider(providers: [apps, commands], inputProvider: commands)
-            return SearchShortcutProvider(wrapping: composite)
+            return SearchShortcutProvider(wrapping: composite, isCommand: commands.hasCommand)
         }
     }
 }

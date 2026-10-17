@@ -75,10 +75,10 @@ Type a keyword, a space, and a query to search the web or ask an LLM. `g swift a
 | --- | --- |
 | `g` | Google |
 | `ddg` | DuckDuckGo |
-| `gh` | GitHub search |
+| `ghs` | GitHub search |
 | `yt` | YouTube |
 | `w` | Wikipedia |
-| `c`, `claude` | Claude |
+| `c` | Claude |
 | `gpt`, `chatgpt` | ChatGPT |
 | `p` | Perplexity |
 | `cc` | `claude "<prompt>"` in your terminal (Claude Code) |
@@ -89,7 +89,7 @@ Edit them in Settings → Shortcuts. Each shortcut has a keyword, a name, a temp
 - **Browser**: `{query}` in the template is replaced by what you typed, URL-encoded, e.g. `https://www.google.com/search?q={query}`.
 - **Terminal**: `{query}` is replaced by what you typed, shell-quoted, and the command runs in the terminal picked in Settings → General, e.g. `claude {query}`.
 
-Keywords are case-insensitive. Shortcuts are off when a list is piped in.
+Keywords are case-insensitive. If a keyword is also a program listed from your `$PATH`, its shortcut is listed after the other matches. **Shift Enter** always runs what you typed, even when a shortcut matches. Shortcuts are off when a list is piped in.
 
 ## Settings
 
