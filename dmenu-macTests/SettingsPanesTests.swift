@@ -59,6 +59,46 @@ final class SettingsPanesTests: XCTestCase {
         XCTAssertGreaterThan(appearance.height, general.height)
     }
 
+    // MARK: - Aliases
+
+    func testAliasesPaneMetadata() {
+        let pane = AliasSettingsView.pane()
+
+        XCTAssertEqual(pane.paneIdentifier, .aliases)
+        XCTAssertEqual(pane.paneTitle, "Aliases")
+        XCTAssertNotNil(pane.toolbarItemIcon)
+    }
+
+    func testAliasesPaneHasUsableFittingSize() {
+        let size = AliasSettingsView.pane().view.fittingSize
+        XCTAssertEqual(size.width, SettingsLayout.paneWidth, accuracy: 0.5)
+        XCTAssertGreaterThan(size.height, 40)
+    }
+
+    func testManyAliasesScrollInsteadOfGrowingThePane() {
+        AliasSettings.shared.aliases = (0..<60).map { Alias(keyword: "a\($0)", target: "Item \($0)") }
+        defer { AliasSettings.shared.aliases = [] }
+
+        let pane = AliasSettingsView.pane()
+        let window = NSWindow(contentViewController: pane)
+        window.layoutIfNeeded()
+        pane.view.layoutSubtreeIfNeeded()
+
+        let list = scrollViews(in: pane.view).first { $0.frame.height == AliasSettingsView.listHeight }
+        guard let list, let document = list.documentView else {
+            return XCTFail("alias list should be in its own scroll view")
+        }
+        XCTAssertGreaterThan(document.frame.height, list.frame.height, "60 aliases overflow the list")
+        XCTAssertTrue(list.hasVerticalScroller, "an overflowing list must scroll")
+        XCTAssertNotEqual(list.verticalScrollElasticity, .none, "scrolling must not be disabled")
+        XCTAssertLessThan(pane.view.fittingSize.height, 600, "pane fits a normal screen")
+    }
+
+    private func scrollViews(in view: NSView) -> [NSScrollView] {
+        let own = (view as? NSScrollView).map { [$0] } ?? []
+        return own + view.subviews.flatMap(scrollViews)
+    }
+
     // MARK: - Memory management
 
     func testPanesCanBeDeallocated() {
