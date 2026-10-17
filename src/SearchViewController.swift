@@ -75,7 +75,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
 
         // Create search service
         if let provider = listProvider {
-            searchService = SearchService(provider: provider)
+            searchService = SearchService(provider: provider, usage: UsageStore.shared)
         }
 
         if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
@@ -224,6 +224,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
     /// With --no-custom only list items are accepted.
     func submit(preferTypedInput: Bool) {
         if !(preferTypedInput && allowCustomInput), let item = resultsText.selectedItem() {
+            searchService?.recordSelection(item)
             listProvider?.doAction(item: item)
         } else if allowCustomInput, let input = typedInput() {
             listProvider?.doAction(input: input)

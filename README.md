@@ -26,7 +26,7 @@ To call `dmenu-mac` from scripts, put `dmenu-mac.app/Contents/Resources/dmenu-ma
 
 1. Open dmenu-mac. It lives in the menu bar and waits for its hotkey.
 2. Press **⌘ Space** anywhere to bring up the launcher.
-3. Start typing. Matching is fuzzy and case-insensitive, so `safri` still finds Safari.
+3. Start typing. Matching is fuzzy and case-insensitive, so `safri` still finds Safari. Things you open often and recently rank higher, and come first before you type anything.
 4. Press **Enter** to open the highlighted result, or **Esc** to dismiss.
 
 Tip: dmenu-mac is best paired with Spotlight's shortcut turned off (System Settings → Keyboard → Keyboard Shortcuts → Spotlight), or pick a different hotkey in dmenu-mac's settings.
@@ -53,6 +53,8 @@ The launcher does not steal focus: the app you were in stays in front and gets t
 - Optionally, command-line programs from your `$PATH` (see below).
 
 The list refreshes on its own when apps are installed or removed.
+
+Results are ranked by how well they match, nudged by how often and how recently you've opened each one. Usage fades over a few weeks, so old habits drop back down. Menus piped in from scripts are never recorded.
 
 ## Running commands
 
