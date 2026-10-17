@@ -1,7 +1,7 @@
 import XCTest
 @testable import dmenu_mac
 
-/// Saves and restores the appearance keys, since tests run against the host app's real defaults.
+/// Saves and restores the appearance keys in the suite tests use instead of the real defaults.
 struct AppearanceDefaultsSnapshot {
     static let keys = [
         UserDefaults.AppearanceKeys.searchTextColor,
@@ -19,7 +19,7 @@ struct AppearanceDefaultsSnapshot {
     private let saved: [String: Any]
 
     init() {
-        let defaults = UserDefaults.standard
+        let defaults = AppearanceManager.appDefaults
         var saved = [String: Any]()
         for key in Self.keys {
             saved[key] = defaults.object(forKey: key)
@@ -28,12 +28,12 @@ struct AppearanceDefaultsSnapshot {
     }
 
     static func clear() {
-        keys.forEach { UserDefaults.standard.removeObject(forKey: $0) }
+        keys.forEach { AppearanceManager.appDefaults.removeObject(forKey: $0) }
     }
 
     func restore() {
         Self.clear()
-        saved.forEach { UserDefaults.standard.set($0.value, forKey: $0.key) }
+        saved.forEach { AppearanceManager.appDefaults.set($0.value, forKey: $0.key) }
     }
 }
 
@@ -70,6 +70,16 @@ final class AppearanceManagerTests: XCTestCase {
     }
 
     // MARK: - Persistence
+
+    func testTestsNeverWriteTheRealDefaults() {
+        XCTAssertFalse(AppearanceManager.appDefaults === UserDefaults.standard)
+        let key = UserDefaults.AppearanceKeys.fontName
+        let real = UserDefaults.standard.object(forKey: key) as? String
+
+        AppearanceManager.shared.fontName = "IsolationProbe"
+
+        XCTAssertEqual(UserDefaults.standard.object(forKey: key) as? String, real)
+    }
 
     func testColorsRoundTripThroughUserDefaults() {
         let red = NSColor(srgbRed: 1, green: 0, blue: 0, alpha: 1)
@@ -110,7 +120,7 @@ final class AppearanceManagerTests: XCTestCase {
     }
 
     func testCorruptedColorDataFallsBackToDefault() {
-        UserDefaults.standard.set(Data([0x00, 0x01, 0x02]),
+        AppearanceManager.appDefaults.set(Data([0x00, 0x01, 0x02]),
                                   forKey: UserDefaults.AppearanceKeys.searchTextColor)
         XCTAssertEqual(manager.searchTextColor, NSColor.textColor)
     }
@@ -125,7 +135,7 @@ final class AppearanceManagerTests: XCTestCase {
     }
 
     func testUnknownWindowPositionFallsBackToDefault() {
-        UserDefaults.standard.set("sideways", forKey: UserDefaults.AppearanceKeys.windowPosition)
+        AppearanceManager.appDefaults.set("sideways", forKey: UserDefaults.AppearanceKeys.windowPosition)
         XCTAssertEqual(manager.windowPosition, .top)
     }
 
@@ -139,7 +149,7 @@ final class AppearanceManagerTests: XCTestCase {
     }
 
     func testUnknownScreenSelectionFallsBackToDefault() {
-        UserDefaults.standard.set("projector", forKey: UserDefaults.AppearanceKeys.screenSelection)
+        AppearanceManager.appDefaults.set("projector", forKey: UserDefaults.AppearanceKeys.screenSelection)
         XCTAssertEqual(manager.screenSelection, .activeWindow)
     }
 

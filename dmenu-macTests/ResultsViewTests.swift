@@ -113,7 +113,7 @@ final class ResultsViewTests: XCTestCase {
         view.list = items("a")
         let widthBefore = view.frame.width
 
-        let defaults = UserDefaults.standard
+        let defaults = AppearanceManager.appDefaults
         let key = UserDefaults.AppearanceKeys.fontSize
         let saved = defaults.object(forKey: key)
         defer {
@@ -134,7 +134,7 @@ final class ResultsViewTests: XCTestCase {
     private let appURL = URL(fileURLWithPath: "/System/Applications/Calculator.app")
 
     private func withIcons(_ enabled: Bool, _ body: () -> Void) {
-        let defaults = UserDefaults.standard
+        let defaults = AppearanceManager.appDefaults
         let key = UserDefaults.AppearanceKeys.showIcons
         let saved = defaults.object(forKey: key)
         defer {
