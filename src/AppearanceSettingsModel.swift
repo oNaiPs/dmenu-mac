@@ -57,6 +57,17 @@ final class AppearanceSettingsModel: NSObject, ObservableObject {
         "\(Int((windowOpacity * 100).rounded()))%"
     }
 
+    var showIcons: Bool {
+        get { manager.showIcons }
+        set {
+            update {
+                // Toggling doubles as a manual refresh of icons cached earlier.
+                IconCache.shared.removeAll()
+                manager.showIcons = newValue
+            }
+        }
+    }
+
     // MARK: - Colors
 
     var searchTextColor: Color {

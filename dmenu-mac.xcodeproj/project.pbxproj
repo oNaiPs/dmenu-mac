@@ -34,6 +34,7 @@
 		7F3278F71C71C9CE00AFB227 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278EF1C71C9CE00AFB227 /* SearchViewController.swift */; };
 		7F3279001C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278FF1C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift */; };
 		7F32790E1C71DF3E00AFB227 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F32790D1C71DF3E00AFB227 /* Carbon.framework */; };
+		1C0A1C0A2F20000000000001 /* ItemIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0A1C0A2F20000000000101 /* ItemIcons.swift */; };
 		7F5D0E261CACCD0100268983 /* ResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5D0E241CACCD0100268983 /* ResultsView.swift */; };
 		7F5D0E2C1CACCDD400268983 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F5D0E281CACCDD400268983 /* Main.storyboard */; };
 		7F6511F729A619DE007D3EB3 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6511F629A619DE007D3EB3 /* GeneralSettingsView.swift */; };
@@ -106,6 +107,7 @@
 		7F3278FF1C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VerticalAlignedTextFieldCell.swift; path = src/VerticalAlignedTextFieldCell.swift; sourceTree = "<group>"; };
 		7F32790D1C71DF3E00AFB227 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		7F3279111C71E02300AFB227 /* BridgingHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BridgingHeader.h; path = src/BridgingHeader.h; sourceTree = "<group>"; };
+		1C0A1C0A2F20000000000101 /* ItemIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ItemIcons.swift; path = src/ItemIcons.swift; sourceTree = "<group>"; };
 		7F5D0E241CACCD0100268983 /* ResultsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResultsView.swift; path = src/ResultsView.swift; sourceTree = "<group>"; };
 		7F5D0E291CACCDD400268983 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = src/Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7F6511F629A619DE007D3EB3 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GeneralSettingsView.swift; path = src/GeneralSettingsView.swift; sourceTree = "<group>"; };
@@ -256,6 +258,7 @@
 				7F2CCA31268FEDF600C14B29 /* PipeListProvider.swift */,
 				7F2CCA3D268FFDB500C14B29 /* ReadStdin.h */,
 				7F2CCA3E268FFDB500C14B29 /* ReadStdin.h.m */,
+				1C0A1C0A2F20000000000101 /* ItemIcons.swift */,
 				7F5D0E241CACCD0100268983 /* ResultsView.swift */,
 				7F3278EF1C71C9CE00AFB227 /* SearchViewController.swift */,
 				7F3278ED1C71C9CE00AFB227 /* SearchWindow.swift */,
@@ -416,6 +419,7 @@
 			files = (
 				7F3279001C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift in Sources */,
 				7F2CCA30268FE38C00C14B29 /* AppListProvider.swift in Sources */,
+				1C0A1C0A2F20000000000001 /* ItemIcons.swift in Sources */,
 				7F5D0E261CACCD0100268983 /* ResultsView.swift in Sources */,
 				7FCEF4112EFBE70300301202 /* AppearanceSettings.swift in Sources */,
 				7FCEF4122EFBE70300301202 /* AppearanceSettingsView.swift in Sources */,

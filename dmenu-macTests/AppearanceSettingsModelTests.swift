@@ -86,6 +86,29 @@ final class AppearanceSettingsModelTests: XCTestCase {
         XCTAssertEqual(model.fontSizeText, "21 pt")
     }
 
+    func testShowIconsIsOffByDefault() {
+        XCTAssertFalse(model.showIcons)
+    }
+
+    func testTogglingShowIconsStoresItAndNotifies() {
+        let notified = expectation(forNotification: .appearanceSettingsChanged, object: nil)
+        model.showIcons = true
+        wait(for: [notified], timeout: 1.0)
+
+        XCTAssertTrue(AppearanceManager.shared.showIcons)
+        XCTAssertTrue(model.showIcons)
+    }
+
+    func testTogglingShowIconsClearsIconCache() {
+        let app = URL(fileURLWithPath: "/System/Applications/Calculator.app")
+        _ = IconCache.shared.icon(for: app)
+        XCTAssertTrue(IconCache.shared.isCached(app))
+
+        model.showIcons = true
+
+        XCTAssertFalse(IconCache.shared.isCached(app))
+    }
+
     func testChangingColorPersistsAsArchivableColor() {
         let notified = expectation(forNotification: .appearanceSettingsChanged, object: nil)
         model.searchTextColor = Color(red: 1, green: 0, blue: 0)
@@ -118,10 +141,13 @@ final class AppearanceSettingsModelTests: XCTestCase {
         manager.fontSize = 40
         manager.windowPosition = .bottom
         manager.screenSelection = .mouse
+        manager.showIcons = true
 
         let notified = expectation(forNotification: .appearanceSettingsChanged, object: nil)
         model.resetToDefaults()
         wait(for: [notified], timeout: 1.0)
+
+        XCTAssertFalse(model.showIcons)
 
         XCTAssertEqual(manager.windowOpacity, 0.6, accuracy: 0.0001)
         XCTAssertEqual(model.opacityText, "60%")

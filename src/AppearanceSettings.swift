@@ -28,6 +28,7 @@ extension UserDefaults {
         static let fontSize = "appearance.fontSize"
         static let windowPosition = "appearance.windowPosition"
         static let screenSelection = "appearance.screenSelection"
+        static let showIcons = "appearance.showIcons"
     }
 }
 
@@ -61,6 +62,7 @@ class AppearanceManager {
         static let fontSize: CGFloat = 13.0
         static let windowPosition = WindowPosition.top
         static let screenSelection = ScreenSelection.activeWindow
+        static let showIcons = false
     }
 
     // MARK: - Color Properties
@@ -141,6 +143,11 @@ class AppearanceManager {
         set { defaults.set(newValue.rawValue, forKey: UserDefaults.AppearanceKeys.screenSelection) }
     }
 
+    var showIcons: Bool {
+        get { defaults.object(forKey: UserDefaults.AppearanceKeys.showIcons) as? Bool ?? Defaults.showIcons }
+        set { defaults.set(newValue, forKey: UserDefaults.AppearanceKeys.showIcons) }
+    }
+
     // MARK: - Helper Methods
     private func colorForKey(_ key: String) -> NSColor? {
         guard let data = defaults.data(forKey: key) else { return nil }
@@ -166,6 +173,7 @@ class AppearanceManager {
         fontSize = Defaults.fontSize
         windowPosition = Defaults.windowPosition
         screenSelection = Defaults.screenSelection
+        showIcons = Defaults.showIcons
     }
 }
 

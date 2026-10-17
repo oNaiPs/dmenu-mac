@@ -12,7 +12,8 @@ struct AppearanceDefaultsSnapshot {
         UserDefaults.AppearanceKeys.fontName,
         UserDefaults.AppearanceKeys.fontSize,
         UserDefaults.AppearanceKeys.windowPosition,
-        UserDefaults.AppearanceKeys.screenSelection
+        UserDefaults.AppearanceKeys.screenSelection,
+        UserDefaults.AppearanceKeys.showIcons
     ]
 
     private let saved: [String: Any]
@@ -142,6 +143,15 @@ final class AppearanceManagerTests: XCTestCase {
         XCTAssertEqual(manager.screenSelection, .activeWindow)
     }
 
+    func testShowIconsDefaultsToOff() {
+        XCTAssertFalse(manager.showIcons)
+    }
+
+    func testShowIconsRoundTrip() {
+        manager.showIcons = true
+        XCTAssertTrue(AppearanceManager().showIcons)
+    }
+
     // MARK: - currentFont
 
     func testCurrentFontUsesSystemFontByDefault() {
@@ -179,6 +189,7 @@ final class AppearanceManagerTests: XCTestCase {
         manager.fontSize = 30
         manager.windowPosition = .bottom
         manager.screenSelection = .primary
+        manager.showIcons = true
 
         manager.resetToDefaults()
 
@@ -191,6 +202,7 @@ final class AppearanceManagerTests: XCTestCase {
         XCTAssertEqual(manager.fontSize, 13.0, accuracy: 0.0001)
         XCTAssertEqual(manager.windowPosition, .top)
         XCTAssertEqual(manager.screenSelection, .activeWindow)
+        XCTAssertFalse(manager.showIcons)
     }
 
     // MARK: - Keys and notifications

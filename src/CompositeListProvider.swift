@@ -20,11 +20,12 @@ import Foundation
  * Merge several providers into one list, routing each action back to the provider that owns the item
  */
 class CompositeListProvider: ListProvider {
-    private struct Tagged: UsageIdentifiable {
+    private struct Tagged: UsageIdentifiable, FileURLRepresentable {
         let providerIndex: Int
         let data: Any?
 
         var usageKey: String? { (data as? UsageIdentifiable)?.usageKey }
+        var fileURL: URL? { (data as? FileURLRepresentable)?.fileURL }
     }
 
     let providers: [ListProvider]
