@@ -53,6 +53,7 @@
 		0B0A4D1E0000000000000002 /* AutomationPermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0A4D1E0000000000000102 /* AutomationPermissions.swift */; };
 		0B0A4D1E0000000000000003 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0A4D1E0000000000000103 /* OnboardingView.swift */; };
 		0B0A4D1E0000000000000004 /* OnboardingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0A4D1E0000000000000104 /* OnboardingTests.swift */; };
+		0B0A4D1E0000000000000005 /* DockPresence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0A4D1E0000000000000105 /* DockPresence.swift */; };
 		7FCEF3DF2EF89BAE00301202 /* ProviderFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF3DA2EF89BAE00301202 /* ProviderFactory.swift */; };
 		7FA0D1E12F00000000000001 /* AppDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA0D1E02F00000000000001 /* AppDelegateTests.swift */; };
 		7FCEF3E42EF89BB900301202 /* AppListProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF3E02EF89BB900301202 /* AppListProviderTests.swift */; };
@@ -123,6 +124,7 @@
 		0B0A4D1E0000000000000102 /* AutomationPermissions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AutomationPermissions.swift; path = src/AutomationPermissions.swift; sourceTree = "<group>"; };
 		0B0A4D1E0000000000000103 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OnboardingView.swift; path = src/OnboardingView.swift; sourceTree = "<group>"; };
 		0B0A4D1E0000000000000104 /* OnboardingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OnboardingTests.swift; path = "dmenu-macTests/OnboardingTests.swift"; sourceTree = "<group>"; };
+		0B0A4D1E0000000000000105 /* DockPresence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DockPresence.swift; path = src/DockPresence.swift; sourceTree = "<group>"; };
 		7FA0D1E02F00000000000001 /* AppDelegateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegateTests.swift; path = "dmenu-macTests/AppDelegateTests.swift"; sourceTree = "<group>"; };
 		7FCEF3E02EF89BB900301202 /* AppListProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppListProviderTests.swift; path = "dmenu-macTests/AppListProviderTests.swift"; sourceTree = "<group>"; };
 		7FCEF3E12EF89BB900301202 /* MockListProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MockListProvider.swift; path = "dmenu-macTests/MockListProvider.swift"; sourceTree = "<group>"; };
@@ -241,6 +243,7 @@
 				0B0A4D1E0000000000000101 /* Onboarding.swift */,
 				0B0A4D1E0000000000000102 /* AutomationPermissions.swift */,
 				0B0A4D1E0000000000000103 /* OnboardingView.swift */,
+				0B0A4D1E0000000000000105 /* DockPresence.swift */,
 				7F3278E81C71C9CE00AFB227 /* AppDelegate.swift */,
 				7F2CCA2F268FE38C00C14B29 /* AppListProvider.swift */,
 				7F25568E269CF945002324AC /* CommandArguments.swift */,
@@ -428,6 +431,7 @@
 				0B0A4D1E0000000000000001 /* Onboarding.swift in Sources */,
 				0B0A4D1E0000000000000002 /* AutomationPermissions.swift in Sources */,
 				0B0A4D1E0000000000000003 /* OnboardingView.swift in Sources */,
+				0B0A4D1E0000000000000005 /* DockPresence.swift in Sources */,
 				7FCEF3DF2EF89BAE00301202 /* ProviderFactory.swift in Sources */,
 				7F2CCA32268FEDF600C14B29 /* PipeListProvider.swift in Sources */,
 				7F2CCA3F268FFDB500C14B29 /* ReadStdin.h.m in Sources */,

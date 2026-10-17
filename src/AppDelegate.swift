@@ -62,6 +62,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     // Opening the app again (Finder, Launchpad, Spotlight) shows the launcher, so it stays
     // reachable even when the menu bar icon is hidden.
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        // While Setup or Settings is open the Dock icon brings that window back instead.
+        if DockPresence.shared.reopen() {
+            return false
+        }
         resumeApp()
         return false
     }
@@ -101,11 +105,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     }
 
     @objc func openSettings() {
-        // show() only activates the app, which macOS 14+ may refuse for a background app.
+        // show() only activates the app, which macOS 14+ may refuse for an accessory app, so
+        // DockPresence makes it a regular app and orders the window front. It goes first so it
+        // remembers the app to return focus to.
+        if let window = settingsWindowController.window {
+            DockPresence.shared.show(window)
+        }
         settingsWindowController.show()
-        guard let window = settingsWindowController.window else { return }
-        window.makeKeyAndOrderFront(nil)
-        window.orderFrontRegardless()
     }
 
     private lazy var settings: [SettingsPane] = [

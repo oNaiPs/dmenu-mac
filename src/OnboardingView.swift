@@ -216,15 +216,30 @@ private extension AutomationStatus {
     }
 }
 
+/// ⌘W closes the window; the app has no File menu to provide it.
+final class OnboardingWindow: NSWindow {
+    override func performKeyEquivalent(with event: NSEvent) -> Bool {
+        if event.modifierFlags.intersection(.deviceIndependentFlagsMask) == .command,
+           event.charactersIgnoringModifiers == "w" {
+            performClose(nil)
+            return true
+        }
+        return super.performKeyEquivalent(with: event)
+    }
+}
+
 /// Hosts the wizard in a small standalone window.
 final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
     static let shared = OnboardingWindowController()
 
     let model: OnboardingModel
+    private let dockPresence: DockPresence
 
-    init(model: OnboardingModel = OnboardingModel()) {
+    init(model: OnboardingModel = OnboardingModel(), dockPresence: DockPresence = .shared) {
         self.model = model
-        let window = NSWindow(contentViewController: NSHostingController(rootView: OnboardingView(model: model)))
+        self.dockPresence = dockPresence
+        let window = OnboardingWindow(
+            contentViewController: NSHostingController(rootView: OnboardingView(model: model)))
         window.styleMask = [.titled, .closable]
         window.title = "dmenu-mac Setup"
         window.isReleasedWhenClosed = false
@@ -244,10 +259,8 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
         if reopening {
             model.restart()
         }
-        // dmenu-mac is a menu bar app, so it has to pull itself forward.
-        NSApp.activate(ignoringOtherApps: true)
-        window.makeKeyAndOrderFront(nil)
-        window.orderFrontRegardless()
+        // Shown in the Dock and ⌘Tab while open, so it can't get lost behind other windows.
+        dockPresence.show(window)
         if reopening, let content = window.contentViewController?.view {
             // SwiftUI sizes the window lazily; size it first so center() uses the real frame.
             window.setContentSize(content.fittingSize)
