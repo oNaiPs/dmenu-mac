@@ -23,6 +23,9 @@ protocol ListProvider {
     // Performs action on a selected item
     func doAction(item: ListItem)
 
+    // Performs an alternate action (⌘/⌥/⌃ Enter) on a selected item
+    func doAction(item: ListItem, action: ItemAction)
+
     // Performs action on free text typed by the user
     func doAction(input: String)
 
@@ -31,6 +34,11 @@ protocol ListProvider {
 }
 
 extension ListProvider {
+    /// Providers without alternate actions treat them as plain Enter.
+    func doAction(item: ListItem, action: ItemAction) {
+        doAction(item: item)
+    }
+
     func doAction(input: String) {}
     func cancel() {}
 }

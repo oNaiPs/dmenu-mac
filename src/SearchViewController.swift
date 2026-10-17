@@ -206,9 +206,10 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
         } else if movingRight {
             resultsText.selectedIndex = (resultsText.selectedIndex + 1) % resultsText.list.count
             return true
-        } else if commandSelector == #selector(insertNewline(_:)) {
-            let shiftPressed = NSApp.currentEvent?.modifierFlags.contains(.shift) ?? false
-            submit(preferTypedInput: shiftPressed)
+        } else if ItemAction.isSubmit(commandSelector, event: NSApp.currentEvent) {
+            let modifiers = NSApp.currentEvent?.modifierFlags ?? []
+            let shiftPressed = modifiers.contains(.shift)
+            submit(preferTypedInput: shiftPressed, action: shiftPressed ? .open : ItemAction(modifiers: modifiers))
             return true
         } else if commandSelector == #selector(cancelOperation(_:)) {
             listProvider?.cancel()
@@ -222,10 +223,11 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
     /// Acts on the selected item, falling back to the typed text when nothing matches.
     /// With preferTypedInput (Shift+Enter) the typed text wins even if there are matches.
     /// With --no-custom only list items are accepted.
-    func submit(preferTypedInput: Bool) {
+    /// Alternate actions (⌘/⌥/⌃ Enter) only apply to a selected item, never to typed text.
+    func submit(preferTypedInput: Bool, action: ItemAction = .open) {
         if !(preferTypedInput && allowCustomInput), let item = resultsText.selectedItem() {
-            listProvider?.doAction(item: item)
-        } else if allowCustomInput, let input = typedInput() {
+            listProvider?.doAction(item: item, action: action)
+        } else if action == .open, allowCustomInput, let input = typedInput() {
             listProvider?.doAction(input: input)
         } else {
             return

@@ -185,6 +185,26 @@ final class CommandListProviderTests: XCTestCase {
         XCTAssertEqual(launcher.commands, ["nvim"])
     }
 
+    func testCopyPathUsesFirstProgramInPath() {
+        settings.enabled = true
+        let provider = makeProvider()
+        load(provider)
+        let pasteboard = NSPasteboard(name: NSPasteboard.Name("dmenu-mac-tests-\(UUID().uuidString)"))
+        defer { pasteboard.releaseGlobally() }
+        provider.fileActions.pasteboard = pasteboard
+
+        provider.doAction(item: ListItem(name: "nvim", data: Command(commandLine: "nvim")), action: .copyPath)
+
+        XCTAssertEqual(pasteboard.string(forType: .string), binDir.appendingPathComponent("nvim").path)
+        XCTAssertTrue(launcher.commands.isEmpty)
+    }
+
+    func testNewInstanceOfProgramRunsItInTerminal() {
+        makeProvider().doAction(item: ListItem(name: "nvim", data: Command(commandLine: "nvim")),
+                                action: .openNewInstance)
+        XCTAssertEqual(launcher.commands, ["nvim"])
+    }
+
     func testTypedInputOpensInTerminalWhenEnabled() {
         settings.enabled = true
         makeProvider().doAction(input: "nvim notes.md")

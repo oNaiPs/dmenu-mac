@@ -24,6 +24,7 @@ import Fuse
 class AppListProvider: ListProvider {
 
     var appDirDict = [String: Bool]()
+    var fileActions = FileActions()
 
     static let launchableExtensions: Set<String> = ["app", "prefPane"]
 
@@ -160,8 +161,15 @@ class AppListProvider: ListProvider {
     }
 
     func doAction(item: ListItem) {
+        doAction(item: item, action: .open)
+    }
+
+    func doAction(item: ListItem, action: ItemAction) {
         guard let app: URL = item.data as? URL else {
             NSLog("Cannot do action on item \(item.name)")
+            return
+        }
+        if fileActions.perform(action, on: app) {
             return
         }
         DispatchQueue.main.async {

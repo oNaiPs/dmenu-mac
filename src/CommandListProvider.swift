@@ -31,7 +31,10 @@ class CommandListProvider: ListProvider {
     private let searchPathsLoader: () -> [String]
     private let inputFallback: ListProvider?
 
+    var fileActions = FileActions()
+
     private var commands = [String]()
+    private var commandPaths = [String: String]()
     private var loaded = false
     private var loading = false
     private var fileWatcher: FileWatcher?
@@ -81,9 +84,12 @@ class CommandListProvider: ListProvider {
     }
 
     private func update(_ paths: [String]) {
-        let newCommands = CommandListProvider.executables(in: paths)
+        let found = CommandListProvider.executablePaths(in: paths)
+        let newCommands = found.map { $0.name }
+        let newPaths = Dictionary(found.map { ($0.name, $0.path) }, uniquingKeysWith: { first, _ in first })
         queue.async(flags: .barrier) {
             self.commands = newCommands
+            self.commandPaths = newPaths
             self.loaded = true
             self.loading = false
         }
@@ -212,9 +218,14 @@ class CommandListProvider: ListProvider {
 
     /// Executable file names in the given directories, first occurrence winning like PATH lookup.
     static func executables(in paths: [String]) -> [String] {
+        return executablePaths(in: paths).map { $0.name }
+    }
+
+    /// Like executables(in:), with the full path of each program.
+    static func executablePaths(in paths: [String]) -> [(name: String, path: String)] {
         let fileManager = FileManager.default
         var seen = Set<String>()
-        var result = [String]()
+        var result = [(name: String, path: String)]()
         for path in paths {
             guard let names = try? fileManager.contentsOfDirectory(atPath: path) else { continue }
             for name in names.sorted() where !name.hasPrefix(".") && !seen.contains(name) {
@@ -224,7 +235,7 @@ class CommandListProvider: ListProvider {
                 if fileManager.fileExists(atPath: full, isDirectory: &isDir), !isDir.boolValue,
                    fileManager.isExecutableFile(atPath: full) {
                     seen.insert(name)
-                    result.append(name)
+                    result.append((name: name, path: full))
                 }
             }
         }
@@ -241,8 +252,18 @@ class CommandListProvider: ListProvider {
     }
 
     func doAction(item: ListItem) {
+        doAction(item: item, action: .open)
+    }
+
+    /// Reveal and copy work on the program's file; a new instance is just another terminal run.
+    func doAction(item: ListItem, action: ItemAction) {
         guard let command = item.data as? Command else {
             NSLog("Cannot do action on item \(item.name)")
+            return
+        }
+        if action == .reveal || action == .copyPath,
+           let path = queue.sync(execute: { commandPaths[command.commandLine] }) {
+            fileActions.perform(action, on: URL(fileURLWithPath: path))
             return
         }
         launcher.run(command.commandLine)

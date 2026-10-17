@@ -45,11 +45,15 @@ class CompositeListProvider: ListProvider {
     }
 
     func doAction(item: ListItem) {
+        doAction(item: item, action: .open)
+    }
+
+    func doAction(item: ListItem, action: ItemAction) {
         guard let tagged = item.data as? Tagged, providers.indices.contains(tagged.providerIndex) else {
             NSLog("Cannot do action on item \(item.name)")
             return
         }
-        providers[tagged.providerIndex].doAction(item: ListItem(name: item.name, data: tagged.data))
+        providers[tagged.providerIndex].doAction(item: ListItem(name: item.name, data: tagged.data), action: action)
     }
 
     func cancel() {
