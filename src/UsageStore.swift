@@ -39,7 +39,15 @@ extension ListItem {
  * the total halves every `halfLife`, so frequent and recent picks both rank higher.
  */
 class UsageStore {
-    static let shared = UsageStore()
+    static let shared = UsageStore(defaults: UsageStore.defaultDefaults())
+
+    /// Tests get a throwaway suite so they never touch the user's real history.
+    private static func defaultDefaults() -> UserDefaults {
+        guard ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil else { return .standard }
+        let suite = "dmenu-mac.tests.usage"
+        UserDefaults().removePersistentDomain(forName: suite)
+        return UserDefaults(suiteName: suite) ?? .standard
+    }
 
     static let defaultsKey = "usageHistory"
     /// Scores below this are dropped when saving, so the history doesn't grow forever.
@@ -70,8 +78,16 @@ class UsageStore {
         return decayed(entry)
     }
 
+    /// Picks up selections saved by other dmenu-mac processes, e.g. short-lived skhd runs
+    /// next to the menu bar instance.
+    func reload() {
+        entries = UsageStore.load(from: defaults)
+    }
+
     func record(_ item: ListItem) {
         guard let key = item.usageKey else { return }
+        // Read-modify-write so another process's records aren't overwritten.
+        reload()
         let current = entries[key].map(decayed) ?? 0
         entries[key] = Entry(score: current + 1, lastUsed: now())
         save()

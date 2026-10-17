@@ -63,6 +63,34 @@ final class UsageStoreTests: XCTestCase {
         XCTAssertEqual(makeStore().score(for: app("Safari")), 1, accuracy: 0.0001)
     }
 
+    func testInstancesSharingDefaultsDoNotOverwriteEachOther() {
+        let menuBar = makeStore()
+        let cli = makeStore()
+        menuBar.record(app("Safari"))
+        cli.record(app("Music"))
+        menuBar.record(app("Safari"))
+
+        let fresh = makeStore()
+        XCTAssertEqual(fresh.score(for: app("Safari")), 2, accuracy: 0.0001)
+        XCTAssertEqual(fresh.score(for: app("Music")), 1, accuracy: 0.0001)
+    }
+
+    func testSearchSeesRecordsFromAnotherInstance() {
+        let menuBar = makeStore()
+        let provider = MockListProvider(items: [app("Calculator"), app("Calendar")])
+        let service = SearchService(provider: provider, usage: menuBar)
+        XCTAssertEqual(service.search(query: "").first?.name, "Calculator")
+
+        makeStore().record(app("Calendar"))
+        XCTAssertEqual(service.search(query: "").first?.name, "Calendar")
+    }
+
+    func testSharedStoreIsIsolatedUnderTests() {
+        UsageStore.shared.record(app("SharedStoreProbe"))
+        let real = UserDefaults.standard.dictionary(forKey: UsageStore.defaultsKey)
+        XCTAssertNil(real?["file:/Applications/SharedStoreProbe.app"])
+    }
+
     func testStaleEntriesArePrunedOnSave() {
         let store = makeStore()
         store.record(app("Old"))

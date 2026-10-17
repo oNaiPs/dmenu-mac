@@ -50,6 +50,7 @@ class SearchService {
      */
     func search(query: String) -> [ListItem] {
         let items = provider.get()
+        usage?.reload()
 
         // Empty query returns most used items first, then the rest alphabetically
         if query.isEmpty {
