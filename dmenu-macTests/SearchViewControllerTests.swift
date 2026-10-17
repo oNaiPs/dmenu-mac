@@ -73,14 +73,16 @@ final class SearchViewControllerTests: XCTestCase {
         let provider = factory.createProvider(stdinContent: "option1\noption2\n")
 
         XCTAssertTrue(provider is PipeListProvider, "Should create PipeListProvider when stdin has content")
+        XCTAssertFalse(provider is QueryListProvider, "Shortcuts are off when piping a list")
     }
 
     func testProviderFactorySelectsAppAndCommandProvidersWhenStdinEmpty() {
         let factory = ProviderFactory()
         let provider = factory.createProvider(stdinContent: "")
 
-        guard let composite = provider as? CompositeListProvider else {
-            return XCTFail("Should create CompositeListProvider when stdin is empty")
+        guard let shortcuts = provider as? SearchShortcutProvider,
+              let composite = shortcuts.wrapped as? CompositeListProvider else {
+            return XCTFail("Should create CompositeListProvider wrapped in shortcuts when stdin is empty")
         }
         XCTAssertEqual(composite.providers.count, 2)
         XCTAssertTrue(composite.providers[0] is AppListProvider)

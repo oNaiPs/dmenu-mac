@@ -67,11 +67,36 @@ To launch `nvim`, `htop`, `ranger`, and friends in a terminal window:
 
 Programs from your login shell's `$PATH` (Homebrew, nix, `~/.local/bin`, ...) then show up alongside apps, and typed commands like `nvim notes.md` open in that terminal too. The first time Terminal or iTerm2 is used, macOS asks to let dmenu-mac control it.
 
+## Search shortcuts
+
+Type a keyword, a space, and a query to search the web or ask an LLM. `g swift actors` puts **Search Google for 'swift actors'** at the top of the list, and Enter opens it in your default browser.
+
+| Keyword | Opens |
+| --- | --- |
+| `g` | Google |
+| `ddg` | DuckDuckGo |
+| `gh` | GitHub search |
+| `yt` | YouTube |
+| `w` | Wikipedia |
+| `c`, `claude` | Claude |
+| `gpt`, `chatgpt` | ChatGPT |
+| `p` | Perplexity |
+| `cc` | `claude "<prompt>"` in your terminal (Claude Code) |
+| `cx` | `codex "<prompt>"` in your terminal (Codex) |
+
+Edit them in Settings → Shortcuts. Each shortcut has a keyword, a name, a template, and where it opens:
+
+- **Browser**: `{query}` in the template is replaced by what you typed, URL-encoded, e.g. `https://www.google.com/search?q={query}`.
+- **Terminal**: `{query}` is replaced by what you typed, shell-quoted, and the command runs in the terminal picked in Settings → General, e.g. `claude {query}`.
+
+Keywords are case-insensitive. Shortcuts are off when a list is piped in.
+
 ## Settings
 
 Open Settings with **⌘ ,** while the launcher is up, or from the menu bar icon.
 
 - **General**: the global hotkey, **Launch at login**, and the terminal setup described above.
+- **Shortcuts**: the search keywords described above. **Restore Defaults** brings back the built-in set.
 - **Appearance**: bar position (top or bottom of the screen), opacity, colors for the text, selection, and background, and the font and its size. **Reset to Defaults** undoes it all.
 
 The menu bar icon also lets you show the launcher and quit.
