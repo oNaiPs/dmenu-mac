@@ -22,6 +22,8 @@ import KeyboardShortcuts
 extension Settings.PaneIdentifier {
     static let general = Self("general")
     static let appearance = Self("appearance")
+    static let shortcuts = Self("shortcuts")
+    static let aliases = Self("aliases")
 }
 
 // import legacy settings if they existed
@@ -117,7 +119,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
 
     private lazy var settings: [SettingsPane] = [
         GeneralSettingsView.pane(),
-        AppearanceSettingsView.pane()
+        AppearanceSettingsView.pane(),
+        SearchShortcutsSettingsView.pane(),
+        AliasSettingsView.pane()
     ]
 
     private lazy var settingsWindowController: SettingsWindowController = {

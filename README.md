@@ -27,7 +27,7 @@ To call `dmenu-mac` from scripts, put `dmenu-mac.app/Contents/Resources/dmenu-ma
 1. Open dmenu-mac. It lives in the menu bar and waits for its hotkey.
    The first time, a short setup walks you through the hotkey, launching at login, and terminal programs. Every step can be skipped (Enter continues, Esc skips), and you can run it again from the menu bar icon with **Run Setup Again…**. It does not appear when dmenu-mac is started from a shell or a script.
 2. Press **⌘ Space** anywhere to bring up the launcher.
-3. Start typing. Matching is fuzzy and case-insensitive, so `safri` still finds Safari.
+3. Start typing. Matching is fuzzy and case-insensitive, so `safri` still finds Safari. Things you open often and recently rank higher, and come first before you type anything.
 4. Press **Enter** to open the highlighted result, or **Esc** to dismiss.
 
 Tip: dmenu-mac is best paired with Spotlight's shortcut turned off (System Settings → Keyboard → Keyboard Shortcuts → Spotlight), or pick a different hotkey in dmenu-mac's settings.
@@ -41,6 +41,9 @@ Tip: dmenu-mac is best paired with Spotlight's shortcut turned off (System Setti
 | **Shift Tab** / **←** | Move to the previous result |
 | **Enter** | Open the selected result, or run what you typed when nothing matches |
 | **Shift Enter** | Run what you typed even if there are matches |
+| **⌘ Enter** | Reveal the selected app, pane, or program in Finder |
+| **⌥ Enter** | Copy the selected item's path to the clipboard |
+| **⌃ Enter** | Open a new instance of the selected app |
 | **Esc** | Hide the launcher |
 | **⌘ ,** | Open Settings |
 
@@ -55,6 +58,12 @@ The launcher does not steal focus: the app you were in stays in front and gets t
 
 The list refreshes on its own when apps are installed or removed.
 
+Results are ranked by how well they match, nudged by how often and how recently you've opened each one. Usage fades over a few weeks, so old habits drop back down. Menus piped in from scripts are never recorded.
+
+## Aliases
+
+Give anything in the list a short keyword in Settings → Aliases, such as `ff` for Firefox or `term` for Ghostty. Typing the alias exactly (in any case) puts its target first, ahead of the usual fuzzy matches, and partial typing like `ter` still lists it. Aliases don't apply to menus piped in on stdin.
+
 ## Running commands
 
 If nothing matches what you typed, Enter runs the text as a shell command in your login shell, from your home directory. `mpv ~/Movies/clip.mp4` plays a video without opening a terminal. Shift Enter does the same even when something matches.
@@ -68,12 +77,38 @@ To launch `nvim`, `htop`, `ranger`, and friends in a terminal window:
 
 Programs from your login shell's `$PATH` (Homebrew, nix, `~/.local/bin`, ...) then show up alongside apps, and typed commands like `nvim notes.md` open in that terminal too. The first time Terminal or iTerm2 is used, macOS asks to let dmenu-mac control it; the setup offers to ask up front instead.
 
+## Search shortcuts
+
+Type a keyword, a space, and a query to search the web or ask an LLM. `g swift actors` puts **Search Google for 'swift actors'** at the top of the list, and Enter opens it in your default browser.
+
+| Keyword | Opens |
+| --- | --- |
+| `g` | Google |
+| `ddg` | DuckDuckGo |
+| `ghs` | GitHub search |
+| `yt` | YouTube |
+| `w` | Wikipedia |
+| `c` | Claude |
+| `gpt`, `chatgpt` | ChatGPT |
+| `p` | Perplexity |
+| `cc` | `claude "<prompt>"` in your terminal (Claude Code) |
+| `cx` | `codex "<prompt>"` in your terminal (Codex) |
+
+Edit them in Settings → Shortcuts. Each shortcut has a keyword, a name, a template, and where it opens:
+
+- **Browser**: `{query}` in the template is replaced by what you typed, URL-encoded, e.g. `https://www.google.com/search?q={query}`.
+- **Terminal**: `{query}` is replaced by what you typed, shell-quoted, and the command runs in the terminal picked in Settings → General, e.g. `claude {query}`.
+
+Keywords are case-insensitive. If a keyword is also a program listed from your `$PATH`, its shortcut is listed after the other matches. **Shift Enter** always runs what you typed, even when a shortcut matches. Shortcuts are off when a list is piped in.
+
 ## Settings
 
 Open Settings with **⌘ ,** while the launcher is up, or from the menu bar icon.
 
 - **General**: the global hotkey, **Launch at login**, and the terminal setup described above.
-- **Appearance**: bar position (top or bottom of the screen), opacity, colors for the text, selection, and background, and the font and its size. **Reset to Defaults** undoes it all.
+- **Aliases**: short keywords for items in the list (see above).
+- **Shortcuts**: the search keywords described above. **Restore Defaults** brings back the built-in set.
+- **Appearance**: bar position (top or bottom of the screen), which screen it appears on (the one with the active window, the one with the mouse pointer, or the primary screen; the bar spans the full width, below the menu bar and above a bottom Dock), opacity, **Show icons** (app and System Settings icons next to their names, off by default), colors for the text, selection, and background, and the font and its size. **Reset to Defaults** undoes it all.
 
 The menu bar icon also lets you show the launcher, run the setup again, and quit.
 
@@ -89,6 +124,7 @@ dmenu-mac --help
 | --- | --- |
 | `-p`, `--prompt <text>` | Show a prompt instead of the search field |
 | `-b`, `--bottom` | Show the bar at the bottom of the screen for this run |
+| `-m`, `--monitor <n>` | Show the bar on screen `n` for this run, counting from 0 in macOS's display order; only 0 (the primary screen) is guaranteed to stay the same, and indexes with no screen are ignored |
 | `--no-custom` | Only accept items from the list; typed text that matches nothing is ignored |
 | `--exit` / `--no-exit` | Quit after a selection, or stay in the background |
 

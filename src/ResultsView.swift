@@ -21,6 +21,7 @@ import Cocoa
 class ResultsView: NSView {
     let rectFillPadding: CGFloat = 5
     let itemSpacing: CGFloat = 10
+    let iconSpacing: CGFloat = 4
     private let appearanceManager = AppearanceManager.shared
     private(set) var resultsList: [ListItem] = []
 
@@ -29,6 +30,11 @@ class ResultsView: NSView {
     /// Measured text size and x offset for each entry of `drawList`.
     private var itemSizes: [NSSize] = []
     private var itemOffsets: [CGFloat] = []
+    /// File whose icon precedes each item's text, when icons are on. Icons themselves are
+    /// fetched lazily in `draw`, so only visible items ever hit `NSWorkspace`.
+    private var itemIconURLs: [URL?] = []
+    /// Square icon side, matching the text height; 0 when icons are off.
+    private(set) var iconSide: CGFloat = 0
 
     var selectedRect: NSRect {
         return highlightRect(at: selectedIndexValue)
@@ -85,25 +91,36 @@ class ResultsView: NSView {
         list = []
     }
 
-    /// Re-measures every item; call when the font changes.
+    /// Re-measures every item; call when the font or the icon setting changes.
     func invalidateLayout() {
         layoutItems()
     }
 
     private func layoutItems() {
         drawList = resultsList.isEmpty ? [ListItem(name: "No results", data: nil)] : resultsList
-        let attributes: [NSAttributedString.Key: Any] = [.font: appearanceManager.currentFont]
+        let font = appearanceManager.currentFont
+        let attributes: [NSAttributedString.Key: Any] = [.font: font]
+        let showIcons = appearanceManager.showIcons
+        iconSide = showIcons ? ceil(font.ascender - font.descender) : 0
 
         itemSizes.removeAll(keepingCapacity: true)
         itemOffsets.removeAll(keepingCapacity: true)
+        itemIconURLs.removeAll(keepingCapacity: true)
         itemSizes.reserveCapacity(drawList.count)
         itemOffsets.reserveCapacity(drawList.count)
+        itemIconURLs.reserveCapacity(drawList.count)
 
         var textX = rectFillPadding
         for item in drawList {
-            let size = (item.name as NSString).size(withAttributes: attributes)
+            var size = (item.name as NSString).size(withAttributes: attributes)
+            let iconURL = showIcons ? item.fileURL : nil
+            if iconURL != nil {
+                size.width += iconSide + iconSpacing
+                size.height = max(size.height, iconSide)
+            }
             itemSizes.append(size)
             itemOffsets.append(textX)
+            itemIconURLs.append(iconURL)
             textX += itemSpacing + size.width
         }
 
@@ -113,7 +130,8 @@ class ResultsView: NSView {
         scrollToVisible(selectedRect)
     }
 
-    private func textRect(at index: Int) -> NSRect {
+    /// Icon (if any) plus text of one item.
+    private func contentRect(at index: Int) -> NSRect {
         let size = itemSizes[index]
         return NSRect(x: itemOffsets[index], y: (bounds.height - size.height) / 2,
                       width: size.width, height: size.height)
@@ -123,7 +141,7 @@ class ResultsView: NSView {
         guard index >= 0, index < itemSizes.count else {
             return NSRect()
         }
-        return textRect(at: index).insetBy(dx: -rectFillPadding, dy: -rectFillPadding)
+        return contentRect(at: index).insetBy(dx: -rectFillPadding, dy: -rectFillPadding)
     }
 
     /// Indices of the items whose highlight rect overlaps `rect` (touching edges don't count,
@@ -148,11 +166,20 @@ class ResultsView: NSView {
         return low ..< end
     }
 
+    /// Text offsets are fractional, and an icon straddling device pixels gets resampled
+    /// and looks soft, so snap it to the backing grid. Text keeps its subpixel position.
+    func iconRect(at originX: CGFloat) -> NSRect {
+        let rect = NSRect(x: originX, y: (bounds.height - iconSide) / 2, width: iconSide, height: iconSide)
+        return backingAlignedRect(rect, options: .alignAllEdgesNearest)
+    }
+
     override func draw(_ dirtyRect: NSRect) {
         let textAttributes: [NSAttributedString.Key: Any] = [
             .font: appearanceManager.currentFont,
             .foregroundColor: appearanceManager.resultsTextColor
         ]
+
+        NSGraphicsContext.current?.imageInterpolation = .high
 
         for i in visibleRange(in: dirtyRect) {
             if selectedIndexValue == i {
@@ -160,7 +187,16 @@ class ResultsView: NSView {
                 highlightRect(at: i).fill()
             }
 
-            (drawList[i].name as NSString).draw(in: textRect(at: i), withAttributes: textAttributes)
+            var textRect = contentRect(at: i)
+            if let iconURL = itemIconURLs[i] {
+                IconCache.shared.icon(for: iconURL).draw(in: iconRect(at: textRect.minX), from: .zero,
+                                                        operation: .sourceOver, fraction: 1,
+                                                        respectFlipped: true, hints: nil)
+                textRect.origin.x += iconSide + iconSpacing
+                textRect.size.width -= iconSide + iconSpacing
+            }
+
+            (drawList[i].name as NSString).draw(in: textRect, withAttributes: textAttributes)
         }
     }
 }

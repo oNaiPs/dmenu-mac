@@ -30,6 +30,8 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
     var allowCustomInput = true
     /// Set from the command line; takes precedence over the Appearance setting.
     var windowPositionOverride: WindowPosition?
+    /// Screen index from the command line; takes precedence over the Appearance setting.
+    var monitorOverride: Int?
     private let appearanceManager = AppearanceManager.shared
 
     deinit {
@@ -75,7 +77,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
 
         // Create search service
         if let provider = listProvider {
-            searchService = SearchService(provider: provider)
+            searchService = AliasSearchService.make(provider: provider, usage: UsageStore.shared)
         }
 
         if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
@@ -88,6 +90,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
             if options.bottom {
                 windowPositionOverride = .bottom
             }
+            monitorOverride = options.monitor
         }
 
         clearFields()
@@ -109,7 +112,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
     }
 
     func updatePosition() {
-        (view.window as? SearchWindow)?.updatePosition(windowPosition)
+        (view.window as? SearchWindow)?.updatePosition(windowPosition, monitor: monitorOverride)
     }
 
     func updateColors() {
@@ -206,9 +209,10 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
         } else if movingRight {
             resultsText.selectedIndex = (resultsText.selectedIndex + 1) % resultsText.list.count
             return true
-        } else if commandSelector == #selector(insertNewline(_:)) {
-            let shiftPressed = NSApp.currentEvent?.modifierFlags.contains(.shift) ?? false
-            submit(preferTypedInput: shiftPressed)
+        } else if ItemAction.isSubmit(commandSelector, event: NSApp.currentEvent) {
+            let modifiers = NSApp.currentEvent?.modifierFlags ?? []
+            let shiftPressed = modifiers.contains(.shift)
+            submit(preferTypedInput: shiftPressed, action: shiftPressed ? .open : ItemAction(modifiers: modifiers))
             return true
         } else if commandSelector == #selector(cancelOperation(_:)) {
             listProvider?.cancel()
@@ -222,10 +226,15 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
     /// Acts on the selected item, falling back to the typed text when nothing matches.
     /// With preferTypedInput (Shift+Enter) the typed text wins even if there are matches.
     /// With --no-custom only list items are accepted.
-    func submit(preferTypedInput: Bool) {
+    /// Alternate actions (⌘/⌥/⌃ Enter) only apply to a selected item, never to typed text.
+    func submit(preferTypedInput: Bool, action: ItemAction = .open) {
         if !(preferTypedInput && allowCustomInput), let item = resultsText.selectedItem() {
-            listProvider?.doAction(item: item)
-        } else if allowCustomInput, let input = typedInput() {
+            // Revealing or copying the path isn't a use of the item
+            if action == .open || action == .openNewInstance {
+                searchService?.recordSelection(item)
+            }
+            listProvider?.doAction(item: item, action: action)
+        } else if action == .open, allowCustomInput, let input = typedInput() {
             listProvider?.doAction(input: input)
         } else {
             return
