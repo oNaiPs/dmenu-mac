@@ -53,6 +53,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         }
         setupMenus()
         setupKeyboardShortcut()
+        showOnboardingIfNeeded()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -79,6 +80,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
 
         let settings = NSMenuItem(title: "Settings…", action: #selector(openSettings), keyEquivalent: ",")
         menu.addItem(settings)
+
+        menu.addItem(NSMenuItem(title: "Run Setup Again…", action: #selector(runSetup), keyEquivalent: ""))
 
         menu.addItem(NSMenuItem.separator())
 

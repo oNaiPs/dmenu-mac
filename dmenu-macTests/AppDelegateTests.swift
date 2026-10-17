@@ -26,7 +26,7 @@ final class AppDelegateTests: XCTestCase {
     func testStatusMenuItems() throws {
         let menu = try XCTUnwrap(appDelegate.statusItem.menu)
         let titles = menu.items.filter { !$0.isSeparatorItem }.map(\.title)
-        XCTAssertEqual(titles, ["Open", "Settings…", "Quit dmenu-mac"])
+        XCTAssertEqual(titles, ["Open", "Settings…", "Run Setup Again…", "Quit dmenu-mac"])
     }
 
     func testResumeAppReusesStoryboardLauncher() throws {
