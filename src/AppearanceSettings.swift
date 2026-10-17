@@ -49,7 +49,19 @@ enum WindowPosition: String, CaseIterable {
 class AppearanceManager {
     static let shared = AppearanceManager()
 
-    private let defaults = UserDefaults.standard
+    /// The app's defaults, or a throwaway suite under tests so they never touch the user's real settings.
+    static let appDefaults: UserDefaults = {
+        guard ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil else { return .standard }
+        let suite = "dmenu-mac.tests.appearance"
+        UserDefaults().removePersistentDomain(forName: suite)
+        return UserDefaults(suiteName: suite) ?? .standard
+    }()
+
+    private let defaults: UserDefaults
+
+    init(defaults: UserDefaults = AppearanceManager.appDefaults) {
+        self.defaults = defaults
+    }
 
     // MARK: - Default Values
     private struct Defaults {
