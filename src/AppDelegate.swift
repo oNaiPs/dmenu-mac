@@ -45,6 +45,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     private(set) var statusItem: NSStatusItem!
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        // First: it tells upgrades from new installs by keys the hotkey setup writes.
+        showOnboardingIfNeeded()
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
         if let button = statusItem.button {
@@ -53,7 +55,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         }
         setupMenus()
         setupKeyboardShortcut()
-        showOnboardingIfNeeded()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

@@ -54,6 +54,25 @@ final class OnboardingSettings {
         get { defaults.bool(forKey: Self.completedKey) }
         set { defaults.set(newValue, forKey: Self.completedKey) }
     }
+
+    /// Keys only an earlier run of dmenu-mac writes. KeyboardShortcuts stores the default
+    /// hotkey on first use, so every install since it was adopted has that one.
+    static let priorInstallKeys = ["KeyboardShortcuts_activateSearchGlobalShortcut", kLegacyKc]
+    static let priorInstallPrefixes = ["appearance.", "commands."]
+
+    /// Existing users upgrading to the version with the wizard have set things up already, so
+    /// it is marked as seen for them. Must run before the hotkey is first registered, which
+    /// writes the KeyboardShortcuts key on new installs too.
+    func markCompletedIfUpgrading() {
+        guard defaults.object(forKey: Self.completedKey) == nil else { return }
+        let keys = defaults.dictionaryRepresentation().keys
+        let upgrading = keys.contains { key in
+            Self.priorInstallKeys.contains(key) || Self.priorInstallPrefixes.contains { key.hasPrefix($0) }
+        }
+        if upgrading {
+            completed = true
+        }
+    }
 }
 
 /// Decides whether the wizard opens on its own at launch.
@@ -128,7 +147,7 @@ final class OnboardingModel: ObservableObject {
     @Published private(set) var isRequestingAccess = false
 
     private let settings: OnboardingSettings
-    private let commands: CommandSettings
+    let commands: CommandSettings
     private let permissions: AutomationPermissions
     var onFinish: (() -> Void)?
 

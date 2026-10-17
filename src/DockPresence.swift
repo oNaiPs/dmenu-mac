@@ -22,6 +22,8 @@ protocol ActivationPolicyApplying: AnyObject {
     func bringToFront()
     /// Runs `work` on a later main run loop turn.
     func onNextTurn(_ work: @escaping () -> Void)
+    /// Hands focus back to another app.
+    func returnFocus(to other: NSRunningApplication)
 }
 
 extension NSApplication: ActivationPolicyApplying {
@@ -43,6 +45,10 @@ extension NSApplication: ActivationPolicyApplying {
     func onNextTurn(_ work: @escaping () -> Void) {
         DispatchQueue.main.async(execute: work)
     }
+
+    func returnFocus(to other: NSRunningApplication) {
+        other.activate(options: [])
+    }
 }
 
 /**
@@ -57,17 +63,27 @@ final class DockPresence {
     private let previousAppProvider: () -> NSRunningApplication?
     private var windows: [NSWindow] = []
     private var observers: [ObjectIdentifier: NSObjectProtocol] = [:]
-    private var previousApp: NSRunningApplication?
+    /// The app to hand focus back to: the last other app that was active while windows are open.
+    private(set) var previousApp: NSRunningApplication?
+    private let workspaceCenter: NotificationCenter
+    private var activationObserver: NSObjectProtocol?
 
     init(app: ActivationPolicyApplying,
-         previousAppProvider: @escaping () -> NSRunningApplication? = DockPresence.frontmostOtherApp) {
+         previousAppProvider: @escaping () -> NSRunningApplication? = DockPresence.frontmostOtherApp,
+         workspaceCenter: NotificationCenter = NSWorkspace.shared.notificationCenter) {
         self.app = app
         self.previousAppProvider = previousAppProvider
+        self.workspaceCenter = workspaceCenter
     }
 
     static func frontmostOtherApp() -> NSRunningApplication? {
         let front = NSWorkspace.shared.frontmostApplication
-        return front?.processIdentifier == ProcessInfo.processInfo.processIdentifier ? nil : front
+        return isOtherApp(front) ? front : nil
+    }
+
+    private static func isOtherApp(_ other: NSRunningApplication?) -> Bool {
+        guard let other else { return false }
+        return other.processIdentifier != ProcessInfo.processInfo.processIdentifier
     }
 
     var isActive: Bool { !windows.isEmpty }
@@ -76,6 +92,14 @@ final class DockPresence {
     func show(_ window: NSWindow) {
         if windows.isEmpty {
             previousApp = previousAppProvider()
+            // The user may switch apps while the window is open; return to the latest one.
+            activationObserver = workspaceCenter.addObserver(
+                forName: NSWorkspace.didActivateApplicationNotification, object: nil, queue: nil) { [weak self] note in
+                    let activated = note.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication
+                    if Self.isOtherApp(activated) {
+                        self?.previousApp = activated
+                    }
+            }
             app.applyActivationPolicy(.regular)
         }
         if !windows.contains(where: { $0 === window }) {
@@ -114,8 +138,14 @@ final class DockPresence {
             NotificationCenter.default.removeObserver(observer)
         }
         guard windows.isEmpty else { return }
+        if let activationObserver {
+            workspaceCenter.removeObserver(activationObserver)
+            self.activationObserver = nil
+        }
         app.applyActivationPolicy(.accessory)
-        previousApp?.activate(options: [])
+        if let previousApp {
+            app.returnFocus(to: previousApp)
+        }
         previousApp = nil
     }
 }

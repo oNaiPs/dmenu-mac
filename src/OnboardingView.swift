@@ -26,7 +26,13 @@ enum SystemSettingsURL {
 
 struct OnboardingView: View {
     @ObservedObject var model: OnboardingModel
-    @StateObject private var commands = CommandSettingsModel()
+    @StateObject private var commands: CommandSettingsModel
+
+    init(model: OnboardingModel) {
+        self.model = model
+        // Same settings the model checks Automation access against.
+        _commands = StateObject(wrappedValue: CommandSettingsModel(settings: model.commands))
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -283,6 +289,7 @@ extension AppDelegate {
     /// Opens the wizard on the first launch as an app, once the launcher has read its arguments.
     func showOnboardingIfNeeded(settings: OnboardingSettings = .shared) {
         guard !OnboardingGate.isRunningTests else { return }
+        settings.markCompletedIfUpgrading()
         DispatchQueue.main.async { [weak self] in
             guard let controller = self?.searchViewController else { return }
             let show = OnboardingGate.shouldShow(

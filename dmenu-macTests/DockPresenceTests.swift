@@ -44,6 +44,71 @@ private final class MockApplication: ActivationPolicyApplying {
         nextTurn = []
         work.forEach { $0() }
     }
+
+    private(set) var focusReturnedTo: [NSRunningApplication] = []
+
+    func returnFocus(to other: NSRunningApplication) {
+        focusReturnedTo.append(other)
+    }
+}
+
+final class DockPresenceFocusTests: XCTestCase {
+    private var app: MockApplication!
+    private var workspace: NotificationCenter!
+    private var window: NSWindow!
+    private var first: NSRunningApplication!
+    private var second: NSRunningApplication!
+
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        app = MockApplication()
+        workspace = NotificationCenter()
+        window = NSWindow(contentRect: .init(x: 0, y: 0, width: 100, height: 100),
+                          styleMask: [.titled, .closable], backing: .buffered, defer: true)
+        window.isReleasedWhenClosed = false
+        let others = NSWorkspace.shared.runningApplications.filter { $0 != .current }
+        guard others.count >= 2 else { throw XCTSkip("needs two other running apps") }
+        first = others[0]
+        second = others[1]
+    }
+
+    private func activated(_ other: NSRunningApplication) {
+        workspace.post(name: NSWorkspace.didActivateApplicationNotification, object: nil,
+                       userInfo: [NSWorkspace.applicationUserInfoKey: other])
+    }
+
+    private func makePresence() -> DockPresence {
+        let first = first
+        return DockPresence(app: app, previousAppProvider: { first }, workspaceCenter: workspace)
+    }
+
+    func testReturnsToAppThatWasFrontWhenOpened() {
+        let presence = makePresence()
+        presence.show(window)
+        window.close()
+        XCTAssertEqual(app.focusReturnedTo, [first])
+    }
+
+    func testReturnsToLatestAppActivatedWhileOpen() {
+        let presence = makePresence()
+        presence.show(window)
+        activated(second)
+        XCTAssertEqual(presence.previousApp, second)
+
+        activated(.current)
+        XCTAssertEqual(presence.previousApp, second, "dmenu-mac itself is never the app to go back to")
+
+        window.close()
+        XCTAssertEqual(app.focusReturnedTo, [second])
+    }
+
+    func testStopsTrackingOnceClosed() {
+        let presence = makePresence()
+        presence.show(window)
+        window.close()
+        activated(second)
+        XCTAssertNil(presence.previousApp)
+    }
 }
 
 final class DockPresenceTests: XCTestCase {

@@ -117,6 +117,38 @@ final class OnboardingTests: XCTestCase {
         XCTAssertTrue(OnboardingSettings(defaults: defaults).completed)
     }
 
+    func testNewInstallStillGetsTheWizard() {
+        settings.markCompletedIfUpgrading()
+        XCTAssertFalse(settings.completed)
+        XCTAssertNil(defaults.object(forKey: OnboardingSettings.completedKey), "left undecided")
+    }
+
+    func testUpgradeIsMarkedCompleted() {
+        let priorInstalls: [String] = [
+            "KeyboardShortcuts_activateSearchGlobalShortcut",
+            kLegacyKc,
+            UserDefaults.CommandKeys.terminal,
+            "appearance.fontSize"
+        ]
+        for key in priorInstalls {
+            defaults.removePersistentDomain(forName: suiteName)
+            defaults.set("x", forKey: key)
+
+            settings.markCompletedIfUpgrading()
+
+            XCTAssertTrue(settings.completed, key)
+        }
+    }
+
+    func testUpgradeCheckLeavesAnExplicitAnswerAlone() {
+        settings.completed = false
+        defaults.set(true, forKey: UserDefaults.CommandKeys.enabled)
+
+        settings.markCompletedIfUpgrading()
+
+        XCTAssertFalse(settings.completed, "only decides when nothing is stored yet")
+    }
+
     // MARK: - Steps
 
     func testStepsInOrder() {
