@@ -77,7 +77,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
 
         // Create search service
         if let provider = listProvider {
-            searchService = SearchService(provider: provider)
+            searchService = SearchService(provider: provider, usage: UsageStore.shared)
         }
 
         if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
@@ -229,6 +229,10 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
     /// Alternate actions (⌘/⌥/⌃ Enter) only apply to a selected item, never to typed text.
     func submit(preferTypedInput: Bool, action: ItemAction = .open) {
         if !(preferTypedInput && allowCustomInput), let item = resultsText.selectedItem() {
+            // Revealing or copying the path isn't a use of the item
+            if action == .open || action == .openNewInstance {
+                searchService?.recordSelection(item)
+            }
             listProvider?.doAction(item: item, action: action)
         } else if action == .open, allowCustomInput, let input = typedInput() {
             listProvider?.doAction(input: input)
