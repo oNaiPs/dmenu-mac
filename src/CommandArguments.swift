@@ -38,7 +38,10 @@ struct DmenuMac: ParsableArguments {
 
     @Option(name: .shortAndLong, help: ArgumentHelp(
         "Show the bar on screen <n>, counting from 0 (the primary screen).",
-        discussion: "Overrides the screen set in Appearance settings. Ignored if there is no such screen."))
+        discussion: """
+            Overrides the screen set in Appearance settings. Ignored if there is no such screen. \
+            Indexes follow macOS's display order; only 0, the primary screen, is guaranteed to stay the same.
+            """))
     var monitor: Int?
 
     /// Opened via LaunchServices (Finder, Dock, login items, `open`) the parent is launchd;

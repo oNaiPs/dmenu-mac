@@ -29,8 +29,8 @@ class SearchWindow: NSPanel {
         self.hasShadow = false
         self.hidesOnDeactivate = false
         self.collectionBehavior = NSWindow.CollectionBehavior.canJoinAllSpaces
-        // Stay above the Dock, which otherwise covers the bar when placed on the side,
-        // but below the menu bar so it isn't hidden.
+        // Stay above a Dock on the side, which the full-width bar overlaps, but below the
+        // menu bar. The bar is placed between the menu bar and a bottom Dock (see barArea).
         self.level = NSWindow.Level(rawValue: NSWindow.Level.dock.rawValue + 1)
         updatePosition()
     }
@@ -44,9 +44,17 @@ class SearchWindow: NSPanel {
         guard let screen = ScreenPicker.pick(from: NSScreen.screens, selection: selection, monitor: monitor,
                                              context: .current(), fallback: NSScreen.main) else { return }
 
-        // The visible frame excludes the menu bar and the Dock, so the bar never hides behind either.
-        let frame = Self.frame(for: position, in: screen.visibleFrame, height: self.frame.height)
+        let frame = Self.frame(for: position, in: Self.barArea(of: screen), height: self.frame.height)
         setFrame(frame, display: false)
+    }
+
+    /**
+     * The screen's full width, between the menu bar and a bottom Dock. A Dock on the side
+     * doesn't narrow the bar, since the window level keeps the bar above it.
+     */
+    static func barArea(of screen: ScreenDescribing) -> NSRect {
+        let visible = screen.visibleFrame
+        return NSRect(x: screen.frame.minX, y: visible.minY, width: screen.frame.width, height: visible.height)
     }
 
     /**

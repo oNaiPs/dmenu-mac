@@ -82,3 +82,60 @@ final class ScreenPickerTests: XCTestCase {
         XCTAssertNil(picked)
     }
 }
+
+final class FrontmostWindowFrameTests: XCTestCase {
+    private let pid: pid_t = 42
+    // Primary is 1440x900 at the origin; a second display sits above it.
+    private let screens = [NSRect(x: 0, y: 0, width: 1440, height: 900),
+                           NSRect(x: 0, y: 900, width: 1440, height: 900)]
+
+    private func window(pid: pid_t = 42, layer: Int = 0, alpha: Double = 1,
+                        _ rect: CGRect) -> [String: Any] {
+        [kCGWindowOwnerPID as String: pid,
+         kCGWindowLayer as String: layer,
+         kCGWindowAlpha as String: alpha,
+         kCGWindowBounds as String: rect.dictionaryRepresentation as NSDictionary]
+    }
+
+    private func frame(_ windows: [[String: Any]]) -> NSRect? {
+        ScreenContext.frontmostWindowFrame(in: windows, pid: pid, primaryHeight: 900, screenFrames: screens)
+    }
+
+    func testFlipsQuartzBoundsToCocoa() {
+        let windows = [window(CGRect(x: 100, y: 50, width: 800, height: 600))]
+        XCTAssertEqual(frame(windows), NSRect(x: 100, y: 250, width: 800, height: 600))
+    }
+
+    func testWindowOnDisplayAbovePrimaryHasNegativeQuartzY() {
+        let windows = [window(CGRect(x: 100, y: -700, width: 800, height: 600))]
+        XCTAssertEqual(frame(windows), NSRect(x: 100, y: 1000, width: 800, height: 600))
+    }
+
+    func testWindowOnDisplayBelowPrimary() {
+        let below = [NSRect(x: 0, y: 0, width: 1440, height: 900), NSRect(x: 0, y: -900, width: 1440, height: 900)]
+        let windows = [window(CGRect(x: 100, y: 1000, width: 800, height: 600))]
+        XCTAssertEqual(ScreenContext.frontmostWindowFrame(in: windows, pid: pid, primaryHeight: 900,
+                                                          screenFrames: below),
+                       NSRect(x: 100, y: -700, width: 800, height: 600))
+    }
+
+    func testSkipsOtherAppsAndNonNormalLayers() {
+        let windows = [window(pid: 7, CGRect(x: 0, y: 0, width: 500, height: 500)),
+                       window(layer: 25, CGRect(x: 0, y: 0, width: 500, height: 500)),
+                       window(CGRect(x: 100, y: -700, width: 800, height: 600))]
+        XCTAssertEqual(frame(windows)?.minY, 1000)
+    }
+
+    func testSkipsHelperWindows() {
+        let windows = [window(alpha: 0, CGRect(x: 0, y: 0, width: 800, height: 600)),
+                       window(CGRect(x: 0, y: 0, width: 1, height: 1)),
+                       window(CGRect(x: -9000, y: -9000, width: 800, height: 600)),
+                       window(CGRect(x: 100, y: -700, width: 800, height: 600))]
+        XCTAssertEqual(frame(windows), NSRect(x: 100, y: 1000, width: 800, height: 600))
+    }
+
+    func testNoRealWindowGivesNil() {
+        XCTAssertNil(frame([window(alpha: 0, CGRect(x: 0, y: 0, width: 800, height: 600))]))
+        XCTAssertNil(frame([]))
+    }
+}

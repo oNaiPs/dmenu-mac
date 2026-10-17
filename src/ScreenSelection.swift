@@ -45,27 +45,42 @@ struct ScreenContext {
     var activeWindowFrame: NSRect?
 
     static func current() -> ScreenContext {
-        ScreenContext(mouseLocation: NSEvent.mouseLocation, activeWindowFrame: frontmostWindowFrame())
+        var windowFrame: NSRect?
+        if let pid = NSWorkspace.shared.frontmostApplication?.processIdentifier,
+           let primary = NSScreen.screens.first,
+           let windows = CGWindowListCopyWindowInfo(
+            [.optionOnScreenOnly, .excludeDesktopElements], kCGNullWindowID
+           ) as? [[String: Any]] {
+            windowFrame = frontmostWindowFrame(in: windows, pid: pid, primaryHeight: primary.frame.maxY,
+                                               screenFrames: NSScreen.screens.map(\.frame))
+        }
+        return ScreenContext(mouseLocation: NSEvent.mouseLocation, activeWindowFrame: windowFrame)
     }
 
-    /// Frame of the frontmost app's top window. The bar's panel never activates the app,
-    /// so the frontmost app is still the one the user was in. Window bounds and owner PIDs
-    /// are readable without Screen Recording permission.
-    private static func frontmostWindowFrame() -> NSRect? {
-        guard let pid = NSWorkspace.shared.frontmostApplication?.processIdentifier,
-              let primary = NSScreen.screens.first,
-              let windows = CGWindowListCopyWindowInfo(
-                [.optionOnScreenOnly, .excludeDesktopElements], kCGNullWindowID
-              ) as? [[String: Any]] else { return nil }
+    /// Smaller windows are treated as helpers rather than something the user is looking at.
+    static let minimumWindowSize: CGFloat = 50
 
+    /**
+     * Frame of the frontmost app's top real window, from `CGWindowListCopyWindowInfo` output
+     * (front to back). The bar's panel never activates the app, so the frontmost app is still
+     * the one the user was in. Window bounds and owner PIDs are readable without Screen
+     * Recording permission. Skips invisible, tiny and off-screen helper windows, which
+     * Electron and Chromium apps keep around.
+     */
+    static func frontmostWindowFrame(in windows: [[String: Any]], pid: pid_t,
+                                     primaryHeight: CGFloat, screenFrames: [NSRect]) -> NSRect? {
         for info in windows {
             guard info[kCGWindowOwnerPID as String] as? pid_t == pid,
                   info[kCGWindowLayer as String] as? Int == 0,
+                  (info[kCGWindowAlpha as String] as? Double ?? 1) > 0,
                   let bounds = info[kCGWindowBounds as String] as? NSDictionary,
-                  let rect = CGRect(dictionaryRepresentation: bounds as CFDictionary) else { continue }
-            // Quartz measures from the top-left of the primary display.
-            return NSRect(x: rect.minX, y: primary.frame.maxY - rect.maxY,
-                          width: rect.width, height: rect.height)
+                  let rect = CGRect(dictionaryRepresentation: bounds as CFDictionary),
+                  rect.width >= minimumWindowSize, rect.height >= minimumWindowSize else { continue }
+            // Quartz measures down from the top-left of the primary display.
+            let frame = NSRect(x: rect.minX, y: primaryHeight - rect.maxY, width: rect.width, height: rect.height)
+            if screenFrames.contains(where: { $0.intersects(frame) }) {
+                return frame
+            }
         }
         return nil
     }
