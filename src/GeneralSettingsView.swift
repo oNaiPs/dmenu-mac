@@ -18,13 +18,17 @@ import Cocoa
 import Settings
 import SwiftUI
 import KeyboardShortcuts
+import LaunchAtLogin
 
 struct GeneralSettingsView: View {
     @StateObject private var commands = CommandSettingsModel()
 
     var body: some View {
         Form {
-            KeyboardShortcuts.Recorder("Global shortcut", name: .activateSearch)
+            Section {
+                KeyboardShortcuts.Recorder("Global shortcut", name: .activateSearch)
+                LaunchAtLogin.Toggle("Launch at login")
+            }
 
             Section {
                 Toggle("List programs from $PATH", isOn: $commands.enabled)

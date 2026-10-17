@@ -16,7 +16,6 @@
 
 import Cocoa
 import Carbon
-import LaunchAtLogin
 import Settings
 import KeyboardShortcuts
 
@@ -40,11 +39,10 @@ extension KeyboardShortcuts.Name {
 }
 
 @main
-class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMenuDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     @IBOutlet var controllerWindow: NSWindowController?
 
     private(set) var statusItem: NSStatusItem!
-    private(set) var startAtLaunch: NSMenuItem!
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -67,11 +65,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMenuDele
         return false
     }
 
-    // The login item can also be changed in System Settings > General > Login Items.
-    func menuNeedsUpdate(_ menu: NSMenu) {
-        startAtLaunch.state = LaunchAtLogin.isEnabled ? .on : .off
-    }
-
     private func setupKeyboardShortcut() {
         KeyboardShortcuts.onKeyUp(for: .activateSearch) { [weak self] in
             self?.resumeApp()
@@ -80,18 +73,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMenuDele
 
     func setupMenus() {
         let menu = NSMenu()
-        menu.delegate = self
 
         let open = NSMenuItem(title: "Open", action: #selector(resumeApp), keyEquivalent: "")
         menu.addItem(open)
 
         let settings = NSMenuItem(title: "Settings…", action: #selector(openSettings), keyEquivalent: ",")
         menu.addItem(settings)
-
-        menu.addItem(NSMenuItem.separator())
-        startAtLaunch = NSMenuItem(title: "Launch at Login", action: #selector(toggleLaunchAtLogin), keyEquivalent: "")
-        startAtLaunch.state = LaunchAtLogin.isEnabled ? .on : .off
-        menu.addItem(startAtLaunch)
 
         menu.addItem(NSMenuItem.separator())
 
@@ -116,11 +103,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMenuDele
         guard let window = settingsWindowController.window else { return }
         window.makeKeyAndOrderFront(nil)
         window.orderFrontRegardless()
-    }
-
-    @objc func toggleLaunchAtLogin() {
-        LaunchAtLogin.isEnabled.toggle()
-        startAtLaunch.state = LaunchAtLogin.isEnabled ? .on : .off
     }
 
     private lazy var settings: [SettingsPane] = [
