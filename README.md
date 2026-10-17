@@ -72,11 +72,36 @@ To launch `nvim`, `htop`, `ranger`, and friends in a terminal window:
 
 Programs from your login shell's `$PATH` (Homebrew, nix, `~/.local/bin`, ...) then show up alongside apps, and typed commands like `nvim notes.md` open in that terminal too. The first time Terminal or iTerm2 is used, macOS asks to let dmenu-mac control it.
 
+## Search shortcuts
+
+Type a keyword, a space, and a query to search the web or ask an LLM. `g swift actors` puts **Search Google for 'swift actors'** at the top of the list, and Enter opens it in your default browser.
+
+| Keyword | Opens |
+| --- | --- |
+| `g` | Google |
+| `ddg` | DuckDuckGo |
+| `ghs` | GitHub search |
+| `yt` | YouTube |
+| `w` | Wikipedia |
+| `c` | Claude |
+| `gpt`, `chatgpt` | ChatGPT |
+| `p` | Perplexity |
+| `cc` | `claude "<prompt>"` in your terminal (Claude Code) |
+| `cx` | `codex "<prompt>"` in your terminal (Codex) |
+
+Edit them in Settings → Shortcuts. Each shortcut has a keyword, a name, a template, and where it opens:
+
+- **Browser**: `{query}` in the template is replaced by what you typed, URL-encoded, e.g. `https://www.google.com/search?q={query}`.
+- **Terminal**: `{query}` is replaced by what you typed, shell-quoted, and the command runs in the terminal picked in Settings → General, e.g. `claude {query}`.
+
+Keywords are case-insensitive. If a keyword is also a program listed from your `$PATH`, its shortcut is listed after the other matches. **Shift Enter** always runs what you typed, even when a shortcut matches. Shortcuts are off when a list is piped in.
+
 ## Settings
 
 Open Settings with **⌘ ,** while the launcher is up, or from the menu bar icon.
 
 - **General**: the global hotkey, **Launch at login**, and the terminal setup described above.
+- **Shortcuts**: the search keywords described above. **Restore Defaults** brings back the built-in set.
 - **Appearance**: bar position (top or bottom of the screen), which screen it appears on (the one with the active window, the one with the mouse pointer, or the primary screen; the bar spans the full width, below the menu bar and above a bottom Dock), opacity, **Show icons** (app and System Settings icons next to their names, off by default), colors for the text, selection, and background, and the font and its size. **Reset to Defaults** undoes it all.
 
 The menu bar icon also lets you show the launcher and quit.

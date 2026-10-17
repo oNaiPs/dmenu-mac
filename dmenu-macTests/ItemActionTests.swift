@@ -132,7 +132,9 @@ final class ItemActionTests: XCTestCase {
     /// Goes through the real provider stack so a wrapper that drops the action is caught.
     func testFactoryStackDeliversActionToAppProvider() throws {
         let provider = ProviderFactory().createProvider(stdinContent: "")
-        let composite = try XCTUnwrap(provider as? CompositeListProvider)
+        // The shortcut layer sits on top and must pass the action through
+        let shortcuts = try XCTUnwrap(provider as? SearchShortcutProvider)
+        let composite = try XCTUnwrap(shortcuts.wrapped as? CompositeListProvider)
         let apps = try XCTUnwrap(composite.providers.first { $0 is AppListProvider } as? AppListProvider)
         apps.fileActions = makeFileActions()
         let item = try XCTUnwrap(provider.get().first { $0.name == "Calculator" })

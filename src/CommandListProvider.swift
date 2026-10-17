@@ -253,6 +253,12 @@ class CommandListProvider: ListProvider {
         }
     }
 
+    /// Whether `name` is a listed program, i.e. listing is enabled and it was found in $PATH.
+    func hasCommand(_ name: String) -> Bool {
+        guard settings.enabled else { return false }
+        return queue.sync { commands.contains(name) }
+    }
+
     func doAction(item: ListItem) {
         doAction(item: item, action: .open)
     }

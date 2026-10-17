@@ -60,6 +60,10 @@ class SearchService {
                 .map { $0.item }
         }
 
+        // Shortcuts such as "g <query>". Only found when the QueryListProvider is the outermost provider,
+        // i.e. not wrapped by another provider such as CompositeListProvider.
+        let queryItems = (provider as? QueryListProvider)?.items(for: query) ?? QueryItems()
+
         // Perform fuzzy search
         let pattern = fuse.createPattern(from: query)
         var scoredItems: [Ranked] = []
@@ -74,9 +78,10 @@ class SearchService {
         }
 
         // Sort by score (lower is better) and return items
-        return scoredItems
+        let matches = scoredItems
             .sorted(by: SearchService.ranks)
             .map { $0.item }
+        return queryItems.afterMatches ? matches + queryItems.items : queryItems.items + matches
     }
 
     /// Grows with usage but flattens out: 1 use ≈ 0.04, 7 uses ≈ 0.12, capped at maxUsageBoost.
