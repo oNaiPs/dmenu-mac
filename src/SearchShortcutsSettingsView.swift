@@ -64,56 +64,56 @@ struct SearchShortcutsSettingsView: View {
     @State private var editing: EditingShortcut?
 
     var body: some View {
-        Form {
-            Section {
-                List(selection: $selection) {
-                    ForEach(Array(model.shortcuts.enumerated()), id: \.offset) { index, shortcut in
-                        row(shortcut)
-                            .tag(index)
-                            .contentShape(Rectangle())
-                            .onTapGesture(count: 2) { edit(index) }
-                    }
-                }
-                .frame(height: 220)
+        // Not a Form: a List inside a grouped Form is laid out as plain rows and never scrolls.
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Search shortcuts")
+                .font(.headline)
 
-                HStack {
-                    Button {
-                        editing = EditingShortcut(index: nil, shortcut: SearchShortcut(
-                            keyword: "", name: "", template: "https://example.com/?q={query}", kind: .url))
-                    } label: {
-                        Image(systemName: "plus")
-                    }
-                    Button {
-                        if let index = selection {
-                            model.delete(at: index)
-                            selection = nil
-                        }
-                    } label: {
-                        Image(systemName: "minus")
-                    }
-                    .disabled(selection == nil)
-                    Button("Edit…") {
-                        if let index = selection { edit(index) }
-                    }
-                    .disabled(selection == nil)
-                    Spacer()
-                    Button("Restore Defaults") {
-                        model.restoreDefaults()
+            List(selection: $selection) {
+                ForEach(Array(model.shortcuts.enumerated()), id: \.offset) { index, shortcut in
+                    row(shortcut)
+                        .tag(index)
+                        .contentShape(Rectangle())
+                        .onTapGesture(count: 2) { edit(index) }
+                }
+            }
+            .listStyle(.bordered(alternatesRowBackgrounds: true))
+            .frame(height: Self.listHeight)
+
+            HStack {
+                Button {
+                    editing = EditingShortcut(index: nil, shortcut: SearchShortcut(
+                        keyword: "", name: "", template: "https://example.com/?q={query}", kind: .url))
+                } label: {
+                    Image(systemName: "plus")
+                }
+                Button {
+                    if let index = selection {
+                        model.delete(at: index)
                         selection = nil
                     }
+                } label: {
+                    Image(systemName: "minus")
                 }
-            } header: {
-                Text("Search shortcuts")
-            } footer: {
-                Text("Type a keyword, a space and a query, e.g. \"g swift actors\". "
-                     + "In a template, {query} is replaced by what you typed.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                .disabled(selection == nil)
+                Button("Edit…") {
+                    if let index = selection { edit(index) }
+                }
+                .disabled(selection == nil)
+                Spacer()
+                Button("Restore Defaults") {
+                    model.restoreDefaults()
+                    selection = nil
+                }
             }
+
+            Text("Type a keyword, a space and a query, e.g. \"g swift actors\". "
+                 + "In a template, {query} is replaced by what you typed.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
         }
-        .formStyle(.grouped)
-        .scrollDisabled(true)
-        .fixedSize(horizontal: false, vertical: true)
+        .padding(20)
         .frame(width: SettingsLayout.paneWidth)
         .sheet(item: $editing) { item in
             SearchShortcutEditor(shortcut: item.shortcut) { shortcut in
@@ -121,6 +121,8 @@ struct SearchShortcutsSettingsView: View {
             }
         }
     }
+
+    static let listHeight: CGFloat = 260
 
     private func row(_ shortcut: SearchShortcut) -> some View {
         HStack(alignment: .firstTextBaseline) {

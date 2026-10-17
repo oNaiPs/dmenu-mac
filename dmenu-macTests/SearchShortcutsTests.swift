@@ -200,4 +200,25 @@ final class SearchShortcutsTests: XCTestCase {
         XCTAssertEqual(size.width, SettingsLayout.paneWidth, accuracy: 0.5)
         XCTAssertGreaterThan(size.height, 200)
     }
+
+    func testShortcutListScrollsWhenItOverflows() {
+        let pane = SearchShortcutsSettingsView.pane()
+        let window = NSWindow(contentViewController: pane)
+        window.layoutIfNeeded()
+        pane.view.layoutSubtreeIfNeeded()
+
+        let list = scrollViews(in: pane.view).first { $0.frame.height == SearchShortcutsSettingsView.listHeight }
+        guard let list = list, let document = list.documentView else {
+            return XCTFail("shortcut list should be in its own scroll view")
+        }
+        XCTAssertGreaterThan(document.frame.height, list.frame.height, "the defaults overflow the list")
+        XCTAssertTrue(list.hasVerticalScroller, "an overflowing list must scroll")
+        XCTAssertNotEqual(list.verticalScrollElasticity, .none, "scrolling must not be disabled")
+        XCTAssertLessThan(pane.view.fittingSize.height, 600, "pane fits a normal screen")
+    }
+
+    private func scrollViews(in view: NSView) -> [NSScrollView] {
+        let own = (view as? NSScrollView).map { [$0] } ?? []
+        return own + view.subviews.flatMap(scrollViews)
+    }
 }
