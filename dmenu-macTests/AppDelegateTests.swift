@@ -1,5 +1,4 @@
 import XCTest
-import ServiceManagement
 import Settings
 @testable import dmenu_mac
 
@@ -24,14 +23,10 @@ final class AppDelegateTests: XCTestCase {
         XCTAssertEqual(settings.keyEquivalentModifierMask, .command)
     }
 
-    func testLaunchAtLoginMenuItemReflectsLoginItemStatus() throws {
+    func testStatusMenuItems() throws {
         let menu = try XCTUnwrap(appDelegate.statusItem.menu)
-        appDelegate.startAtLaunch.state = .mixed
-
-        appDelegate.menuNeedsUpdate(menu)
-
-        let expected: NSControl.StateValue = SMAppService.mainApp.status == .enabled ? .on : .off
-        XCTAssertEqual(appDelegate.startAtLaunch.state, expected)
+        let titles = menu.items.filter { !$0.isSeparatorItem }.map(\.title)
+        XCTAssertEqual(titles, ["Open", "Settings…", "Quit dmenu-mac"])
     }
 
     func testResumeAppReusesStoryboardLauncher() throws {
