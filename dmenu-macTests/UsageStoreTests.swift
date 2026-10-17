@@ -170,4 +170,26 @@ final class UsageStoreTests: XCTestCase {
         XCTAssertEqual(store.score(for: app("Safari")), 1, accuracy: 0.0001)
         XCTAssertEqual(store.score(for: app("Calculator")), 0)
     }
+
+    func testOnlyOpeningActionsRecordUsage() {
+        let provider = MockListProvider(items: [app("Safari")])
+        let store = makeStore()
+        let resultsView = ResultsView(frame: NSRect(x: 0, y: 0, width: 400, height: 30))
+        let controller = SearchViewController()
+        controller.setValue(InputField(), forKey: "searchText")
+        controller.setValue(resultsView, forKey: "resultsText")
+        controller.listProvider = provider
+        controller.searchService = SearchService(provider: provider, usage: store)
+        controller.promptValue = "prompt"
+
+        for action in [ItemAction.reveal, .copyPath] {
+            controller.clearFields()
+            controller.submit(preferTypedInput: false, action: action)
+        }
+        XCTAssertEqual(store.score(for: app("Safari")), 0)
+
+        controller.clearFields()
+        controller.submit(preferTypedInput: false, action: .openNewInstance)
+        XCTAssertEqual(store.score(for: app("Safari")), 1, accuracy: 0.0001)
+    }
 }

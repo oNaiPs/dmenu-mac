@@ -40,6 +40,9 @@ Tip: dmenu-mac is best paired with Spotlight's shortcut turned off (System Setti
 | **Shift Tab** / **←** | Move to the previous result |
 | **Enter** | Open the selected result, or run what you typed when nothing matches |
 | **Shift Enter** | Run what you typed even if there are matches |
+| **⌘ Enter** | Reveal the selected app, pane, or program in Finder |
+| **⌥ Enter** | Copy the selected item's path to the clipboard |
+| **⌃ Enter** | Open a new instance of the selected app |
 | **Esc** | Hide the launcher |
 | **⌘ ,** | Open Settings |
 
@@ -74,7 +77,7 @@ Programs from your login shell's `$PATH` (Homebrew, nix, `~/.local/bin`, ...) th
 Open Settings with **⌘ ,** while the launcher is up, or from the menu bar icon.
 
 - **General**: the global hotkey, **Launch at login**, and the terminal setup described above.
-- **Appearance**: bar position (top or bottom of the screen), opacity, colors for the text, selection, and background, and the font and its size. **Reset to Defaults** undoes it all.
+- **Appearance**: bar position (top or bottom of the screen), which screen it appears on (the one with the active window, the one with the mouse pointer, or the primary screen; the bar spans the full width, below the menu bar and above a bottom Dock), opacity, colors for the text, selection, and background, and the font and its size. **Reset to Defaults** undoes it all.
 
 The menu bar icon also lets you show the launcher and quit.
 
@@ -90,6 +93,7 @@ dmenu-mac --help
 | --- | --- |
 | `-p`, `--prompt <text>` | Show a prompt instead of the search field |
 | `-b`, `--bottom` | Show the bar at the bottom of the screen for this run |
+| `-m`, `--monitor <n>` | Show the bar on screen `n` for this run, counting from 0 in macOS's display order; only 0 (the primary screen) is guaranteed to stay the same, and indexes with no screen are ignored |
 | `--no-custom` | Only accept items from the list; typed text that matches nothing is ignored |
 | `--exit` / `--no-exit` | Quit after a selection, or stay in the background |
 
