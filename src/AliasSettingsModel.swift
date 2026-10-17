@@ -76,7 +76,11 @@ final class AliasSettingsModel: ObservableObject {
         if alias.target.isEmpty {
             return "Pick a target."
         }
-        if isMissing(alias) {
+        // A saved target may be missing for now ($PATH listing off, list still loading),
+        // so only check it when it changed; otherwise the keyword couldn't be edited.
+        let stored = aliases.first { $0.id == alias.id }
+        let targetChanged = stored?.targetID != alias.targetID || stored?.target != alias.target
+        if targetChanged && isMissing(alias) {
             return "\"\(alias.target)\" isn't in the list."
         }
         return nil

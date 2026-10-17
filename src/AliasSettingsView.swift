@@ -22,34 +22,40 @@ struct AliasSettingsView: View {
     @StateObject private var model = AliasSettingsModel()
     @State private var editing: Alias?
 
+    static let listHeight: CGFloat = 260
+
     var body: some View {
-        Form {
-            Section {
+        // Not a Form: a List inside a grouped Form is laid out as plain rows and never scrolls.
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Aliases")
+                .font(.headline)
+
+            List {
+                ForEach(model.aliases) { alias in
+                    row(alias)
+                }
+            }
+            .listStyle(.bordered(alternatesRowBackgrounds: true))
+            .frame(height: Self.listHeight)
+            .overlay {
                 if model.aliases.isEmpty {
                     Text("No aliases yet.")
                         .foregroundStyle(.secondary)
                 }
-                ForEach(model.aliases) { alias in
-                    row(alias)
-                }
-            } header: {
-                Text("Aliases")
-            } footer: {
-                Text("Typing an alias exactly shows its target first, e.g. ff for Firefox.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
             }
 
             HStack {
+                Text("Typing an alias exactly shows its target first, e.g. ff for Firefox.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
                 Spacer()
                 Button("Add Alias…") {
                     editing = Alias(keyword: "", target: "")
                 }
             }
         }
-        .formStyle(.grouped)
-        .scrollDisabled(true)
-        .fixedSize(horizontal: false, vertical: true)
+        .padding(20)
         .frame(width: SettingsLayout.paneWidth)
         .sheet(item: $editing) { alias in
             AliasEditor(model: model, alias: alias) { editing = nil }

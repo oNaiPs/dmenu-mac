@@ -73,6 +73,20 @@ final class AliasSettingsModelTests: XCTestCase {
         XCTAssertFalse(model.save(alias("", 2)))
     }
 
+    func testKeywordOfAliasWithMissingTargetCanBeEdited() {
+        var saved = alias("vi", 5)
+        model.save(saved)
+        items.removeLast() // $PATH programs turned off
+
+        saved.keyword = "v"
+        XCTAssertNil(model.validationError(for: saved))
+        XCTAssertTrue(model.save(saved))
+
+        saved.target = "Netscape"
+        saved.targetID = "/Applications/Netscape.app"
+        XCTAssertNotNil(model.validationError(for: saved), "a newly picked target must exist")
+    }
+
     func testAnyTargetAcceptedWhenListIsUnavailable() {
         items = []
         XCTAssertNil(model.validationError(for: Alias(keyword: "x", target: "Whatever")))
