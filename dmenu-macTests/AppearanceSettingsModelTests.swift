@@ -60,6 +60,14 @@ final class AppearanceSettingsModelTests: XCTestCase {
         XCTAssertEqual(AppearanceManager.shared.windowPosition, .bottom)
     }
 
+    func testChangingScreenStoresItAndNotifies() {
+        let notified = expectation(forNotification: .appearanceSettingsChanged, object: nil)
+        model.screenSelection = .primary
+        wait(for: [notified], timeout: 1.0)
+
+        XCTAssertEqual(AppearanceManager.shared.screenSelection, .primary)
+    }
+
     func testChangingOpacityStoresItAndNotifies() {
         let notified = expectation(forNotification: .appearanceSettingsChanged, object: nil)
         model.windowOpacity = 0.4
@@ -109,6 +117,7 @@ final class AppearanceSettingsModelTests: XCTestCase {
         manager.windowOpacity = 0.3
         manager.fontSize = 40
         manager.windowPosition = .bottom
+        manager.screenSelection = .mouse
 
         let notified = expectation(forNotification: .appearanceSettingsChanged, object: nil)
         model.resetToDefaults()
@@ -118,6 +127,7 @@ final class AppearanceSettingsModelTests: XCTestCase {
         XCTAssertEqual(model.opacityText, "60%")
         XCTAssertEqual(model.fontSizeText, "13 pt")
         XCTAssertEqual(model.windowPosition, .top)
+        XCTAssertEqual(model.screenSelection, .activeWindow)
     }
 
     // MARK: - Font panel

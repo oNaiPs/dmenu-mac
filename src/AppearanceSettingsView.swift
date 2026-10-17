@@ -30,6 +30,12 @@ struct AppearanceSettingsView: View {
                     }
                 }
 
+                Picker("Screen", selection: $model.screenSelection) {
+                    ForEach(ScreenSelection.allCases, id: \.self) { selection in
+                        Text(selection.title).tag(selection)
+                    }
+                }
+
                 LabeledContent("Opacity") {
                     HStack {
                         Slider(value: $model.windowOpacity, in: AppearanceSettingsModel.opacityRange)

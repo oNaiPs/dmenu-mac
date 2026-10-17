@@ -36,12 +36,16 @@ class SearchWindow: NSPanel {
     }
 
     /**
-     * Updates search window position.
+     * Updates search window position. `monitor` is a screen index that overrides `screen` when valid.
      */
-    func updatePosition(_ position: WindowPosition = AppearanceManager.shared.windowPosition) {
-        guard let screen = NSScreen.main else { return }
+    func updatePosition(_ position: WindowPosition = AppearanceManager.shared.windowPosition,
+                        screen selection: ScreenSelection = AppearanceManager.shared.screenSelection,
+                        monitor: Int? = nil) {
+        guard let screen = ScreenPicker.pick(from: NSScreen.screens, selection: selection, monitor: monitor,
+                                             context: .current(), fallback: NSScreen.main) else { return }
 
-        let frame = Self.frame(for: position, in: screen.frame, height: self.frame.height)
+        // The visible frame excludes the menu bar and the Dock, so the bar never hides behind either.
+        let frame = Self.frame(for: position, in: screen.visibleFrame, height: self.frame.height)
         setFrame(frame, display: false)
     }
 

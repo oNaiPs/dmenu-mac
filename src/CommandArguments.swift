@@ -36,6 +36,11 @@ struct DmenuMac: ParsableArguments {
         discussion: "Overrides the window position set in Appearance settings."))
     var bottom = false
 
+    @Option(name: .shortAndLong, help: ArgumentHelp(
+        "Show the bar on screen <n>, counting from 0 (the primary screen).",
+        discussion: "Overrides the screen set in Appearance settings. Ignored if there is no such screen."))
+    var monitor: Int?
+
     /// Opened via LaunchServices (Finder, Dock, login items, `open`) the parent is launchd;
     /// anything else (a shell, skhd, ...) is a one-shot invocation that should not linger.
     static func shouldExitOnClose(flag: Bool?, parentPID: pid_t = getppid()) -> Bool {
