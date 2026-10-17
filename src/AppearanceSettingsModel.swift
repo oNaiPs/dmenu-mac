@@ -52,6 +52,11 @@ final class AppearanceSettingsModel: NSObject, ObservableObject {
         "\(Int((windowOpacity * 100).rounded()))%"
     }
 
+    var showIcons: Bool {
+        get { manager.showIcons }
+        set { update { manager.showIcons = newValue } }
+    }
+
     // MARK: - Colors
 
     var searchTextColor: Color {

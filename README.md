@@ -72,7 +72,7 @@ Programs from your login shell's `$PATH` (Homebrew, nix, `~/.local/bin`, ...) th
 Open Settings with **⌘ ,** while the launcher is up, or from the menu bar icon.
 
 - **General**: the global hotkey, **Launch at login**, and the terminal setup described above.
-- **Appearance**: bar position (top or bottom of the screen), opacity, colors for the text, selection, and background, and the font and its size. **Reset to Defaults** undoes it all.
+- **Appearance**: bar position (top or bottom of the screen), opacity, **Show icons** (app and System Settings icons next to their names, off by default), colors for the text, selection, and background, and the font and its size. **Reset to Defaults** undoes it all.
 
 The menu bar icon also lets you show the launcher and quit.
 

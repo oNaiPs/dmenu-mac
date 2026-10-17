@@ -39,6 +39,8 @@ struct AppearanceSettingsView: View {
                             .frame(minWidth: 40, alignment: .trailing)
                     }
                 }
+
+                Toggle("Show icons", isOn: $model.showIcons)
             }
 
             Section("Colors") {

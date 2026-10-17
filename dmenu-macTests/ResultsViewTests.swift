@@ -129,6 +129,78 @@ final class ResultsViewTests: XCTestCase {
         XCTAssertGreaterThan(view.frame.width, widthBefore)
     }
 
+    // MARK: - Icons
+
+    private let appURL = URL(fileURLWithPath: "/System/Applications/Calculator.app")
+
+    private func withIcons(_ enabled: Bool, _ body: () -> Void) {
+        let defaults = UserDefaults.standard
+        let key = UserDefaults.AppearanceKeys.showIcons
+        let saved = defaults.object(forKey: key)
+        defer {
+            if let saved = saved {
+                defaults.set(saved, forKey: key)
+            } else {
+                defaults.removeObject(forKey: key)
+            }
+        }
+        AppearanceManager.shared.showIcons = enabled
+        body()
+    }
+
+    func testFileURLComesFromFileBackedItemsOnly() {
+        XCTAssertEqual(ListItem(name: "Calculator", data: appURL).fileURL, appURL)
+        XCTAssertNil(ListItem(name: "piped", data: nil).fileURL)
+        XCTAssertNil(ListItem(name: "web", data: URL(string: "https://example.com")).fileURL)
+        XCTAssertNil(ListItem(name: "nvim", data: Command(commandLine: "nvim")).fileURL)
+    }
+
+    func testFileURLSurvivesCompositeProviderTagging() {
+        let provider = CompositeListProvider(providers: [
+            MockListProvider(items: [ListItem(name: "Calculator", data: appURL)])
+        ])
+        XCTAssertEqual(provider.get().first?.fileURL, appURL)
+    }
+
+    func testStubSettingsPanesBorrowTheSystemSettingsIcon() throws {
+        XCTAssertEqual(IconCache.iconSource(for: appURL), appURL)
+
+        let stub = URL(fileURLWithPath: "/System/Library/PreferencePanes/Displays.prefPane")
+        try XCTSkipUnless(FileManager.default.fileExists(atPath: stub.path))
+        XCTAssertEqual(IconCache.iconSource(for: stub).pathExtension, "app")
+    }
+
+    func testIconsOffLeavesLayoutUnchanged() {
+        withIcons(false) {
+            view.list = [ListItem(name: "Calculator", data: appURL)]
+            XCTAssertEqual(view.iconSide, 0)
+        }
+    }
+
+    func testIconsWidenOnlyFileBackedItems() {
+        var plainWidth: CGFloat = 0
+        var appWidth: CGFloat = 0
+        withIcons(true) {
+            view.list = [ListItem(name: "Calculator", data: nil)]
+            plainWidth = view.frame.width
+            view.list = [ListItem(name: "Calculator", data: appURL)]
+            appWidth = view.frame.width
+            XCTAssertGreaterThan(view.iconSide, 0)
+            XCTAssertEqual(appWidth - plainWidth, view.iconSide + view.iconSpacing, accuracy: 0.0001)
+            drawOffscreen()
+        }
+    }
+
+    func testTogglingIconsTakesEffectOnInvalidateLayout() {
+        withIcons(false) {
+            view.list = [ListItem(name: "Calculator", data: appURL)]
+            let widthWithout = view.frame.width
+            AppearanceManager.shared.showIcons = true
+            view.invalidateLayout()
+            XCTAssertGreaterThan(view.frame.width, widthWithout)
+        }
+    }
+
     // MARK: - Culling
 
     func testVisibleRangeCoversAllItemsForFullBounds() {
