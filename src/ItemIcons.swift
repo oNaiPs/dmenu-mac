@@ -46,6 +46,15 @@ final class IconCache {
         return icon
     }
 
+    /// Drops every cached icon, e.g. after apps change on disk.
+    func removeAll() {
+        cache.removeAllObjects()
+    }
+
+    func isCached(_ url: URL) -> Bool {
+        cache.object(forKey: url.path as NSString) != nil
+    }
+
     /// Built-in settings panes are empty stubs that Finder shows as blank documents,
     /// so they borrow the System Settings icon. Panes that ship their own icon keep it.
     static func iconSource(for url: URL) -> URL {

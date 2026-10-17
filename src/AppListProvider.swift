@@ -82,6 +82,8 @@ class AppListProvider: ListProvider {
     func initFileWatch(_ dirs: [String]) {
         let filewatcher = FileWatcher(dirs)
         filewatcher.callback = {_ in
+            // An updated or reinstalled app may come with a new icon.
+            IconCache.shared.removeAll()
             self.updateAppList()
         }
         filewatcher.start()

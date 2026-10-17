@@ -170,6 +170,16 @@ final class ResultsViewTests: XCTestCase {
         XCTAssertEqual(IconCache.iconSource(for: stub).pathExtension, "app")
     }
 
+    func testIconCacheRemoveAllDropsCachedIcons() {
+        let cache = IconCache()
+        _ = cache.icon(for: appURL)
+        XCTAssertTrue(cache.isCached(appURL))
+
+        cache.removeAll()
+
+        XCTAssertFalse(cache.isCached(appURL))
+    }
+
     func testIconsOffLeavesLayoutUnchanged() {
         withIcons(false) {
             view.list = [ListItem(name: "Calculator", data: appURL)]

@@ -54,7 +54,13 @@ final class AppearanceSettingsModel: NSObject, ObservableObject {
 
     var showIcons: Bool {
         get { manager.showIcons }
-        set { update { manager.showIcons = newValue } }
+        set {
+            update {
+                // Toggling doubles as a manual refresh of icons cached earlier.
+                IconCache.shared.removeAll()
+                manager.showIcons = newValue
+            }
+        }
     }
 
     // MARK: - Colors

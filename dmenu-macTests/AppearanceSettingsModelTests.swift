@@ -91,6 +91,16 @@ final class AppearanceSettingsModelTests: XCTestCase {
         XCTAssertTrue(model.showIcons)
     }
 
+    func testTogglingShowIconsClearsIconCache() {
+        let app = URL(fileURLWithPath: "/System/Applications/Calculator.app")
+        _ = IconCache.shared.icon(for: app)
+        XCTAssertTrue(IconCache.shared.isCached(app))
+
+        model.showIcons = true
+
+        XCTAssertFalse(IconCache.shared.isCached(app))
+    }
+
     func testChangingColorPersistsAsArchivableColor() {
         let notified = expectation(forNotification: .appearanceSettingsChanged, object: nil)
         model.searchTextColor = Color(red: 1, green: 0, blue: 0)
