@@ -63,6 +63,12 @@
 		A11A5E500000000000000003 /* AliasSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11A5E500000000000000103 /* AliasSettingsView.swift */; };
 		A11A5E500000000000000004 /* AliasSearchServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11A5E500000000000000104 /* AliasSearchServiceTests.swift */; };
 		A11A5E500000000000000005 /* AliasSettingsModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11A5E500000000000000105 /* AliasSettingsModelTests.swift */; };
+		0B0A4D1E0000000000000001 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0A4D1E0000000000000101 /* Onboarding.swift */; };
+		0B0A4D1E0000000000000002 /* AutomationPermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0A4D1E0000000000000102 /* AutomationPermissions.swift */; };
+		0B0A4D1E0000000000000003 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0A4D1E0000000000000103 /* OnboardingView.swift */; };
+		0B0A4D1E0000000000000004 /* OnboardingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0A4D1E0000000000000104 /* OnboardingTests.swift */; };
+		0B0A4D1E0000000000000005 /* DockPresence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0A4D1E0000000000000105 /* DockPresence.swift */; };
+		0B0A4D1E0000000000000006 /* DockPresenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0A4D1E0000000000000106 /* DockPresenceTests.swift */; };
 		7FCEF3DF2EF89BAE00301202 /* ProviderFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF3DA2EF89BAE00301202 /* ProviderFactory.swift */; };
 		7FA0D1E12F00000000000001 /* AppDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA0D1E02F00000000000001 /* AppDelegateTests.swift */; };
 		7FCEF3E42EF89BB900301202 /* AppListProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCEF3E02EF89BB900301202 /* AppListProviderTests.swift */; };
@@ -145,6 +151,12 @@
 		A11A5E500000000000000103 /* AliasSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AliasSettingsView.swift; path = src/AliasSettingsView.swift; sourceTree = "<group>"; };
 		A11A5E500000000000000104 /* AliasSearchServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AliasSearchServiceTests.swift; path = "dmenu-macTests/AliasSearchServiceTests.swift"; sourceTree = "<group>"; };
 		A11A5E500000000000000105 /* AliasSettingsModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AliasSettingsModelTests.swift; path = "dmenu-macTests/AliasSettingsModelTests.swift"; sourceTree = "<group>"; };
+		0B0A4D1E0000000000000101 /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Onboarding.swift; path = src/Onboarding.swift; sourceTree = "<group>"; };
+		0B0A4D1E0000000000000102 /* AutomationPermissions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AutomationPermissions.swift; path = src/AutomationPermissions.swift; sourceTree = "<group>"; };
+		0B0A4D1E0000000000000103 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OnboardingView.swift; path = src/OnboardingView.swift; sourceTree = "<group>"; };
+		0B0A4D1E0000000000000104 /* OnboardingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OnboardingTests.swift; path = "dmenu-macTests/OnboardingTests.swift"; sourceTree = "<group>"; };
+		0B0A4D1E0000000000000105 /* DockPresence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DockPresence.swift; path = src/DockPresence.swift; sourceTree = "<group>"; };
+		0B0A4D1E0000000000000106 /* DockPresenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DockPresenceTests.swift; path = "dmenu-macTests/DockPresenceTests.swift"; sourceTree = "<group>"; };
 		7FA0D1E02F00000000000001 /* AppDelegateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegateTests.swift; path = "dmenu-macTests/AppDelegateTests.swift"; sourceTree = "<group>"; };
 		7FCEF3E02EF89BB900301202 /* AppListProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppListProviderTests.swift; path = "dmenu-macTests/AppListProviderTests.swift"; sourceTree = "<group>"; };
 		7FCEF3E12EF89BB900301202 /* MockListProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MockListProvider.swift; path = "dmenu-macTests/MockListProvider.swift"; sourceTree = "<group>"; };
@@ -206,6 +218,8 @@
 				5EA2C0DE2F10000000000103 /* SearchShortcutsTests.swift */,
 				A11A5E500000000000000104 /* AliasSearchServiceTests.swift */,
 				A11A5E500000000000000105 /* AliasSettingsModelTests.swift */,
+				0B0A4D1E0000000000000104 /* OnboardingTests.swift */,
+				0B0A4D1E0000000000000106 /* DockPresenceTests.swift */,
 				7FCEF3E32EF89BB900301202 /* SearchViewControllerTests.swift */,
 				BAFA97BFB86D4BBEA3CA3C69 /* CommandArgumentsTests.swift */,
 				2B4A6EB6FC9D42409B853E7D /* PipeListProviderTests.swift */,
@@ -275,6 +289,10 @@
 				A11A5E500000000000000101 /* Aliases.swift */,
 				A11A5E500000000000000102 /* AliasSettingsModel.swift */,
 				A11A5E500000000000000103 /* AliasSettingsView.swift */,
+				0B0A4D1E0000000000000101 /* Onboarding.swift */,
+				0B0A4D1E0000000000000102 /* AutomationPermissions.swift */,
+				0B0A4D1E0000000000000103 /* OnboardingView.swift */,
+				0B0A4D1E0000000000000105 /* DockPresence.swift */,
 				7F3278E81C71C9CE00AFB227 /* AppDelegate.swift */,
 				7F2CCA2F268FE38C00C14B29 /* AppListProvider.swift */,
 				7F25568E269CF945002324AC /* CommandArguments.swift */,
@@ -470,6 +488,10 @@
 				A11A5E500000000000000001 /* Aliases.swift in Sources */,
 				A11A5E500000000000000002 /* AliasSettingsModel.swift in Sources */,
 				A11A5E500000000000000003 /* AliasSettingsView.swift in Sources */,
+				0B0A4D1E0000000000000001 /* Onboarding.swift in Sources */,
+				0B0A4D1E0000000000000002 /* AutomationPermissions.swift in Sources */,
+				0B0A4D1E0000000000000003 /* OnboardingView.swift in Sources */,
+				0B0A4D1E0000000000000005 /* DockPresence.swift in Sources */,
 				7FCEF3DF2EF89BAE00301202 /* ProviderFactory.swift in Sources */,
 				7F2CCA32268FEDF600C14B29 /* PipeListProvider.swift in Sources */,
 				7F2CCA3F268FFDB500C14B29 /* ReadStdin.h.m in Sources */,
@@ -500,6 +522,8 @@
 				5EA2C0DE2F10000000000003 /* SearchShortcutsTests.swift in Sources */,
 				A11A5E500000000000000004 /* AliasSearchServiceTests.swift in Sources */,
 				A11A5E500000000000000005 /* AliasSettingsModelTests.swift in Sources */,
+				0B0A4D1E0000000000000004 /* OnboardingTests.swift in Sources */,
+				0B0A4D1E0000000000000006 /* DockPresenceTests.swift in Sources */,
 				42312E27230649C0A82474D4 /* PipeListProviderTests.swift in Sources */,
 				A1B2C3D4E5F60718293A4B5C /* ReadStdinTests.swift in Sources */,
 				CAA73A0945C642C6A1A7CD3D /* NotificationNameTests.swift in Sources */,

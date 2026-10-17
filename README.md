@@ -25,6 +25,7 @@ To call `dmenu-mac` from scripts, put `dmenu-mac.app/Contents/Resources/dmenu-ma
 ## Quick start
 
 1. Open dmenu-mac. It lives in the menu bar and waits for its hotkey.
+   The first time, a short setup walks you through the hotkey, launching at login, and terminal programs. Every step can be skipped (Enter continues, Esc skips), and you can run it again from the menu bar icon with **Run Setup Again…**. It does not appear when dmenu-mac is started from a shell or a script.
 2. Press **⌘ Space** anywhere to bring up the launcher.
 3. Start typing. Matching is fuzzy and case-insensitive, so `safri` still finds Safari. Things you open often and recently rank higher, and come first before you type anything.
 4. Press **Enter** to open the highlighted result, or **Esc** to dismiss.
@@ -74,7 +75,7 @@ To launch `nvim`, `htop`, `ranger`, and friends in a terminal window:
 1. Open Settings → General and turn on **List programs from $PATH**.
 2. Pick your terminal: Terminal, iTerm2, Ghostty, Alacritty, kitty, WezTerm, or a custom command where `{cmd}` is replaced by the program to run.
 
-Programs from your login shell's `$PATH` (Homebrew, nix, `~/.local/bin`, ...) then show up alongside apps, and typed commands like `nvim notes.md` open in that terminal too. The first time Terminal or iTerm2 is used, macOS asks to let dmenu-mac control it.
+Programs from your login shell's `$PATH` (Homebrew, nix, `~/.local/bin`, ...) then show up alongside apps, and typed commands like `nvim notes.md` open in that terminal too. The first time Terminal or iTerm2 is used, macOS asks to let dmenu-mac control it; the setup offers to ask up front instead.
 
 ## Search shortcuts
 
@@ -109,7 +110,7 @@ Open Settings with **⌘ ,** while the launcher is up, or from the menu bar icon
 - **Shortcuts**: the search keywords described above. **Restore Defaults** brings back the built-in set.
 - **Appearance**: bar position (top or bottom of the screen), which screen it appears on (the one with the active window, the one with the mouse pointer, or the primary screen; the bar spans the full width, below the menu bar and above a bottom Dock), opacity, **Show icons** (app and System Settings icons next to their names, off by default), colors for the text, selection, and background, and the font and its size. **Reset to Defaults** undoes it all.
 
-The menu bar icon also lets you show the launcher and quit.
+The menu bar icon also lets you show the launcher, run the setup again, and quit.
 
 ## Command line
 
