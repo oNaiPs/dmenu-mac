@@ -20,6 +20,8 @@ import Cocoa
 protocol ActivationPolicyApplying: AnyObject {
     func applyActivationPolicy(_ policy: NSApplication.ActivationPolicy)
     func bringToFront()
+    /// Runs `work` on a later main run loop turn.
+    func onNextTurn(_ work: @escaping () -> Void)
 }
 
 extension NSApplication: ActivationPolicyApplying {
@@ -32,11 +34,14 @@ extension NSApplication: ActivationPolicyApplying {
     }
 
     func bringToFront() {
-        if #available(macOS 14, *) {
-            activate()
-        } else {
-            activate(ignoringOtherApps: true)
-        }
+        // On macOS 14+ the cooperative activate() is refused here (seen on macOS 26 from the status
+        // menu and from ⌘, in the launcher): the window stays behind and never becomes key.
+        // The older call still brings the app forward.
+        activate(ignoringOtherApps: true)
+    }
+
+    func onNextTurn(_ work: @escaping () -> Void) {
+        DispatchQueue.main.async(execute: work)
     }
 }
 
@@ -67,7 +72,7 @@ final class DockPresence {
 
     var isActive: Bool { !windows.isEmpty }
 
-    /// Shows the app in the Dock until `window` closes, and brings it forward.
+    /// Shows the app in the Dock until `window` closes, and makes `window` the key window.
     func show(_ window: NSWindow) {
         if windows.isEmpty {
             previousApp = previousAppProvider()
@@ -80,17 +85,26 @@ final class DockPresence {
                     (note.object as? NSWindow).map { self?.windowClosed($0) }
             }
         }
-        app.bringToFront()
-        window.makeKeyAndOrderFront(nil)
-        window.orderFrontRegardless()
+        bringForward(window)
+        // A new activation policy only takes effect on a later turn, and activating before
+        // that can be ignored, so ask again once it has.
+        app.onNextTurn { [weak self, weak window] in
+            guard let self, let window, self.windows.contains(where: { $0 === window }) else { return }
+            self.bringForward(window)
+        }
     }
 
     /// Clicking the Dock icon brings back the tracked window; false when there is none.
     func reopen() -> Bool {
         guard let window = windows.last else { return false }
+        bringForward(window)
+        return true
+    }
+
+    private func bringForward(_ window: NSWindow) {
         app.bringToFront()
         window.makeKeyAndOrderFront(nil)
-        return true
+        window.orderFrontRegardless()
     }
 
     private func windowClosed(_ window: NSWindow) {
