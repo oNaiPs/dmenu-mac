@@ -166,11 +166,20 @@ class ResultsView: NSView {
         return low ..< end
     }
 
+    /// Text offsets are fractional, and an icon straddling device pixels gets resampled
+    /// and looks soft, so snap it to the backing grid. Text keeps its subpixel position.
+    func iconRect(at originX: CGFloat) -> NSRect {
+        let rect = NSRect(x: originX, y: (bounds.height - iconSide) / 2, width: iconSide, height: iconSide)
+        return backingAlignedRect(rect, options: .alignAllEdgesNearest)
+    }
+
     override func draw(_ dirtyRect: NSRect) {
         let textAttributes: [NSAttributedString.Key: Any] = [
             .font: appearanceManager.currentFont,
             .foregroundColor: appearanceManager.resultsTextColor
         ]
+
+        NSGraphicsContext.current?.imageInterpolation = .high
 
         for i in visibleRange(in: dirtyRect) {
             if selectedIndexValue == i {
@@ -180,9 +189,9 @@ class ResultsView: NSView {
 
             var textRect = contentRect(at: i)
             if let iconURL = itemIconURLs[i] {
-                let iconRect = NSRect(x: textRect.minX, y: (bounds.height - iconSide) / 2,
-                                      width: iconSide, height: iconSide)
-                IconCache.shared.icon(for: iconURL).draw(in: iconRect)
+                IconCache.shared.icon(for: iconURL).draw(in: iconRect(at: textRect.minX), from: .zero,
+                                                        operation: .sourceOver, fraction: 1,
+                                                        respectFlipped: true, hints: nil)
                 textRect.origin.x += iconSide + iconSpacing
                 textRect.size.width -= iconSide + iconSpacing
             }

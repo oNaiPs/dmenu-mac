@@ -191,6 +191,24 @@ final class ResultsViewTests: XCTestCase {
         }
     }
 
+    func testIconRectSnapsToDevicePixels() {
+        let window = NSWindow(contentRect: view.frame, styleMask: .borderless, backing: .buffered, defer: false)
+        window.contentView?.addSubview(view)
+        let scale = window.backingScaleFactor
+
+        withIcons(true) {
+            // "x" leaves the next item at a fractional offset.
+            view.list = [ListItem(name: "x", data: nil), ListItem(name: "Calculator", data: appURL)]
+            view.selectedIndex = 1
+            let rect = view.iconRect(at: view.selectedRect.minX + view.rectFillPadding)
+
+            for edge in [rect.minX, rect.minY, rect.maxX, rect.maxY] {
+                XCTAssertEqual(edge * scale, (edge * scale).rounded(), accuracy: 0.0001)
+            }
+            XCTAssertEqual(rect.width, view.iconSide, accuracy: 0.0001)
+        }
+    }
+
     func testTogglingIconsTakesEffectOnInvalidateLayout() {
         withIcons(false) {
             view.list = [ListItem(name: "Calculator", data: appURL)]
