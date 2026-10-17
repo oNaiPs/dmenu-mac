@@ -30,6 +30,8 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
     var allowCustomInput = true
     /// Set from the command line; takes precedence over the Appearance setting.
     var windowPositionOverride: WindowPosition?
+    /// Screen index from the command line; takes precedence over the Appearance setting.
+    var monitorOverride: Int?
     private let appearanceManager = AppearanceManager.shared
 
     deinit {
@@ -88,6 +90,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
             if options.bottom {
                 windowPositionOverride = .bottom
             }
+            monitorOverride = options.monitor
         }
 
         clearFields()
@@ -109,7 +112,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSWindowDeleg
     }
 
     func updatePosition() {
-        (view.window as? SearchWindow)?.updatePosition(windowPosition)
+        (view.window as? SearchWindow)?.updatePosition(windowPosition, monitor: monitorOverride)
     }
 
     func updateColors() {

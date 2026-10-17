@@ -54,4 +54,13 @@ final class SearchWindowTests: XCTestCase {
         let frame = SearchWindow.frame(for: .bottom, in: screenFrame, height: 30)
         XCTAssertEqual(frame, NSRect(x: 1440, y: -200, width: 1920, height: 30))
     }
+
+    func testBarAreaKeepsFullWidthButSkipsMenuBarAndBottomDock() {
+        struct Screen: ScreenDescribing {
+            let frame = NSRect(x: 1440, y: -200, width: 1920, height: 1080)
+            // Menu bar on top, Dock on the left and a bottom Dock inset.
+            let visibleFrame = NSRect(x: 1520, y: -150, width: 1840, height: 995)
+        }
+        XCTAssertEqual(SearchWindow.barArea(of: Screen()), NSRect(x: 1440, y: -150, width: 1920, height: 995))
+    }
 }

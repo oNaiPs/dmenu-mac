@@ -30,6 +30,7 @@
 		7F3278F01C71C9CE00AFB227 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278E81C71C9CE00AFB227 /* AppDelegate.swift */; };
 		7F3278F11C71C9CE00AFB227 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7F3278E91C71C9CE00AFB227 /* Assets.xcassets */; };
 		7F3278F51C71C9CE00AFB227 /* SearchWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278ED1C71C9CE00AFB227 /* SearchWindow.swift */; };
+		5C2E7A9B1D3F4E6A8B0C1D21 /* ScreenSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2E7A9B1D3F4E6A8B0C1D22 /* ScreenSelection.swift */; };
 		7F3278F71C71C9CE00AFB227 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278EF1C71C9CE00AFB227 /* SearchViewController.swift */; };
 		7F3279001C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3278FF1C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift */; };
 		7F32790E1C71DF3E00AFB227 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F32790D1C71DF3E00AFB227 /* Carbon.framework */; };
@@ -64,6 +65,7 @@
 		B587A216B6D840909FF34BE0 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A741D70BEA39425CA2842ABC /* XCTest.framework */; };
 		CAA73A0945C642C6A1A7CD3D /* NotificationNameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9315B77060242E2BEE75F2C /* NotificationNameTests.swift */; };
 		A1B2C3D4E5F6A7B8C9D0E1F2 /* SearchWindowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A7B8C9D0E1F3 /* SearchWindowTests.swift */; };
+		5C2E7A9B1D3F4E6A8B0C1D23 /* ScreenPickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2E7A9B1D3F4E6A8B0C1D24 /* ScreenPickerTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +99,7 @@
 		7F3278E91C71C9CE00AFB227 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = src/Assets.xcassets; sourceTree = "<group>"; };
 		7F3278EC1C71C9CE00AFB227 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = src/Info.plist; sourceTree = "<group>"; };
 		7F3278ED1C71C9CE00AFB227 /* SearchWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchWindow.swift; path = src/SearchWindow.swift; sourceTree = "<group>"; };
+		5C2E7A9B1D3F4E6A8B0C1D22 /* ScreenSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScreenSelection.swift; path = src/ScreenSelection.swift; sourceTree = "<group>"; };
 		7F3278EF1C71C9CE00AFB227 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchViewController.swift; path = src/SearchViewController.swift; sourceTree = "<group>"; };
 		7F3278FF1C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VerticalAlignedTextFieldCell.swift; path = src/VerticalAlignedTextFieldCell.swift; sourceTree = "<group>"; };
 		7F32790D1C71DF3E00AFB227 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
@@ -132,6 +135,7 @@
 		A741D70BEA39425CA2842ABC /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = System/Library/Frameworks/XCTest.framework; sourceTree = SDKROOT; };
 		B9315B77060242E2BEE75F2C /* NotificationNameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NotificationNameTests.swift; path = "dmenu-macTests/NotificationNameTests.swift"; sourceTree = "<group>"; };
 		A1B2C3D4E5F6A7B8C9D0E1F3 /* SearchWindowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchWindowTests.swift; path = "dmenu-macTests/SearchWindowTests.swift"; sourceTree = "<group>"; };
+		5C2E7A9B1D3F4E6A8B0C1D24 /* ScreenPickerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScreenPickerTests.swift; path = "dmenu-macTests/ScreenPickerTests.swift"; sourceTree = "<group>"; };
 		BAFA97BFB86D4BBEA3CA3C69 /* CommandArgumentsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CommandArgumentsTests.swift; path = "dmenu-macTests/CommandArgumentsTests.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -186,6 +190,7 @@
 				1EC484740A8AF74BCD6728BD /* SearchViewControllerCommandTests.swift */,
 				E2D26D3B3F7F04738396CC8D /* SettingsPanesTests.swift */,
 				A1B2C3D4E5F6A7B8C9D0E1F3 /* SearchWindowTests.swift */,
+				5C2E7A9B1D3F4E6A8B0C1D24 /* ScreenPickerTests.swift */,
 			);
 			name = "dmenu-macTests";
 			sourceTree = "<group>";
@@ -248,6 +253,7 @@
 				7F5D0E241CACCD0100268983 /* ResultsView.swift */,
 				7F3278EF1C71C9CE00AFB227 /* SearchViewController.swift */,
 				7F3278ED1C71C9CE00AFB227 /* SearchWindow.swift */,
+				5C2E7A9B1D3F4E6A8B0C1D22 /* ScreenSelection.swift */,
 				7F3278FF1C71D39800AFB227 /* VerticalAlignedTextFieldCell.swift */,
 			);
 			name = src;
@@ -425,6 +431,7 @@
 				7F2CCA3F268FFDB500C14B29 /* ReadStdin.h.m in Sources */,
 				7F2CCA23268B195F00C14B29 /* Notification+Name.swift in Sources */,
 				7F3278F51C71C9CE00AFB227 /* SearchWindow.swift in Sources */,
+				5C2E7A9B1D3F4E6A8B0C1D21 /* ScreenSelection.swift in Sources */,
 				7F255694269D01FF002324AC /* InputField.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -455,6 +462,7 @@
 				4BA3124480DF4562AD5C7866 /* SearchViewControllerCommandTests.swift in Sources */,
 				CBC3E3E0E4C9001528BCCC36 /* SettingsPanesTests.swift in Sources */,
 				A1B2C3D4E5F6A7B8C9D0E1F2 /* SearchWindowTests.swift in Sources */,
+				5C2E7A9B1D3F4E6A8B0C1D23 /* ScreenPickerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
