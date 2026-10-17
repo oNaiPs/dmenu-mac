@@ -17,15 +17,53 @@
 import Foundation
 import Fuse
 
+extension ListItem {
+    /// Stable identity for an alias target: the file path for apps and panes,
+    /// the command for $PATH programs, and the name for anything else.
+    var aliasIdentity: String {
+        switch providerData {
+        case let url as URL where url.isFileURL:
+            return url.path
+        case let command as Command:
+            return "cmd:" + command.commandLine
+        default:
+            return "name:" + name
+        }
+    }
+}
+
 /// A short keyword that brings up a listed item, e.g. `ff` for Firefox.
 struct Alias: Codable, Equatable, Identifiable {
     var id = UUID()
     var keyword: String
-    /// Name of the target item as it appears in the list.
+    /// Name of the target as shown in the list, kept for display.
     var target: String
+    /// `ListItem.aliasIdentity` of the target. Aliases saved before this existed only have the name.
+    var targetID: String?
+
+    init(keyword: String, target: String, targetID: String? = nil) {
+        self.keyword = keyword
+        self.target = target
+        self.targetID = targetID
+    }
+
+    init(keyword: String, item: ListItem) {
+        self.init(keyword: keyword, target: item.name, targetID: item.aliasIdentity)
+    }
 
     func matchesExactly(_ query: String) -> Bool {
         keyword.caseInsensitiveCompare(query) == .orderedSame
+    }
+
+    func isTarget(_ item: ListItem) -> Bool {
+        if let targetID {
+            return item.aliasIdentity == targetID
+        }
+        return item.name == target
+    }
+
+    func resolve(in items: [ListItem]) -> ListItem? {
+        items.first(where: isTarget)
     }
 }
 
@@ -35,21 +73,42 @@ extension UserDefaults {
     }
 }
 
+/// Where aliases are kept: UserDefaults, or memory only (used under XCTest so tests
+/// never see the aliases of whoever runs them).
 class AliasSettings {
-    static let shared = AliasSettings()
+    static let shared: AliasSettings = {
+        let isTesting = ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+        return isTesting ? .inMemory() : AliasSettings(defaults: .standard)
+    }()
 
-    private let defaults: UserDefaults
+    private let defaults: UserDefaults?
+    private var stored: [Alias] = []
 
-    init(defaults: UserDefaults = .standard) {
+    init(defaults: UserDefaults) {
         self.defaults = defaults
+    }
+
+    private init() {
+        self.defaults = nil
+    }
+
+    static func inMemory(_ aliases: [Alias] = []) -> AliasSettings {
+        let settings = AliasSettings()
+        settings.aliases = aliases
+        return settings
     }
 
     var aliases: [Alias] {
         get {
+            guard let defaults else { return stored }
             guard let data = defaults.data(forKey: UserDefaults.AliasKeys.aliases) else { return [] }
             return (try? JSONDecoder().decode([Alias].self, from: data)) ?? []
         }
         set {
+            guard let defaults else {
+                stored = newValue
+                return
+            }
             if let data = try? JSONEncoder().encode(newValue) {
                 defaults.set(data, forKey: UserDefaults.AliasKeys.aliases)
             }
@@ -63,53 +122,50 @@ class AliasSettings {
  */
 final class AliasSearchService: SearchService {
     private let provider: ListProvider
-    private let aliases: () -> [Alias]
+    private let settings: AliasSettings
     private let fuse: Fuse
 
-    init(provider: ListProvider,
-         aliases: @escaping () -> [Alias] = { AliasSettings.shared.aliases },
-         threshold: Double = 0.4) {
+    init(provider: ListProvider, settings: AliasSettings = .shared, threshold: Double = 0.4) {
         self.provider = provider
-        self.aliases = aliases
+        self.settings = settings
         self.fuse = Fuse(threshold: threshold)
         super.init(provider: provider, threshold: threshold)
     }
 
     /// Aliases only make sense for the app list, not for choices piped in on stdin.
-    static func make(provider: ListProvider) -> SearchService {
-        provider is PipeListProvider ? SearchService(provider: provider) : AliasSearchService(provider: provider)
+    static func make(provider: ListProvider, settings: AliasSettings = .shared) -> SearchService {
+        provider is PipeListProvider
+            ? SearchService(provider: provider)
+            : AliasSearchService(provider: provider, settings: settings)
     }
 
     override func search(query: String) -> [ListItem] {
         var results = super.search(query: query)
-        let aliases = self.aliases()
+        let aliases = settings.aliases
         guard !query.isEmpty, !aliases.isEmpty else { return results }
 
         let items = provider.get()
-        func item(named name: String) -> ListItem? { items.first { $0.name == name } }
+        var listed = Set<String>()
 
         // Exact alias hits go first, moved up from wherever fuzzy search put them.
         var exact: [ListItem] = []
         for alias in aliases where alias.matchesExactly(query) {
-            guard !exact.contains(where: { $0.name == alias.target }), let target = item(named: alias.target) else {
+            guard let target = alias.resolve(in: items), listed.insert(target.aliasIdentity).inserted else {
                 continue
             }
             exact.append(target)
-            if let index = results.firstIndex(where: { $0.name == alias.target }) {
-                results.remove(at: index)
-            }
+            results.removeAll { $0.aliasIdentity == target.aliasIdentity }
         }
+        results.forEach { listed.insert($0.aliasIdentity) }
 
         // Targets of aliases that fuzzily match follow the regular results, if not already listed.
         let pattern = fuse.createPattern(from: query)
-        let fuzzy = aliases
+        let extra = aliases
             .filter { !$0.matchesExactly(query) }
             .compactMap { alias in fuse.search(pattern, in: alias.keyword).map { (alias, $0.score) } }
             .sorted { $0.1 < $1.1 }
-            .compactMap { item(named: $0.0.target) }
-
-        var listed = Set((exact + results).map { $0.name })
-        let extra = fuzzy.filter { listed.insert($0.name).inserted }
+            .compactMap { $0.0.resolve(in: items) }
+            .filter { listed.insert($0.aliasIdentity).inserted }
 
         return exact + results + extra
     }

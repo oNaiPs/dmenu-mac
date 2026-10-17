@@ -102,7 +102,19 @@ struct AliasEditor: View {
     }
 
     private var error: String? {
-        model.validationError(keyword: alias.keyword, target: alias.target, replacing: alias.id)
+        model.validationError(for: alias)
+    }
+
+    /// Selected row; name-only aliases from older versions select the first item with that name.
+    private var selection: Binding<String?> {
+        Binding(
+            get: { alias.targetID ?? model.targets.first { $0.name == alias.target }?.id },
+            set: { id in
+                let target = model.targets.first { $0.id == id }
+                alias.target = target?.name ?? ""
+                alias.targetID = target?.id
+            }
+        )
     }
 
     var body: some View {
@@ -118,11 +130,16 @@ struct AliasEditor: View {
             TextField("Search items", text: $filter)
                 .textFieldStyle(.roundedBorder)
 
-            List(model.targets(matching: filter), id: \.self, selection: Binding(
-                get: { alias.target.isEmpty ? nil : alias.target },
-                set: { alias.target = $0 ?? "" }
-            )) { name in
-                Text(name)
+            List(model.targets(matching: filter), selection: selection) { target in
+                HStack {
+                    Text(target.name)
+                    Spacer()
+                    Text(target.detail)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                        .truncationMode(.head)
+                }
             }
             .frame(height: 220)
 

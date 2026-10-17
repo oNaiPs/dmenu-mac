@@ -2,74 +2,87 @@ import XCTest
 @testable import dmenu_mac
 
 final class AliasSettingsModelTests: XCTestCase {
-    private let suite = "AliasSettingsModelTests"
-    private var defaults: UserDefaults!
     private var settings: AliasSettings!
-    private var items: [String] = []
+    private var items: [ListItem] = []
     private var model: AliasSettingsModel!
 
     override func setUp() {
         super.setUp()
-        defaults = UserDefaults(suiteName: suite)
-        defaults.removePersistentDomain(forName: suite)
-        settings = AliasSettings(defaults: defaults)
-        items = ["Firefox", "Ghostty", "Safari", "Firefox"]
-        model = AliasSettingsModel(settings: settings, itemNames: { [unowned self] in self.items })
+        settings = .inMemory()
+        items = [
+            ListItem(name: "Firefox", data: URL(fileURLWithPath: "/Applications/Firefox.app")),
+            ListItem(name: "Ghostty", data: URL(fileURLWithPath: "/Applications/Ghostty.app")),
+            ListItem(name: "Safari", data: URL(fileURLWithPath: "/Applications/Safari.app")),
+            ListItem(name: "Firefox", data: URL(fileURLWithPath: "/Applications/Firefox.app")),
+            ListItem(name: "Firefox", data: URL(fileURLWithPath: "/Users/me/Applications/Firefox.app")),
+            ListItem(name: "nvim", data: Command(commandLine: "nvim"))
+        ]
+        model = AliasSettingsModel(settings: settings, items: { [unowned self] in self.items })
     }
 
-    override func tearDown() {
-        defaults.removePersistentDomain(forName: suite)
-        super.tearDown()
+    private func alias(_ keyword: String, _ index: Int) -> Alias {
+        Alias(keyword: keyword, item: items[index])
     }
 
-    func testTargetsAreSortedAndUnique() {
-        XCTAssertEqual(model.targets, ["Firefox", "Ghostty", "Safari"])
-        XCTAssertEqual(model.targets(matching: "fi"), ["Firefox"])
+    func testTargetsAreSortedAndUniqueByIdentity() {
+        XCTAssertEqual(model.targets.map { $0.name }, ["Firefox", "Firefox", "Ghostty", "nvim", "Safari"])
+        XCTAssertEqual(model.targets(matching: "fi").map { $0.id },
+                       ["/Applications/Firefox.app", "/Users/me/Applications/Firefox.app"])
+        XCTAssertEqual(model.targets.first { $0.name == "nvim" }?.detail, "$PATH")
+        XCTAssertEqual(model.targets.first?.detail, "/Applications")
     }
 
     func testSaveAddsAndPersists() {
-        XCTAssertTrue(model.save(Alias(keyword: "ff", target: "Firefox")))
+        XCTAssertTrue(model.save(alias("ff", 0)))
         XCTAssertEqual(settings.aliases.map { $0.keyword }, ["ff"])
-        XCTAssertEqual(AliasSettingsModel(settings: settings, itemNames: { [] }).aliases.count, 1)
+        XCTAssertEqual(settings.aliases.first?.targetID, "/Applications/Firefox.app")
+        XCTAssertEqual(AliasSettingsModel(settings: settings, items: { [] }).aliases.count, 1)
     }
 
     func testSaveReplacesExistingAlias() {
-        var alias = Alias(keyword: "ff", target: "Firefox")
-        model.save(alias)
-        alias.target = "Safari"
-        XCTAssertTrue(model.save(alias))
-        XCTAssertEqual(settings.aliases.map { $0.target }, ["Safari"])
+        var edited = alias("ff", 0)
+        model.save(edited)
+        edited.target = "Safari"
+        edited.targetID = "/Applications/Safari.app"
+        XCTAssertTrue(model.save(edited))
+        XCTAssertEqual(settings.aliases.map { $0.targetID }, ["/Applications/Safari.app"])
     }
 
     func testDeleteRemovesAlias() {
-        let alias = Alias(keyword: "ff", target: "Firefox")
-        model.save(alias)
-        model.delete(alias)
+        let saved = alias("ff", 0)
+        model.save(saved)
+        model.delete(saved)
         XCTAssertTrue(model.aliases.isEmpty)
         XCTAssertTrue(settings.aliases.isEmpty)
     }
 
     func testValidation() {
-        model.save(Alias(keyword: "ff", target: "Firefox"))
+        model.save(alias("ff", 0))
 
-        XCTAssertNotNil(model.validationError(keyword: "", target: "Firefox"))
-        XCTAssertNotNil(model.validationError(keyword: "f f", target: "Firefox"))
-        XCTAssertNotNil(model.validationError(keyword: "FF", target: "Safari"), "duplicate, case-insensitive")
-        XCTAssertNotNil(model.validationError(keyword: "sf", target: ""))
-        XCTAssertNotNil(model.validationError(keyword: "sf", target: "Netscape"))
-        XCTAssertNil(model.validationError(keyword: "sf", target: "Safari"))
-        XCTAssertNil(model.validationError(keyword: "ff", target: "Safari", replacing: model.aliases[0].id))
-        XCTAssertFalse(model.save(Alias(keyword: "", target: "Safari")))
+        XCTAssertNotNil(model.validationError(for: alias("", 0)))
+        XCTAssertNotNil(model.validationError(for: alias("f f", 0)))
+        XCTAssertNotNil(model.validationError(for: alias("FF", 2)), "duplicate, case-insensitive")
+        XCTAssertNotNil(model.validationError(for: Alias(keyword: "sf", target: "")))
+        XCTAssertNotNil(model.validationError(for: Alias(keyword: "sf", target: "Netscape", targetID: "/x.app")))
+        XCTAssertNil(model.validationError(for: alias("sf", 2)))
+
+        var edited = model.aliases[0]
+        edited.target = "Safari"
+        edited.targetID = "/Applications/Safari.app"
+        XCTAssertNil(model.validationError(for: edited), "an alias may keep its own keyword")
+        XCTAssertFalse(model.save(alias("", 2)))
     }
 
     func testAnyTargetAcceptedWhenListIsUnavailable() {
         items = []
-        XCTAssertNil(model.validationError(keyword: "x", target: "Whatever"))
+        XCTAssertNil(model.validationError(for: Alias(keyword: "x", target: "Whatever")))
         XCTAssertFalse(model.isMissing(Alias(keyword: "x", target: "Whatever")))
     }
 
     func testMissingTargetIsFlagged() {
         XCTAssertTrue(model.isMissing(Alias(keyword: "x", target: "Netscape")))
-        XCTAssertFalse(model.isMissing(Alias(keyword: "x", target: "Safari")))
+        XCTAssertTrue(model.isMissing(Alias(keyword: "x", target: "Safari", targetID: "/gone/Safari.app")))
+        XCTAssertFalse(model.isMissing(Alias(keyword: "x", target: "Safari")), "name-only aliases match by name")
+        XCTAssertFalse(model.isMissing(alias("x", 5)))
     }
 }
