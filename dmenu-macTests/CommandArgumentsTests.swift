@@ -44,6 +44,20 @@ final class CommandArgumentsTests: XCTestCase {
         XCTAssertTrue(try DmenuMac.parse(["--bottom"]).bottom)
     }
 
+    func testMonitorDefaultsToUnset() throws {
+        XCTAssertNil(try DmenuMac.parse([]).monitor)
+    }
+
+    func testMonitorParsesBothForms() throws {
+        XCTAssertEqual(try DmenuMac.parse(["-m", "1"]).monitor, 1)
+        XCTAssertEqual(try DmenuMac.parse(["--monitor", "0"]).monitor, 0)
+    }
+
+    func testMonitorRejectsNonNumbers() {
+        XCTAssertThrowsError(try DmenuMac.parse(["-m", "left"]))
+        XCTAssertThrowsError(try DmenuMac.parse(["-m"]))
+    }
+
     func testExitsWhenStartedFromShell() {
         XCTAssertTrue(DmenuMac.shouldExitOnClose(flag: nil, parentPID: 4242))
     }

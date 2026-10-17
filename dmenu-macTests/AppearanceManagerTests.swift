@@ -12,6 +12,7 @@ struct AppearanceDefaultsSnapshot {
         UserDefaults.AppearanceKeys.fontName,
         UserDefaults.AppearanceKeys.fontSize,
         UserDefaults.AppearanceKeys.windowPosition,
+        UserDefaults.AppearanceKeys.screenSelection,
         UserDefaults.AppearanceKeys.showIcons
     ]
 
@@ -128,6 +129,20 @@ final class AppearanceManagerTests: XCTestCase {
         XCTAssertEqual(manager.windowPosition, .top)
     }
 
+    func testScreenSelectionDefaultsToActiveWindow() {
+        XCTAssertEqual(manager.screenSelection, .activeWindow)
+    }
+
+    func testScreenSelectionRoundTrip() {
+        manager.screenSelection = .mouse
+        XCTAssertEqual(AppearanceManager().screenSelection, .mouse)
+    }
+
+    func testUnknownScreenSelectionFallsBackToDefault() {
+        UserDefaults.standard.set("projector", forKey: UserDefaults.AppearanceKeys.screenSelection)
+        XCTAssertEqual(manager.screenSelection, .activeWindow)
+    }
+
     func testShowIconsDefaultsToOff() {
         XCTAssertFalse(manager.showIcons)
     }
@@ -173,6 +188,7 @@ final class AppearanceManagerTests: XCTestCase {
         manager.fontName = "Menlo-Regular"
         manager.fontSize = 30
         manager.windowPosition = .bottom
+        manager.screenSelection = .primary
         manager.showIcons = true
 
         manager.resetToDefaults()
@@ -185,6 +201,7 @@ final class AppearanceManagerTests: XCTestCase {
         XCTAssertEqual(manager.fontName, "system")
         XCTAssertEqual(manager.fontSize, 13.0, accuracy: 0.0001)
         XCTAssertEqual(manager.windowPosition, .top)
+        XCTAssertEqual(manager.screenSelection, .activeWindow)
         XCTAssertFalse(manager.showIcons)
     }
 

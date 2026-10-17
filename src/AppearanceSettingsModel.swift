@@ -43,6 +43,11 @@ final class AppearanceSettingsModel: NSObject, ObservableObject {
         set { update { manager.windowPosition = newValue } }
     }
 
+    var screenSelection: ScreenSelection {
+        get { manager.screenSelection }
+        set { update { manager.screenSelection = newValue } }
+    }
+
     var windowOpacity: Double {
         get { Double(manager.windowOpacity) }
         set { update { manager.windowOpacity = CGFloat(newValue) } }

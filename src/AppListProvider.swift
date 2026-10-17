@@ -24,6 +24,7 @@ import Fuse
 class AppListProvider: ListProvider {
 
     var appDirDict = [String: Bool]()
+    var fileActions = FileActions()
 
     static let launchableExtensions: Set<String> = ["app", "prefPane"]
 
@@ -162,12 +163,22 @@ class AppListProvider: ListProvider {
     }
 
     func doAction(item: ListItem) {
+        doAction(item: item, action: .open)
+    }
+
+    func doAction(item: ListItem, action: ItemAction) {
         guard let app: URL = item.data as? URL else {
             NSLog("Cannot do action on item \(item.name)")
             return
         }
+        // Panes aren't applications, so a new instance of one is just opening it.
+        let action = action == .openNewInstance && app.pathExtension != "app" ? .open : action
+        if fileActions.perform(action, on: app) {
+            return
+        }
+        let open = fileActions.open
         DispatchQueue.main.async {
-            NSWorkspace.shared.open(app)
+            open(app)
         }
     }
 
