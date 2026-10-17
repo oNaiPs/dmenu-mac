@@ -14,7 +14,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Foundation
+import Cocoa
 import FileWatcher
 
 /// A program found in $PATH.
@@ -35,6 +35,7 @@ class CommandListProvider: ListProvider {
 
     private var commands = [String]()
     private var commandPaths = [String: String]()
+    private var searchPaths = [String]()
     private var loaded = false
     private var loading = false
     private var fileWatcher: FileWatcher?
@@ -90,6 +91,7 @@ class CommandListProvider: ListProvider {
         queue.async(flags: .barrier) {
             self.commands = newCommands
             self.commandPaths = newPaths
+            self.searchPaths = paths
             self.loaded = true
             self.loading = false
         }
@@ -261,12 +263,28 @@ class CommandListProvider: ListProvider {
             NSLog("Cannot do action on item \(item.name)")
             return
         }
-        if action == .reveal || action == .copyPath,
-           let path = queue.sync(execute: { commandPaths[command.commandLine] }) {
-            fileActions.perform(action, on: URL(fileURLWithPath: path))
-            return
+        switch action {
+        case .open, .openNewInstance:
+            launcher.run(command.commandLine)
+        case .reveal, .copyPath:
+            if let path = path(of: command.commandLine) {
+                fileActions.perform(action, on: URL(fileURLWithPath: path))
+            } else {
+                NSLog("Cannot find %@ in PATH", command.commandLine)
+                NSSound.beep()
+            }
         }
-        launcher.run(command.commandLine)
+    }
+
+    /// The program's full path, looked up again if it appeared after the last scan.
+    private func path(of name: String) -> String? {
+        let (known, paths) = queue.sync { (commandPaths[name], searchPaths) }
+        if let known = known {
+            return known
+        }
+        return paths.lazy
+            .map { ($0 as NSString).appendingPathComponent(name) }
+            .first { FileManager.default.isExecutableFile(atPath: $0) }
     }
 
     /// Typed commands, e.g. "nvim notes.md", open in the terminal once programs are enabled.

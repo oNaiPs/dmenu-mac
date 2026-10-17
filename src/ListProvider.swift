@@ -23,7 +23,9 @@ protocol ListProvider {
     // Performs action on a selected item
     func doAction(item: ListItem)
 
-    // Performs an alternate action (⌘/⌥/⌃ Enter) on a selected item
+    // Performs an alternate action (⌘/⌥/⌃ Enter) on a selected item.
+    // Providers that wrap other providers MUST forward this to the wrapped provider:
+    // the default implementation below drops the action and does a plain doAction(item:).
     func doAction(item: ListItem, action: ItemAction)
 
     // Performs action on free text typed by the user

@@ -199,6 +199,39 @@ final class CommandListProviderTests: XCTestCase {
         XCTAssertTrue(launcher.commands.isEmpty)
     }
 
+    func testRevealOfUnknownProgramDoesNotRunIt() {
+        settings.enabled = true
+        let provider = makeProvider()
+        load(provider)
+        var revealed: [URL] = []
+        provider.fileActions.reveal = { revealed.append($0) }
+
+        provider.doAction(item: ListItem(name: "gone", data: Command(commandLine: "gone")), action: .reveal)
+        let done = expectation(description: "main queue drained")
+        DispatchQueue.main.async { done.fulfill() }
+        wait(for: [done], timeout: 1)
+
+        XCTAssertTrue(launcher.commands.isEmpty)
+        XCTAssertTrue(revealed.isEmpty)
+    }
+
+    func testRevealFindsProgramAddedAfterScan() throws {
+        settings.enabled = true
+        let provider = makeProvider()
+        load(provider)
+        try makeExecutable(otherBinDir, "newtool")
+        var revealed: [URL] = []
+        provider.fileActions.reveal = { revealed.append($0) }
+
+        provider.doAction(item: ListItem(name: "newtool", data: Command(commandLine: "newtool")), action: .reveal)
+        let done = expectation(description: "main queue drained")
+        DispatchQueue.main.async { done.fulfill() }
+        wait(for: [done], timeout: 1)
+
+        XCTAssertEqual(revealed.map { $0.path }, [otherBinDir.appendingPathComponent("newtool").path])
+        XCTAssertTrue(launcher.commands.isEmpty)
+    }
+
     func testNewInstanceOfProgramRunsItInTerminal() {
         makeProvider().doAction(item: ListItem(name: "nvim", data: Command(commandLine: "nvim")),
                                 action: .openNewInstance)

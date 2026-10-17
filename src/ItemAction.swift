@@ -64,6 +64,10 @@ enum ItemAction: Equatable {
 
 /// Performs the alternate actions on files: apps, panes, programs from $PATH.
 struct FileActions {
+    /// Plain Enter, done by the provider when perform returns false.
+    var open: (URL) -> Void = { url in
+        NSWorkspace.shared.open(url)
+    }
     var reveal: (URL) -> Void = { url in
         NSWorkspace.shared.activateFileViewerSelecting([url])
     }

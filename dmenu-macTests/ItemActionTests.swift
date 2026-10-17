@@ -5,12 +5,14 @@ final class ItemActionTests: XCTestCase {
     private var pasteboard: NSPasteboard!
     private var revealed: [URL] = []
     private var newInstances: [URL] = []
+    private var opened: [URL] = []
 
     override func setUp() {
         super.setUp()
         pasteboard = NSPasteboard(name: NSPasteboard.Name("dmenu-mac-tests-\(UUID().uuidString)"))
         revealed = []
         newInstances = []
+        opened = []
     }
 
     override func tearDown() {
@@ -23,6 +25,7 @@ final class ItemActionTests: XCTestCase {
         var actions = FileActions()
         actions.reveal = { self.revealed.append($0) }
         actions.openNewInstance = { self.newInstances.append($0) }
+        actions.open = { self.opened.append($0) }
         actions.pasteboard = pasteboard
         return actions
     }
@@ -112,6 +115,35 @@ final class ItemActionTests: XCTestCase {
         XCTAssertEqual(pasteboard.string(forType: .string), url.path)
         XCTAssertEqual(revealed, [url])
         XCTAssertEqual(newInstances, [url])
+    }
+
+    func testNewInstanceOfPaneJustOpensIt() {
+        let provider = AppListProvider()
+        provider.fileActions = makeFileActions()
+        let pane = URL(fileURLWithPath: "/System/Library/PreferencePanes/Displays.prefPane")
+
+        provider.doAction(item: ListItem(name: "Displays", data: pane), action: .openNewInstance)
+        drainMainQueue()
+
+        XCTAssertTrue(newInstances.isEmpty)
+        XCTAssertEqual(opened, [pane])
+    }
+
+    /// Goes through the real provider stack so a wrapper that drops the action is caught.
+    func testFactoryStackDeliversActionToAppProvider() throws {
+        let provider = ProviderFactory().createProvider(stdinContent: "")
+        let composite = try XCTUnwrap(provider as? CompositeListProvider)
+        let apps = try XCTUnwrap(composite.providers.first { $0 is AppListProvider } as? AppListProvider)
+        apps.fileActions = makeFileActions()
+        let item = try XCTUnwrap(provider.get().first { $0.name == "Calculator" })
+
+        provider.doAction(item: item, action: .copyPath)
+        provider.doAction(item: item, action: .reveal)
+        drainMainQueue()
+
+        XCTAssertEqual(pasteboard.string(forType: .string), "/System/Applications/Calculator.app")
+        XCTAssertEqual(revealed.map { $0.path }, ["/System/Applications/Calculator.app"])
+        XCTAssertTrue(opened.isEmpty)
     }
 
     func testCompositeForwardsAction() {
